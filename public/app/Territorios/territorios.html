@@ -1,0 +1,128 @@
+<div class="text-center margin">
+    <label class="title-1 kaushan">Gestión de territorios</label>
+</div>
+<div class="col-md-12 perfil-box">
+	<div class="portlet">
+        <div class="portlet-title">
+            <div class="caption caption-red">
+                <i class="fa fa-map-o"></i>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-target="#territorios" data-toggle="tab">Territorios</a>
+                </li>
+                <li>
+                    <a data-target="#nuevoTerritorio" data-toggle="tab">Nuevo</a>
+                </li>
+            </ul>
+        </div>
+        <div class="portlet-body">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="territorios">
+                    <div>
+                        <label class="title-2">Territorios</label>                        
+                    </div>
+                    <div class="col-md-12 col-sm-12 margin" ng-show="territorios.length > 0">
+                        <div class="col-md-4 col-sm-4 card-box" ng-repeat="territorio in territorios">
+                            <div class="inner">
+                                <div class="title-card">
+                                    <label class="title-3">{{territorio.nombre}}</label>
+                                </div>
+                                <div class="body-card">
+                                    <span class="glyphicon glyphicon-pencil" ng-click="editandoTerritorio(territorio)" data-toggle="modal" data-target="#editarterritorio" >
+                                    <md-tooltip md-direction="top">Editar</md-tooltip></span>
+                                    &nbsp;&nbsp;
+                                    <span class="glyphicon glyphicon-trash" ng-click="eliminar($event,territorio.id);">
+                                    <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-box margin" ng-show="territorios.length == 0">No hay territorios registrados.</div> 
+                    <div class="text-center margin" ng-hide="territorios">
+                        <label>Cargando territorios...</label>
+                    </div>             
+                </div>
+                <div id="editarterritorio" class="modal fade" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <div class="modal-header montserrat">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancelEdit()">&times;</button>
+                                <label class="title">Editar territorio</label>
+                            </div>
+                            <div class="modal-body">
+                                <form class="margin" autocomplete="off">	
+			                        <div>        
+			                       		<div ng-show="editar" class="margin" ng-class="styleEditar">{{msgEditar}}</div>
+			                            <div>
+			                                <p>
+			                                    <label for="nombre">Nombre</label>
+			                                    <input ng-model="territorio.nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus ng-blur="">
+		                                    </p>
+			                            </div>
+			                            <div>
+			                                <p>
+			                                    <label for="descripcion">Descripción</label>
+			                                    <textarea ng-model="territorio.descripcion" class="form-control" rows="5" name="descripcion" id="descripcion" required autofocus ng-blur=""></textarea> 	
+			                                </p>	                                
+			                            </div>                            				
+                                        <div>
+                                            <p>
+                                                <label for="Region">Región</label>
+                                                <select class="form-control margin text-center" ng-options = "region as region.nombre for region in regiones track by region.id" ng-model="selectedRegion" name="Region"></select>     
+                                            </p>                                    
+                                        </div>                                          
+		                           </div>   
+		                       </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-cancel margin-top" data-dismiss="modal" ng-click="cancelEdit();"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                                <button class="btn btn-success margin-top" ng-disabled="emptyData" data-ng-click="modificar(territorio); $event.stopPropagation()"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nuevoTerritorio">
+                    <div>
+                        <label class="title-2">Agregar territorio</label>
+                    </div>  
+                    <div class="container">
+                    <form class="margin" autocomplete="off">	
+                        <div class="col-md-offset-3 col-md-6">        
+                       		<div ng-show="registro" class="margin" ng-class="styleRegistro">{{msgRegistro}}</div>
+	                            <div>
+	                                <p>
+	                                    <label for="nombre">Nombre</label>
+	                                    <input ng-model="territorio.nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus ng-blur="">
+                                    </p>
+	                            </div>
+	                            <div>
+	                                <p>
+	                                    <label for="descripcion">Descripción</label>
+	                                    <textarea ng-model="territorio.descripcion" class="form-control" rows="5" name="descripcion" id="descripcion" required autofocus ng-blur=""></textarea> 	
+	                                </p>	                                
+	                            </div>  
+                                <div>
+                                    <p>
+                                        <label for="Region">Región</label>
+                                        <select class="form-control margin text-center" ng-options = "region as region.nombre for region in regiones track by region.id" ng-model="selectedRegion" name="Region"></select>     
+                                    </p>                                    
+                                </div>                          		                            
+                                <br>
+                                <div>
+                                    <center>
+	                                   <button class="btn btn-success" ng-disabled="emptyData" ng-click="store();"><span class="glyphicon glyphicon-floppy-disk" ></span>&nbsp;&nbsp;Guardar</button>
+                                   </center>
+                                </div>
+                           </div>                                 
+                       </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+    Ha ocurrido un error inesperado al cargar los territorios, inténtelo de nuevo
+</div>

@@ -1,0 +1,40 @@
+<div id="vistaEncuestador">
+    <div class="text-center margin">
+        <label class="title-1 kaushan">Encuestas</label>
+    </div>
+    <div class="col-md-12 gestion-box">
+        <div ng-show="personas.length > 0">
+            <div ng-repeat="persona in personas">
+                <div>
+                    <label class="subtitle baskerville margin">{{persona.nombre}}</label>
+                    <div class="col-md-12 col-sm-12 margin" ng-show="persona.encuestas">
+                        <div class="col-md-4 col-sm-4 card-box" ng-repeat="encuesta in persona.encuestas" ng-if="encuesta.estado">
+                            <div class="inner">
+                                <div class="title-card">
+                                    <label class="subtitle">
+                                        <span class="label label-default"><md-tooltip md-direction="top">Total de preguntas</md-tooltip>{{encuesta.numeroPreguntas}}</span>
+                                        &nbsp;Encuesta {{encuesta.id}}
+                                    </label>
+                                </div>
+                                <div  class="body-card">
+                                    <p>{{encuesta.descripcion}}</p>
+                                </div>
+                                <div class="footer-card-box">
+                                    <a ui-sref="encuestador.contestar" ng-click="contestarEncuesta(encuesta.idAplicacion, encuesta.id,encuesta.descripcion)">
+                                    <md-tooltip md-direction="right">Comenzar la encuesta</md-tooltip>Contestar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-box margin" ng-show="encuestas.length == 0">No hay encuestas registradas.</div>
+            </div>
+        </div>
+        <div class="text-center" ng-hide="personas.length > 0">
+            <label>Cargando encuestas...</label>
+        </div>
+        <div class="container">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>

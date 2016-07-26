@@ -1,0 +1,134 @@
+<div class="text-center margin">
+    <label class="title-1 kaushan">Gestión de indicadores</label>
+</div>
+<div class="col-md-12 perfil-box">
+	<div class="portlet">
+	    <div class="portlet-title">
+	        <div class="caption caption-red">
+	            <i class="glyphicon glyphicon-oil"></i>
+	        </div>
+	        <ul class="nav nav-tabs">
+	            <li class="active">
+	                <a data-target="#indicadores" data-toggle="tab">Indicadores</a>
+	            </li>
+	            <li>
+	                <a data-target="#nuevo" data-toggle="tab" ng-click="setData();">Nuevo</a>
+	            </li>
+	        </ul>
+	    </div>
+	    <div class="portlet-body">
+	        <div class="tab-content">
+	            <div class="tab-pane fade in active" id="indicadores">
+	            	<div>
+                        <label class="title-2">Indicadores</label>                        
+                    </div>
+                    <div class="col-md-12 col-sm-12 margin" ng-show="indicadores.length > 0">
+                    	<div class="col-md-4 col-sm-4 card-box" ng-repeat="indicador in indicadores">
+                            <div class="inner">
+                                <div class="title-card">
+                                    <label class="title-3">{{indicador.nombre}}</label>
+                                </div>
+                                <div class="body-card">
+                                    <p>{{indicador.descripcion}}.</p>
+                                </div>
+                                <div class="footer-card-box">
+                                    <span class="glyphicon glyphicon-pencil" ng-click="editandoIndicador(indicador)" data-toggle="modal" data-target="#editarIndicador" >
+                                    <md-tooltip md-direction="top">Editar</md-tooltip></span>
+                                    &nbsp;&nbsp;
+                                    <span class="glyphicon glyphicon-trash" ng-click="remove($event, indicador.id);">
+                                    <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                                </div>
+                            </div>
+                        </div>
+            		</div>
+            		<div class="info-box margin" ng-show="indicadores.length == 0">No hay indicadores registrados.</div>
+            		<div class="text-center margin" ng-hide="indicadores">
+                        <label>Cargando indicadores...</label>
+                    </div>
+
+                    <!-- Formulario editar -->
+                    <div id="editarIndicador" class="modal fade" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header montserrat">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <label class="title">Editar indicador</label>
+                                </div>
+                                <div class="modal-body margin">
+                                    <form name="formIndicador" class="margin row">
+							            <div class="col-md-12" ng-class="{ 'has-error' : formIndicador.name.$error.required && formIndicador.name.$dirty, 'has-success' : !formIndicador.name.$error.required && !formIndicador.name.$dirty }">
+							                <p>
+							                    <label>Nombre</label>
+							                    <input ng-model="indicador.name" class="form-control" type="text" name="name" id="name" required>
+							                    <span class="help-inline red" ng-show="formIndicador.name.$error.required && formIndicador.name.$dirty">El nombre es requerido.</span>
+							                </p>
+							            </div>
+							            <div class="col-md-12" ng-class="{ 'has-error' : formIndicador.description.$error.required && formIndicador.description.$dirty, 'has-success' : !formIndicador.description.$error.required && !formIndicador.description.$dirty }">
+							                <p>
+							                    <label>Descripción</label>
+							                    <input ng-model="indicador.description" class="form-control" type="text" name="description" id="description" required>
+							                    <span class="help-inline red" ng-show="formIndicador.description.$error.required && formIndicador.description.$dirty">La descripción es requerida.</span>
+							                </p>
+							            </div>
+							            <div class="col-md-12">
+							                <p>
+							                    <div><label>Sectores</label></div>
+									        	<span class="checkbox" ng-repeat="sector in sectores" ng-click="validate();">
+									        		<label><input type="checkbox" ng-model="sector.state" value="true">{{sector.nombre}}</label>
+								        		</span>
+							                </p>
+							            </div>       
+									</form>
+				                    <div ng-show="indicadorMsg" ng-class="indicadorClass">{{indicadorMsg}}</div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-cancel" data-dismiss="modal" ng-click="setData();"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                                    <button class="btn btn-success" ng-disabled="!formIndicador.$valid" data-ng-click="update(); $event.stopPropagation() || !sectoresState"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+	            </div>
+	            <div class="tab-pane fade" id="nuevo">
+	            	<div>
+                        <label class="title-2">Agregar indicador</label>
+                    </div>
+                    <form name="formIndicador" class="margin row">
+			            <div class="col-md-12" ng-class="{ 'has-error' : formIndicador.name.$error.required && formIndicador.name.$dirty, 'has-success' : !formIndicador.name.$error.required && !formIndicador.name.$dirty }">
+			                <p>
+			                    <label>Nombre</label>
+			                    <input ng-model="indicador.name" class="form-control" type="text" name="name" id="name" required>
+			                    <span class="help-inline red" ng-show="formIndicador.name.$error.required && formIndicador.name.$dirty">El nombre es requerido.</span>
+			                </p>
+			            </div>
+			            <div class="col-md-12" ng-class="{ 'has-error' : formIndicador.description.$error.required && formIndicador.description.$dirty, 'has-success' : !formIndicador.description.$error.required && !formIndicador.description.$dirty }">
+			                <p>
+			                    <label>Descripción</label>
+			                    <input ng-model="indicador.description" class="form-control" type="text" name="description" id="description" required>
+			                    <span class="help-inline red" ng-show="formIndicador.description.$error.required && formIndicador.description.$dirty">La descripción es requerida.</span>
+			                </p>
+			            </div>
+			            <div class="col-md-12">
+			                <p>
+			                    <div><label>Sectores</label></div>
+					        	<span class="checkbox" ng-repeat="sector in sectores" ng-click="validate();">
+					        		<label><input type="checkbox" ng-model="sector.state" value="true">{{sector.nombre}}</label>
+				        		</span>
+			                </p>
+			            </div>
+			            <div class="col-md-12">
+				            <center>
+				                <button class="btn btn-success margin" ng-click="store();" ng-disabled="!formIndicador.$valid || !sectoresState"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+				            </center>
+				        </div>        
+					</form>
+                    <div ng-show="indicadorMsg" ng-class="indicadorClass">{{indicadorMsg}}</div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+	<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+    Ha ocurrido un error inesperado al cargar los indicadores, inténtelo de nuevo
+</div>

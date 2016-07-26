@@ -1,0 +1,109 @@
+<div class="text-center margin">
+    <label class="title-1 kaushan">Mi perfil</label>
+</div>
+<div class="col-md-12 perfil-box">
+	<!-- BEGIN Portlet PORTLET-->
+	<div class="portlet">
+		<div class="portlet-title">
+			<div class="caption caption-red">
+				<i class="glyphicon glyphicon-user"></i>
+			</div>
+			<ul class="nav nav-tabs">
+				<li class="active">
+					<a data-target="#info" data-toggle="tab">Información</a>
+				</li>
+				<li>
+					<a data-target="#pass" data-toggle="tab">Contraseña</a>
+				</li>
+			</ul>
+		</div>
+		<div class="portlet-body">
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="info">
+					<form>
+				        <div class="col-md-12 margin">
+				            <div class="col-md-6">
+				                <p>
+				                    <label for="cedula">Cédula</label>
+				                    <input ng-model="user.cedula" class="form-control" type="text" name="cedula" id="cedula" required>
+				                </p>
+				            </div>
+				            <div class="col-md-6">
+				                <p>
+				                    <label for="nombre">Nombre</label>
+				                    <input ng-model="user.nombre" class="form-control" type="text" name="nombre" id="name" required title="Por favor ingrese más de dos letras.">
+				                </p>
+				            </div>
+				        </div>
+				        <div class="col-md-12">
+				            <div class="col-md-6">
+				                <p>
+				                    <label for="apellido1">Primer apellido</label>
+				                    <input ng-model="user.apellido1" class="form-control" type="text" name="apellido1" id="apellido1" required title="Por favor ingrese más de dos letras.">
+				                </p>
+				            </div>
+				            <div class="col-md-6">
+				                <p>
+				                    <label for="apellido2">Segundo apellido</label>
+				                    <input ng-model="user.apellido2" class="form-control" type="text" name="apellido2" id="apellido2" required title="Por favor ingrese más de dos letras.">
+				                </p>
+				            </div>
+				        </div>
+				        <div class="col-md-12">
+				            <div class="col-md-12">
+				                <p>
+				                    <label for="email">Email</label>
+				                    <input ng-model="user.email" class="form-control" type="text" name="email" id="email" required title="Por favor ingrese un email valido.">
+				                </p>
+				            </div>
+				        </div>   
+				        <div class="col-md-12">
+				            <center>
+				                <button class="btn btn-success margin" ng-click="update();"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Listo</button>
+				            </center>
+				        </div>
+				    </form>
+				</div>
+				<div class="tab-pane fade" id="pass">
+					<form name="formPass">
+						<div class="col-md-12">
+				            <div class="col-md-12 margin" ng-class="{ 'has-error' : formPass.currentPass.$error.required && formPass.currentPass.$dirty, 'has-success' : !formPass.currentPass.$error.required && !formPass.currentPass.$dirty }">
+				                <p>
+				                    <label for="pass">Contraseña actual</label>
+				                    <input ng-model="currentPass" class="form-control" type="password" name="currentPass" id="currentPass" required title="Por favor ingrese más de dos caracteres.">
+				                    <span class="help-inline red" ng-show="formPass.currentPass.$error.required && formPass.currentPass.$dirty">La contraseña actual es requerida.</span>
+				                    <span class="help-inline red" ng-show="errorCurrentPass">La contraseña actual es incorrecta.</span>
+				                </p>
+				            </div>
+			            </div>
+			            <div class="col-md-12">
+				            <div class="col-md-12" ng-class="{ 'has-error' : formPass.newPass.$error.required && formPass.newPass.$dirty, 'has-success' : !formPass.newPass.$error.required && !formPass.newPass.$dirty }">
+				                <p>
+				                    <label for="apellido2">Contraseña nueva</label>
+				                    <input ng-model="newPass" class="form-control" type="password" name="newPass" id="newPass" required>
+				                    <span class="help-inline red" ng-show="formPass.newPass.$error.required && formPass.newPass.$dirty">La contraseña nueva es requerida.</span>
+				                </p>
+				            </div>
+			            </div>
+			            <div class="col-md-12">
+				            <div class="col-md-12" ng-class="{ 'has-error' : formPass.passConf.$error.required && formPass.passConf.$dirty, 'has-success' : !formPass.passConf.$error.required && !formPass.passConf.$dirty }">
+				                <p>
+				                    <label for="name">Confirmar contraseña</label>
+				                    <input ng-model="passConf" class="form-control" type="password" name="passConf" id="passConf" required>
+				                    <span class="help-inline red" ng-show="formPass.passConf.$error.required && formPass.passConf.$dirty">Confirme su contraseña.</span>
+				                    <span class="help-inline red" ng-show="errorPassConf">Las contraseñas no coinciden.</span>
+				                </p>
+				            </div> 
+			            </div>
+			            <div class="col-md-12">
+			            	<div ng-show="passState" ng-class="passClass">{{passMsg}}</div>
+				            <center>
+				                <button class="btn btn-success margin" ng-click="changePass();" ng-disabled="!formPass.$valid"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Cambiar</button>
+				            </center>
+				        </div>        
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

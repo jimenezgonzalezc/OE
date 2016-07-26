@@ -1,0 +1,229 @@
+<div class="text-center margin">
+    <label class="title-1 kaushan">Gestión de encuestas</label>
+</div>
+<div class="col-md-12 gestion-box">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption caption-red">
+                <i class="glyphicon glyphicon-list"></i>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-target="#encuestas" data-toggle="tab">Encuestas</a>
+                </li>
+                <li>
+                    <a data-target="#nueva" data-toggle="tab">Nueva</a>
+                </li>
+            </ul>
+        </div>
+        <div class="portlet-body">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="encuestas">
+                    <div>
+                        <div>
+                            <label class="title-2">Encuestas</label>
+                        </div>
+                        <div ng-show="encuestas">
+                            <div class="col-md-12 col-sm-12 margin" ng-show="encuestas.length > 0">
+                                <div class="col-md-6 col-sm-6 card-box" ng-repeat="encuesta in encuestas">
+                                    <div class="inner">
+                                        <div class="title-card">
+                                            <label class="title-3">{{encuesta.descripcion}}</label>
+                                        </div>
+                                        <div class="body-card">
+                                            <p>Creada por {{encuesta.nombre}} {{encuesta.apellido1}} {{encuesta.apellido2}} el {{encuesta.fechaCreacion}} y modificada el {{encuesta.fechaModificacion}}.</p>
+                                            <p>Está {{encuesta.estado | estado}}.</p>
+                                        </div>
+                                        <div class="footer-card-box">
+                                            <span class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#editarEncuesta" ng-click="editandoEncuesta(encuesta.id, encuesta.descripcion);">
+                                            <md-tooltip md-direction="top">Editar</md-tooltip></span>
+                                            &nbsp;&nbsp;
+                                            <span class="glyphicon glyphicon-tasks" data-toggle="modal" data-target="#armarEncuesta"  ng-click="armandoEncuesta(encuesta.id);">
+                                            <md-tooltip md-direction="top">Armar</md-tooltip></span>
+                                            &nbsp;&nbsp;
+                                            <span ng-class="{'fa fa-toggle-on': encuesta.estado == 1, 'fa fa-toggle-off': encuesta.estado == 0}" ng-click="cambiarEstado(encuesta);">
+                                            <md-tooltip md-direction="top">Activar/inactivar</md-tooltip></span>
+                                            &nbsp;&nbsp;
+                                            <span class="glyphicon glyphicon-list-alt" data-toggle="modal" data-target="#aplicacion" ng-click="creandoAplicacion(encuesta.id);">
+                                            <md-tooltip md-direction="top">Crear aplicación</md-tooltip></span>
+                                            &nbsp;&nbsp;
+                                            <span class="glyphicon glyphicon-trash" ng-click="destroy($event, encuesta.id);">
+                                            <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-box margin" ng-show="encuestas.length == 0">No hay encuestas registradas.</div>
+                        <div class="text-center margin" ng-hide="encuestas">
+                            <label>Cargando encuestas...</label>
+                        </div>
+                    </div>
+
+                    <!-- Formulario editar -->
+                    <div id="editarEncuesta" class="modal fade" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header montserrat">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <label class="title">Editar encuesta</label>
+                                </div>
+                                <div class="modal-body margin">
+                                    <form name="formEditarEncuesta">
+                                        <div class="form-group" ng-class="{ 'has-error' : formEditarEncuesta.descripcion.$invalid && formEditarEncuesta.descripcion.$touched, 'has-success' : !formEditarEncuesta.descripcion.$invalid && !formEditarEncuesta.descripcion.$touched }">
+                                            <label for="descripcion">Descripción</label>
+                                            <textarea ng-model="descripcionEditar" name="descripcion" class="form-control" rows="7" placeholder="Descripción" ng-required="true" title="La descripción debe tener al menos 5 caracteres."></textarea>
+                                            <p class="help-inline red" ng-show="formEditarEncuesta.descripcion.$invalid && formEditarEncuesta.descripcion.$touched">Ingrese una descripción.</p>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div ng-show="editar" ng-class="styleEditar">{{msgEditar}}</div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-cancel" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                                    <button class="btn btn-success" ng-disabled="formEditarEncuesta.$invalid" data-ng-click="modificar(); $event.stopPropagation()"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulario armar encuesta -->
+                    <div id="armarEncuesta" class="modal fade" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header montserrat">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <label class="title">Armar encuesta</label>
+                                </div>
+                                <div class="modal-body">
+                                    <div ng-show="armarOk" class="margin" ng-class="styleArmar">{{msgArmar}}</div>
+                                    <div class="simpleDemo margin">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="row">
+                                                <div ng-repeat="(listName, list) in preguntas" class="col-md-6 col-sm-6">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <label ng-if="listName == 'preguntas'"class="panel-title">Banco de preguntas</label>
+                                                            <label ng-if="listName == 'banco'"class="panel-title">Preguntas de la encuesta</label>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <ul dnd-list="list">
+                                                                <li ng-repeat="item in list"
+                                                                    dnd-draggable="item"
+                                                                    dnd-moved="list.splice($index, 1)"
+                                                                    dnd-effect-allowed="move"
+                                                                    dnd-selected="models.selected = item"
+                                                                    ng-class="{'selected': models.selected === item}">
+                                                                    {{item.enunciado}}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" style="border: none;">
+                                    <button class="btn btn-cancel" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                                    <button class="btn btn-success" data-ng-click="armar(); $event.stopPropagation()"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Asignar usuarios a la encuesta -->
+                    <div id="aplicacion" class="modal fade" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header montserrat">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <label class="title">Crear aplicación</label>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="portlet">
+                                        <div class="portlet-title">
+                                            <ul class="nav nav-tabs">
+                                                <li class="active">
+                                                    <a data-target="#empresarios" data-toggle="tab">Empresarios</a>
+                                                </li>
+                                                <li>
+                                                    <a data-target="#periodo" data-toggle="tab">Periodo</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="portlet-body">
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade in active" id="empresarios">
+                                                    <label class="title-2">Asigne empresarios</label>
+                                                    <table class="table margin">
+                                                        <thead>
+                                                            <tr>
+                                                                <th><input id="bussMaster" type="checkbox" ng-click="marcarTodos();"></th>
+                                                                <th>Cédula</th>
+                                                                <th>Nombre</th>
+                                                                <th>Email</th>
+                                                                <th>Tipo</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="empresario in empresarios">
+                                                                <th><input type="checkbox" value="true" ng-model="empresario.state"></th>
+                                                                <td>{{empresario.cedula}}</td>
+                                                                <td>{{empresario.nombre}} {{empresario.apellido1}} {{empresario.apellido2}}</td>
+                                                                <td>{{empresario.email}}</td>
+                                                                <td>{{empresario.tipo | user}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="tab-pane fade" id="periodo">
+                                                    <label class="title-2">Seleccione el periodo</label>
+                                                    <select class="form-control margin" ng-options="periodo as periodo.label for periodo in periodos track by periodo.id" ng-model="selectedPeriodo"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div ng-show="asignar" class="margin-bottom" ng-class="styleAsignar">{{msgAsignar}}</div>
+                                    <button class="btn btn-cancel" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                                    <button class="btn btn-success" data-ng-click="crearAplicacion(); $event.stopPropagation()"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nueva">
+                    <div>
+                        <label class="title-2">Agregar encuesta</label>
+                    </div>
+                    <form name="formEncuesta" class="margin">
+                        <div class="col-md-offset-2 col-md-8">
+                            <div class="form-group" ng-class="{ 'has-error' : formEncuesta.descripcion.$invalid && formEncuesta.descripcion.$touched, 'has-success' : !formEncuesta.descripcion.$invalid && !formEncuesta.descripcion.$touched }">
+                                <label for="descripcion">Descripción</label>
+                                <textarea ng-model="descripcion" name="descripcion" class="form-control" rows="7" placeholder="Descripción" ng-required="true" title="La descripción debe tener al menos 5 caracteres."></textarea>
+                                <p class="help-inline red" ng-show="formEncuesta.descripcion.$invalid && formEncuesta.descripcion.$touched">Ingrese una descripción.</p>
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    <div ng-show="registro" ng-class="styleRegistro">{{msgRegistro}}</div>
+                                </div>
+                                <center>
+                                    <button class="btn btn-success margin" ng-disabled="formEncuesta.$invalid" ng-click="agregar();"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </center>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+    Ha ocurrido un error inesperado al cargar las encuestas, inténtelo de nuevo
+</div>

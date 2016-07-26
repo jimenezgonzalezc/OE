@@ -1,0 +1,114 @@
+<div class="text-center margin">
+    <label class="title-1 kaushan">Gestión de regiones</label>
+</div>
+<div class="col-md-12 perfil-box">
+	<div class="portlet">
+        <div class="portlet-title">
+            <div class="caption caption-red">
+                <i class="glyphicon glyphicon-map-marker"></i>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-target="#regiones" data-toggle="tab">Regiones</a>
+                </li>
+                <li>
+                    <a data-target="#nuevaRegion" data-toggle="tab">Nueva</a>
+                </li>
+            </ul>
+        </div>
+        <div class="portlet-body">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="regiones">
+                    <div>
+                        <label class="title-2">Regiones</label>                        
+                    </div>
+                    <div class="col-md-12 col-sm-12 margin" ng-show="regiones.length > 0">
+                        <div class="col-md-4 col-sm-4 card-box" ng-repeat="region in regiones">
+                            <div class="inner">
+                                <div class="title-card">
+                                    <label class="title-3">{{region.nombre}}</label>
+                                </div>
+                                <div class="body-card">
+                                    <span class="glyphicon glyphicon-pencil" ng-click="editandoRegion(region)" data-toggle="modal" data-target="#editarRegion" >
+                                    <md-tooltip md-direction="top">Editar</md-tooltip></span>
+                                    &nbsp;&nbsp;
+                                    <span class="glyphicon glyphicon-trash" ng-click="eliminar($event,region.id);">
+                                    <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-box margin" ng-show="regiones.length == 0">No hay regiones registradas.</div>
+                    <div class="text-center margin" ng-hide="regiones">
+                        <label>Cargando regiones...</label>
+                    </div>
+                </div>
+                <div id="editarRegion" class="modal fade" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header montserrat">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancelEdit()">&times;</button>
+                                    <label class="title">Editar región</label>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="margin" autocomplete="off">	
+				                        <div>        
+				                       		<div ng-show="editar" class="margin" ng-class="styleEditar">{{msgEditar}}</div>
+				                            <div>
+				                                <p>
+				                                    <label for="nombre">Nombre</label>
+				                                    <input ng-model="region.nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus ng-blur="">
+			                                    </p>
+				                            </div>
+				                            <div>
+				                                <p>
+				                                    <label for="descripcion">Descripción</label>
+				                                    <textarea ng-model="region.descripcion" class="form-control" rows="5" name="descripcion" id="descripcion" required autofocus ng-blur=""></textarea> 	
+				                                </p>	                                
+				                            </div>
+			                           </div>   
+			                       </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-cancel margin-top" data-dismiss="modal" ng-click="cancelEdit();"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                                    <button class="btn btn-success margin-top" ng-disabled="emptyData" data-ng-click="modificar(region); $event.stopPropagation()"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="tab-pane fade" id="nuevaRegion">
+                    <div>
+                        <label class="title-2">Agregar región</label>
+                    </div>  
+                    <div class="container">
+                    <form class="margin" autocomplete="off">	
+                        <div class="col-md-offset-3 col-md-6">        
+                       		<div ng-show="registro" class="margin" ng-class="styleRegistro">{{msgRegistro}}</div>
+	                            <div>
+	                                <p>
+	                                    <label for="nombre">Nombre</label>
+	                                    <input ng-model="region.nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus ng-blur="">
+                                    </p>
+	                            </div>
+	                            <div>
+	                                <p>
+	                                    <label for="descripcion">Descripción</label>
+	                                    <textarea ng-model="region.descripcion" class="form-control" rows="5" name="descripcion" id="descripcion" required autofocus ng-blur=""></textarea> 	
+	                                </p>	                                
+	                            </div>                           		                            
+                                <br>
+                                <div>
+                                   <button class="btn btn-success center-block" ng-disabled="emptyData" ng-click="store();"><span class="glyphicon glyphicon-floppy-disk" ></span>&nbsp;&nbsp;Guardar</button>
+                                </div>
+                           </div>                                 
+                       </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+    Ha ocurrido un error inesperado al cargar las regiones, inténtelo de nuevo
+</div>

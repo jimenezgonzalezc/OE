@@ -1,0 +1,185 @@
+<div class="text-center margin">
+    <label class="title-1 kaushan">Gestión de sectores</label>
+</div>
+<div class="col-md-12 perfil-box">
+	<div class="portlet">
+        <div class="portlet-title">
+            <div class="caption caption-red">
+                <i class="fa fa-industry"></i>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-target="#sectores" data-toggle="tab">Sectores</a>
+                </li>
+                <li>
+                    <a data-target="#nuevoSector" data-toggle="tab">Nuevo</a>
+                </li>
+            </ul>
+        </div>
+        <div class="portlet-body">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="sectores">
+                    <div>
+                        <label class="title-2">Sectores</label>
+                    </div>
+                    <div class="col-md-12 col-sm-12 margin" ng-show="sectores.length > 0">
+                        <div class="col-md-4 col-sm-4 card-box" ng-repeat="sector in sectores">
+                            <div class="inner">
+                                <div class="title-card">
+                                    <label class="title-3">{{sector.nombre}}</label>
+                                </div>
+                                <div class="body-card">
+                                    <p>{{sector.descripcion}}</p>
+                                </div>
+                                <div class="footer-card-box">
+                                    <span class="glyphicon glyphicon-search" ng-click="editandoSector(sector)" data-toggle="modal" data-target="#verSector" >
+                                    <md-tooltip md-direction="top">Detalle</md-tooltip></span>
+                                    &nbsp;&nbsp;
+                                    <span class="glyphicon glyphicon-pencil" ng-click="editandoSector(sector)" data-toggle="modal" data-target="#editarSector" >
+                                    <md-tooltip md-direction="top">Editar</md-tooltip></span>
+                                    &nbsp;&nbsp;
+                                    <span class="glyphicon glyphicon-trash" ng-click="eliminar($event,sector.id);">
+                                    <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-box margin" ng-show="sectores.length == 0">No hay sectores registrados.</div>    
+                    <div class="text-center margin" ng-hide="sectores">
+                        <label>Cargando sectores...</label>
+                    </div>              
+                </div>
+                <div id="verSector" class="modal fade" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header montserrat">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancelEdit()">&times;</button>
+                                    <label class="title">Detalles del sector</label>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="margin" autocomplete="off">    
+                                        <div>
+                                            <div>
+                                                <p>
+                                                    <label for="nombre">Nombre</label>
+                                                    <input disabled="true" ng-model="sector.nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus ng-blur="">
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p>
+                                                    <label for="descripcion">Descripción</label>
+                                                    <textarea class="form-control"  disabled="disabled" ng-model="sector.descripcion" rows="5" name="descripcion" id="descripcion" required autofocus ng-blur=""></textarea>     
+                                                </p>                                    
+                                            </div>                              
+                                            <div>
+                                                <p>
+                                                    <label for="name">Región</label>        
+                                                    <select disabled="true" class="form-control margin text-center" ng-options="region as region.nombre for region in regiones track by region.id" ng-model="selectedRegion"></select>         
+                                                    <label for="name">Territorio</label>                            
+                                                    <div class="col-md-6" ng-repeat="territorio in territoriosEditar">
+                                                        <md-checkbox  class="md-primary " ng-checked = "territorio.state" ng-true-value="'sector.id'" ng-false-value="''">{{territorio.nombre}}</md-checkbox>
+                                                    </div>
+                                                </p>
+                                            </div>                                                
+                                       </div>   
+                                   </form>
+                                </div>
+                                <div class="modal-footer margin" style="border: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="editarSector" class="modal fade" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header montserrat">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancelEdit()">&times;</button>
+                                    <label class="title">Editar sector</label>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="margin" autocomplete="off">	
+				                        <div>
+				                       		<div ng-show="editar" class="margin" ng-class="styleEditar">{{msgEditar}}</div>		  
+                                            <div>
+				                                <p>
+				                                    <label for="nombre">Nombre</label>
+				                                    <input ng-model="sector.nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus ng-blur="">
+			                                    </p>
+				                            </div>				                            
+				                            <div>
+				                                <p>
+				                                    <label for="descripcion">Descripción</label>
+				                                    <textarea ng-model="sector.descripcion" class="form-control" rows="5" name="descripcion" id="descripcion" required autofocus ng-blur=""></textarea> 	
+				                                </p>	                                
+				                            </div>                           	
+				                            <div>
+				                            	<p>
+				                            		<label for="name">Region</label>		
+				                            		<select class="form-control margin text-center" ng-options="region as region.nombre for region in regiones track by region.id" ng-model="selectedRegion" ng-change="updateEdit()"></select>			
+			                            			<label for="name">Territorio</label>							
+												    <div class="col-md-6" ng-repeat="territorio in territoriosEditar">
+                                                        <md-checkbox class="md-primary" ng-checked = "territorio.state" ng-true-value="'sector.id'" ng-false-value="''" ng-click="selectTerritorioEdit(territorio);">{{territorio.nombre}}</md-checkbox>
+                                                    </div>
+				                            	</p>
+				                            </div>
+			                           </div>   
+			                       </form>
+                                </div>
+                                <br>
+                                <div class="modal-footer margin">
+                                    <button class="btn btn-cancel margin-top" data-dismiss="modal" ng-click="cancelEdit();"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                                    <button class="btn btn-success margin-top" ng-disabled="emptyData" data-ng-click="modificar(sector); $event.stopPropagation()"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="tab-pane fade" id="nuevoSector">
+                    <div>
+                        <label class="title-2">Agregar sector</label>
+                    </div>  
+                    <div class="container">
+                    <form class="margin" autocomplete="off">	
+                        <div class="col-md-offset-3 col-md-6">        
+                       		<div ng-show="registro" class="margin" ng-class="styleRegistro">{{msgRegistro}}</div>
+                       		
+	                            <div>
+	                                <p>
+	                                    <label for="nombre">Nombre</label>
+	                                    <input ng-model="sector.nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus>
+                                    </p>
+	                            </div>
+                            
+	                            <div>
+	                                <p>
+	                                    <label for="descripcion">Descripción</label>
+	                                    <textarea ng-model="sector.descripcion" class="form-control" rows="5" name="descripcion" id="descripcion" required autofocus ng-blur=""></textarea> 	
+	                                </p>	                                
+	                            </div>                           	
+	                            <div>
+	                            	<p>
+	                            		<label for="name">Region</label>		
+	                            		<select class="form-control margin text-center" ng-options="region as region.nombre for region in regiones track by region.id" ng-model="selectedRegion" ng-change="update()"></select>			
+                            			<label for="name">Territorio</label>							
+                                        <div class="col-md-6" ng-repeat="territorio in territorios">
+                                            <md-checkbox class="md-primary" ng-true-value="'territorio.id'" ng-false-value="''" ng-click="selectTerritorio(territorio.id);">{{territorio.nombre}}</md-checkbox>
+                                        </div>
+	                            	</p>
+	                            </div>
+                                <br>
+                                <br>
+                                <div>
+                                    <center>
+	                                   <button class="btn btn-success" ng-disabled="emptyData" ng-click="store();"><span class="glyphicon glyphicon-floppy-disk" ></span>&nbsp;&nbsp;Guardar</button>
+                                    </center>
+                                </div>
+                           </div>                                 
+                       </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+    Ha ocurrido un error inesperado al cargar los sectores, inténtelo de nuevo
+</div>

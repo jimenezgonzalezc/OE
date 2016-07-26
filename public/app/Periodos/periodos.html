@@ -1,0 +1,123 @@
+<div class="text-center margin">
+    <label class="title-1 kaushan">Gestión de periodos</label>
+</div>
+<div class="col-md-12 perfil-box">
+	<div class="portlet">
+	    <div class="portlet-title">
+	        <div class="caption caption-red">
+	            <i class="fa fa-calendar-o"></i>
+	        </div>
+	        <ul class="nav nav-tabs">
+	            <li class="active">
+	                <a data-target="#periodos" data-toggle="tab">Periodos</a>
+	            </li>
+	            <li>
+	                <a data-target="#nuevo" data-toggle="tab" ng-click="setData();">Nuevo</a>
+	            </li>
+	        </ul>
+	    </div>
+	    <div class="portlet-body">
+	        <div class="tab-content">
+	            <div class="tab-pane fade in active" id="periodos">
+	            	<div>
+                        <label class="title-2">Periodos</label>                        
+                    </div>
+                    <div class="col-md-12 col-sm-12 margin" ng-show="periodos.length > 0">
+                    	<div class="col-md-3 col-sm-3 card-box" ng-repeat="periodo in periodos">
+                            <div class="inner">
+                                <div class="title-card">
+                                    <label class="title-3">Año: {{periodo.anio}}</label>
+                                </div>
+                                <div class="body-card">
+                                    <p>Cuatrimestre: {{periodo.cuatrimestre}}</p>
+                                </div>
+                                <div class="footer-card-box">
+                                    <span class="glyphicon glyphicon-pencil" ng-click="editandoPeriodo(periodo)" data-toggle="modal" data-target="#editarPeriodo" >
+                                    <md-tooltip md-direction="top">Editar</md-tooltip></span>
+                                    &nbsp;&nbsp;
+                                    <span class="glyphicon glyphicon-trash" ng-click="remove($event, periodo.id);">
+                                    <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                                </div>
+                            </div>
+                        </div>
+            		</div>
+            		<div class="info-box margin" ng-show="periodos.length == 0">No hay periodos registrados.</div>
+                    <div class="text-center margin" ng-hide="periodos">
+                        <label>Cargando periodos...</label>
+                    </div>
+
+                    <!-- Formulario editar -->
+                    <div id="editarPeriodo" class="modal fade" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header montserrat">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <label class="title">Editar periodo</label>
+                                </div>
+                                <div class="modal-body margin">
+                                    <form name="formPeriodo" autocomplete="off">	
+			                            <div class="form-group">
+			                                <label>Año</label>
+			                                <select class="form-control margin" ng-options="year as year.year for year in years track by year.id" ng-model="selectedYear"></select>
+			                            </div>
+			                            <div class="form-group">
+			                                <label>Cuatrimestre</label>
+			                                <select class="form-control" ng-model="quarter">
+			                                	<option value="1">1</option>
+			                                	<option value="2">2</option>
+			                                	<option value="3">3</option>
+			                                </select>
+			                            </div>
+				                    </form>
+				                    <div ng-show="periodoMsg" ng-class="peridoClass">
+										<button type="button" class="close" data-dismiss="alert">&times;</button>
+				            			{{periodoMsg}}
+				        			</div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-cancel" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                                    <button class="btn btn-success" data-ng-click="update(); $event.stopPropagation()"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+	            </div>
+	            <div class="tab-pane fade" id="nuevo">
+	            	<div>
+                        <label class="title-2">Agregar periodo</label>
+                    </div>
+                    <form name="formPeriodo" class="margin row" autocomplete="off">
+                        <div class="col-md-offset-2 col-md-8">            
+                            <div class="form-group">
+                                <label>Año</label>
+                                <select class="form-control margin" ng-options="year as year.year for year in years track by year.id" ng-model="selectedYear"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Cuatrimestre</label>
+                                <select class="form-control" ng-model="quarter">
+                                	<option value="1">1</option>
+                                	<option value="2">2</option>
+                                	<option value="3">3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div ng-show="registro" ng-class="styleRegistro">{{msgRegistro}}</div>
+                                <center>
+                                    <button ng-click="store();" class="btn btn-success margin"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </center>
+                            </div>
+                        </div>
+                    </form>
+                    <div ng-show="periodoMsg" ng-class="peridoClass">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+            			{{periodoMsg}}
+        			</div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+    Ha ocurrido un error inesperado al cargar los periodos, inténtelo de nuevo
+</div>

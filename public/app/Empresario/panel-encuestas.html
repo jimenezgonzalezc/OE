@@ -1,0 +1,36 @@
+<div id="vistaEmpresario">
+    <div class="text-center margin">
+        <label class="title-1 kaushan">Encuestas</label>
+    </div>
+    <div class="col-md-12 gestion-box">
+        <div>
+            <label class="subtitle baskerville">Encuestas</label>
+        </div>
+        <div class="col-md-12 col-sm-12 margin" ng-show="encuestas">
+            <div class="col-md-4 col-sm-4 card-box" ng-repeat="encuesta in encuestas" ng-show="encuesta.estado">
+                <div class="inner">
+                    <div class="title-card">
+                        <label class="subtitle">
+                            <span class="label label-default"><md-tooltip md-direction="top">Total de preguntas</md-tooltip>{{encuesta.numeroPreguntas}}</span>
+                            &nbsp;Encuesta {{encuesta.id}}
+                        </label>
+                    </div>
+                    <div  class="body-card">
+                        <p>{{encuesta.descripcion}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info-box margin" ng-show="encuestas.length == 0">No hay encuestas registradas.</div>
+        <div class="text-center margin" ng-hide="encuestas">
+            <label>Cargando encuestas...</label>
+        </div>
+    </div>
+    <div class="container">
+        <div ui-view></div>
+    </div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+    Ha ocurrido un error inesperado al cargar las encuestas, inténtelo de nuevo
+</div>

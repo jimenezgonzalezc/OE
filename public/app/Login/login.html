@@ -1,0 +1,38 @@
+<div class="cover">
+    <span class="icon fa fa-arrow-down" ng-click="goBottom();"></span>
+</div>
+<div class="login-box">
+    <label class="text-center kaushan">Observatorio Empresarial</label>
+    <div class="card card-container">
+        <form name="formLogin" class="form-login form-horizontal">
+            <div ng-class="{ 'has-error' : formLogin.email.$invalid && formLogin.email.$touched, 'has-success' : !formLogin.email.$invalid && !formLogin.email.$touched }">
+                <div class="inner-addon right-addon">
+                    <i class="fa fa-envelope-o"></i>
+                    <input type="text" id="inputEmail" class="form-control" name="email" placeholder="Email" ng-model="email" ng-required="true">
+                </div>
+                <p class="help-inline red" ng-show="formLogin.email.$invalid && formLogin.email.$touched">El email es requerido.</p>
+            </div>
+            <div ng-class="{ 'has-error' : formLogin.pass.$invalid && formLogin.pass.$touched, 'has-success' : !formLogin.pass.$invalid && !formLogin.pass.$touched }">
+                <div class="inner-addon right-addon">
+                    <i class="fa fa-key"></i>
+                    <input type="password" id="inputContrasena" class="form-control" name="pass" placeholder="Contraseña" ng-model="contrasena" ng-required="true">
+                </div>
+                <p class="help-inline red" ng-show="formLogin.pass.$invalid && formLogin.pass.$touched">La contraseña es requerida.</p>
+            </div>
+            <div ng-show="error" class="error-box">El email o la contraseña son incorrectos.</div>
+            <button class="btn btn-primary btn-login" ng-click="logIn();" ng-disabled="formLogin.$invalid"><span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Ingresar</button>
+        </form>
+    </div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;
+    Ha ocurrido un error inesperado, inténtelo de nuevo
+</div>
+<footer class="text-center kaushan">
+    <div class="col-md-6 col-sm-6">
+        <p>&COPY; 2016 Observatorio Empresarial</p>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <p>Proyecto TEC</p>
+    </div>
+</footer>

@@ -1,0 +1,133 @@
+<div class="text-center margin">
+    <label class="title-1 kaushan">Gestión de preguntas</label>
+</div>
+<div class="col-md-12 perfil-box">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption caption-red">
+                <i class="fa fa-question"></i>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-target="#preguntas" data-toggle="tab">Preguntas</a>
+                </li>
+                <li>
+                    <a data-target="#nueva" data-toggle="tab">Nueva</a>
+                </li>
+            </ul>
+        </div>
+        <div class="portlet-body">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="preguntas">
+                    <div>
+                        <div>
+                            <label class="title-2">Preguntas</label>
+                        </div>
+                        <div class="col-md-12" ng-show="preguntas.length > 0">
+                            <table class="table margin">
+                                <thead>
+                                <tr>
+                                    <th>Enunciado</th>
+                                    <th>Tipo</th>
+                                    <th>Indicador</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="pregunta in preguntas">
+                                    <td>{{pregunta.enunciado}}</td>
+                                    <td>{{pregunta.tipo}}</td>
+                                    <td>{{pregunta.indicador_id}}</td>
+                                    <td>
+                                        <span class="glyphicon glyphicon-pencil" ng-click="editandoPregunta(pregunta);" data-toggle="modal" data-target="#editarPregunta">
+                                        <md-tooltip md-direction="top">Editar</md-tooltip></span>
+                                        &nbsp;&nbsp;
+                                        <span class="glyphicon glyphicon-trash" ng-click="eliminar($event,pregunta.id);">
+                                        <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="info-box margin" ng-show="preguntas.length == 0">No hay preguntas registradas.</div>
+                        <div class="text-center margin" ng-hide="preguntas">
+                            <label>Cargando preguntas...</label>
+                        </div>
+                    </div>
+
+                    <!-- Formulario editar pregunta-->
+                    <div id="editarPregunta" class="modal fade" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header montserrat">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <label class="title">Editar pregunta</label>
+                                </div>
+                                <div class="modal-body">
+                                    <div ng-show="editar" ng-class="styleEditar">{{msgEditar}}</div>
+                                    <form name="formEditarPregunta" class="margin">
+                                        <div class="form-group" ng-class="{ 'has-error' : formEditarPregunta.enunciado.$invalid && formEditarPregunta.enunciado.$touched, 'has-success' : !formEditarPregunta.enunciado.$invalid && !formEditarPregunta.enunciado.$touched }">
+                                            <label>Enunciado</label>
+                                            <textarea ng-model="enunciado" class="form-control" name="enunciado" ng-required="true" placeholder="Enunciado" title="Por favor ingrese el enunciado de la pregunta" rows="7"></textarea>
+                                            <p class="help-inline red" ng-show="formEditarPregunta.enunciado.$invalid && formEditarPregunta.enunciado.$touched">Ingrese una descripción.</p>
+                                        </div class="form-group">
+                                        <div>
+                                            <label>Tipo</label>
+                                            <md-radio-group ng-model="tipo">
+                                                <md-radio-button value="true" class="md-primary" ng-true-value="'true'" ng-false-value="'false'">Abierta</md-radio-button>
+                                                <md-radio-button value="false" class="md-primary" ng-true-value="'false'" ng-false-value="'true'">Cerrada</md-radio-button>
+                                            </md-radio-group>
+                                        </div class="form-group">
+                                        <div>
+                                            <label class="">Indicador</label>
+                                            <select class="form-control margin" ng-options="indicador as indicador.nombre for indicador in indicadores track by indicador.id" ng-model="selectedIndicador"></select>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="cerrarEditarEncuesta" type="button" class="btn btn-cancel" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                                    <button class="btn btn-success" ng-disabled="formEditarPregunta.$invalid" data-ng-click="modificar(); $event.stopPropagation()"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nueva">
+                    <div>
+                        <label class="title-2">Agregar pregunta</label>
+                    </div>
+                    <form name="formPregunta" class="margin">
+                        <div class="col-md-offset-2 col-md-8">            
+                            <div class="form-group" ng-class="{ 'has-error' : formPregunta.enunciado.$invalid && formPregunta.enunciado.$touched, 'has-success' : !formPregunta.enunciado.$invalid && !formPregunta.enunciado.$touched }">
+                                <label>Enunciado</label>
+                                <textarea ng-model="enunciado" class="form-control" name="enunciado" ng-required="true" placeholder="Enunciado" title="Por favor ingrese el enunciado de la pregunta" rows="7"></textarea>
+                                <p class="help-inline red" ng-show="formPregunta.enunciado.$invalid && formPregunta.enunciado.$touched">Ingrese una descripción.</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo</label>
+                                <md-radio-group ng-model="tipo">
+                                    <md-radio-button value="true" class="md-primary" ng-true-value="'true'" ng-false-value="'false'">Abierta</md-radio-button>
+                                    <md-radio-button value="false" class="md-primary" ng-true-value="'false'" ng-false-value="'true'">Cerrada</md-radio-button>
+                                </md-radio-group>
+                            </div>
+                            <div class="form-group">
+                                <label>Indicador</label>
+                                <select class="form-control margin" ng-options="indicador as indicador.nombre for indicador in indicadores track by indicador.id" ng-model="selectedIndicador"></select>
+                            </div>
+                            <div class="form-group">
+                                <div ng-show="registro" ng-class="styleRegistro">{{msgRegistro}}</div>
+                                <center>
+                                    <button ng-click="store();" ng-disabled="formPregunta.$invalid" class="btn btn-success margin"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                                </center>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+    Ha ocurrido un error inesperado al cargar las preguntas, inténtelo de nuevo
+</div>

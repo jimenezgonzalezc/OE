@@ -1,0 +1,32 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navBar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand title" ui-sref="encuestador">Observatorio Empresarial</a>
+        </div>
+        <div class="navbar-collapse collapse navBar">
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-class="styleEncuestas"><a ui-sref=".encuestas"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;Encuestas</a></li>
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-option-vertical"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref=".perfil" class="userName"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{user.nombre}} {{user.apellido1}}</a></li>
+                        <li ng-click="logOut();"><a><span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Salir</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container content">
+    <div ui-view>
+        <div class="text-center margin">
+            <label class="title-1 kaushan">Bienvenido {{user.nombre}} {{user.apellido1}} {{user.apellido2}}</label>
+        </div>
+    </div>
+</div>

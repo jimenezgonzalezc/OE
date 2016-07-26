@@ -1,0 +1,36 @@
+<div class="login-box">
+    <label class="text-center kaushan">Observatorio Empresarial</label>
+    <div class="center-block error-box error-auth" style="padding: 20px;">Usted no tiene permiso para ver el contenido. Inicie sesión para continuar.</div>
+    <div class="card card-container">
+        <form name="formLogin" class="form-login form-horizontal" novalidate="">
+            <div>
+                <div class="inner-addon right-addon">
+                    <i class="fa fa-envelope-o"></i>
+                    <input type="text" id="inputEmail" class="form-control" name="inputEmail" placeholder="Email" ng-model="email" ng-required="true">
+                </div>
+                <span class="help-inline red" ng-show="formLogin.inputEmail.$invalid && formLogin.inputEmail.$touched">El email es requerido.</span>
+            </div>
+            <div>
+                <div class="inner-addon right-addon">
+                    <i class="fa fa-key"></i>
+                    <input type="password" id="inputContrasena" class="form-control" name="inputContrasena" placeholder="Contraseña" ng-model="contrasena" ng-required="true">
+                </div>
+                <span class="help-inline red" ng-show="formLogin.inputContrasena.$invalid && formLogin.inputContrasena.$touched">La contraseña es requerida.</span>
+            </div>
+            <div ng-show="error" class="error-box">El email o la contraseña son incorrectos.</div>
+            <button class="btn btn-primary btn-login" ng-click="logIn();" ng-disabled="formLogin.$invalid"><span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Ingresar</button>
+        </form>
+    </div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;
+    Ha ocurrido un error inesperado, inténtelo de nuevo
+</div>
+<footer class="text-center kaushan">
+    <div class="col-md-6 col-sm-6">
+        <p>&COPY; 2016 Observatorio Empresarial</p>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <p>Proyecto TEC</p>
+    </div>
+</footer>
