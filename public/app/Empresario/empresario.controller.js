@@ -41,7 +41,7 @@
 		}
 
 		/**
-		 * Guardas datos en el factory
+		 * Guarda datos en el factory
 		 */
         function contestarEncuesta(id, descripcion){
             $scope.encuestaId = id;
@@ -54,7 +54,7 @@
         }
 
 		/**
-		 * Obtiene las Aplicaciones del empresario actualmente con la sesion iniciada
+		 * Obtiene las Aplicaciones del empresario con la sesion iniciada
 		 */
 		function getAplicacionesByPersona() {
             AplicacionesFactory.getAplicacionesByPersona($scope.empresario)
@@ -67,7 +67,7 @@
 		getAplicacionesByPersona();
 
 		/**
-		 * Obtiene las Encuestas del empresario actualmente con la sesion iniciada
+		 * Obtiene las Encuestas del empresario con la sesion iniciada
 		 */
 		function getEncuestas() {
 			$scope.encuestas = false;
@@ -82,7 +82,7 @@
 					$scope.encuestas.forEach(function(encuesta) {
 						EncuestasFactory.getNumberOfQuestions(encuesta.id)
 							.then(function (response) {
-								if (encuesta.estado === 0)
+								if (encuesta.estado === 0)//Estado para aplicar
 									$scope.encuestas = EncuestasFactory.removeItem(encuesta, $scope.encuestas);
 								else
 									encuesta.numeroPreguntas = parseInt(response);
@@ -93,7 +93,7 @@
 	                $scope.encuestas = true;
 	                $scope.errorConn = true;
 	            });
-			}
+		}
 
 		/**
 		 * Obtiene el id de la Aplicacion

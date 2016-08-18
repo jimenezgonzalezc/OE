@@ -24,7 +24,7 @@
     * @param {Object} Servicio que brinda funciones de las aplicaciones que ayudan a la funcionalidad del controlador.
     * @param {Object} Servicio que brinda funciones de los periodos que ayudan a la funcionalidad del controlador.
     */
-	function EncuestasController($scope, $timeout, $filter, $cookies, $mdDialog, EncuestasFactory, PreguntasFactory, PersonasFactory, AplicacionesFactory, PeriodosFactory) {
+	function EncuestasController($scope, $timeout, $filter, $cookies, $mdDialog, EncuestasFactory, PreguntasFactory, PersonasFactory, AplicacionesFactory, PeriodosFactory, SectoresFactory) {
 		$scope.descripcion = '';
 		$scope.nueva = false;
 		$scope.registro = false;
@@ -56,11 +56,12 @@
         function agregar() {
         	var fechaActual = $filter('date')(new Date(), 'yyyy-MM-dd'),
         	    encuesta = {
-        		descripcion: $scope.descripcion,
-        		estado: false,
-        		fechaCreacion: fechaActual,
-        		fechaModificacion: fechaActual,
-        		persona_id: $cookies.getObject('session').id,
+                    descripcion: $scope.descripcion,
+                    estado: false,
+                    fechaCreacion: fechaActual,
+                    fechaModificacion: fechaActual,
+                    persona_id: $cookies.getObject('session').id,
+                    sector_id: $scope.selectedSector.id
         	};
 
         	EncuestasFactory.store(encuesta)
@@ -366,6 +367,20 @@
                 empresario.state = state;
             });
         }
+
+        /**
+         * Obtener los sectores y cargarlos en la interfaz(combobox)
+         */
+        function getSectores(){
+            SectoresFactory.getAll()
+                .then( function (response) {
+                    if(response.length > 0){
+                        $scope.sectores = response;
+                        $scope.selectedSector = response[0];
+                    }
+                });
+        }
+        getSectores();
 	}
 
 })();

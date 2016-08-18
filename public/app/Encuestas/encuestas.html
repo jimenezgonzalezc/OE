@@ -209,6 +209,10 @@
                                 <p class="help-inline red" ng-show="formEncuesta.descripcion.$invalid && formEncuesta.descripcion.$touched">Ingrese una descripción.</p>
                             </div>
                             <div class="form-group">
+                                <label for="sector">Sector</label>
+                                <select class="form-control text-center" ng-options="sector as sector.nombre for sector in sectores track by sector.id" ng-model="selectedSector"></select>
+                            </div>
+                            <div class="form-group">
                                 <div>
                                     <div ng-show="registro" ng-class="styleRegistro">{{msgRegistro}}</div>
                                 </div>

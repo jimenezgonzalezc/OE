@@ -17,12 +17,15 @@ class CreateAplicacionesRespuestasTable extends Migration
             $table->string('pregunta', 200);
             $table->string('respuesta', 50);
             $table->integer('aplicacion_id')->unsigned();
+            $table->integer('valor_respuesta');
+            $table->integer('indicador_id')->unsigned();
+            $table->string('comentarios', 250);
             $table->timestamps();
 
         });
         Schema::table('aplicaciones_respuestas', function (Blueprint $table) {
             $table->foreign('aplicacion_id')->references('id')->on('aplicaciones')->onDelete('cascade');
-
+            $table->foreign('indicador_id')->references('id')->on('indicadores')->onDelete('cascade');
         });
     }
 

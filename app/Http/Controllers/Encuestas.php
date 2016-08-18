@@ -22,6 +22,8 @@ class Encuestas extends Controller
         $encuesta->fechaCreacion = $request->input('fechaCreacion');
         $encuesta->fechaModificacion = $request->input('fechaModificacion');
         $encuesta->persona_id = $request->input('persona_id');
+        $encuesta->sector_id = $request->input('sector_id');
+
 
         $encuesta->save();
 
@@ -85,7 +87,7 @@ class Encuestas extends Controller
     /**
      * Get al questions of a test.
      *
-     * @param  Request $request
+     * @param  Int $id
      * @return Response
      */
     public function getQuestions($id) {
@@ -105,7 +107,6 @@ class Encuestas extends Controller
      */
     public function getEncuestas(Request $request) {
         return Encuesta::select('encuestas.id', 'encuestas.descripcion', 'encuestas.estado', 'encuestas.persona_id')
-                        //->where('encuestas.id', '=', $request->input('id'))
                         ->whereIn('encuestas.id', $request->input('id'))
                         ->get();
     }

@@ -128,4 +128,13 @@ Route::group(['prefix' => 'api'], function () {
 
     // Analisis
     Route::get('/analisis/get/{idPeriodo}/{idTerritorio}','Analisis@get');
+
+    Route::get('/analisis/procttedimientotest','analis@funcAnalisis');
+    Route::get('/analisis/getNs','Analisis@getNs');
+    Route::get('/analisis/getNir','Analisis@getNir');
+    Route::get('/analisis/getNsir','Analisis@getNsir');
+    Route::get('/analisis/createJSON2','Analisis@createJSON2');
+
+
+
 });
