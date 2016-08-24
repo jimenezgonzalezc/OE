@@ -28,6 +28,8 @@
 		$scope.remove = remove;
 		$scope.setData = setData;
 		$scope.validate = validate;
+		$scope.guardarIndicador = guardarIndicador;
+
 		var respaldoSectores = [];
 
 		/**
@@ -46,14 +48,14 @@
 		function validate() {
 			$scope.sectoresState = false;
 			var i = 0;
-				length = $scope.sectores.length;
+			var	length = $scope.sectores.length;
 
 			for ( ; i < length; i++) {
 				if ($scope.sectores[i].state) {
 					$scope.sectoresState = true;
 					break;
 				}
-			};
+			}
 		}
 
 		/**
@@ -72,6 +74,14 @@
 			
 			SectoresIndicadoresFactory.store(indicadorId, sectoresId)
 			.then(function(response) { });
+		}
+		
+		function guardarIndicador() {
+			if ($scope.sectoresState){
+				store();
+			}
+			else
+				showMessage('Debe seleccionar al menos un indicador.', 'alert error-box');
 		}
 
 		/**

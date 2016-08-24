@@ -13,12 +13,14 @@
 
     function TerritoriosController($scope, $timeout, $mdDialog,  TerritoriosFactory, RegionesFactory) {    	
     	$scope.store = store;
-      $scope.eliminar = eliminar;
-      $scope.editandoTerritorio = editandoTerritorio;
-      $scope.cancelEdit = cancelEdit;
-      $scope.modificar = modificar;
+        $scope.eliminar = eliminar;
+        $scope.editandoTerritorio = editandoTerritorio;
+        $scope.cancelEdit = cancelEdit;
+        $scope.modificar = modificar;
+        $scope.guardarTerritorio = guardarTerritorio;
 
-    //watch para validar datos
+
+        //watch para validar datos
     $scope.$watch('territorio.nombre', validate);
     $scope.$watch('territorio.descripcion', validate);
   	/*
@@ -74,6 +76,11 @@
           }
       }
 
+        function guardarTerritorio() {
+            if(!$scope.emptyData){
+                store();
+            }
+        }
        /*
        * Almacenar una territorio
        */

@@ -19,6 +19,7 @@
         $scope.modificar = modificar;
         $scope.eliminar = eliminar;
         $scope.getPreguntas = getPreguntas;
+        $scope.guardarEncuesta = guardarEncuesta;
 
         $scope.registro = false;
 
@@ -34,7 +35,13 @@
         }
         setData();
 
+        function guardarEncuesta() {
+            if ($scope.enunciado !== ""){
+                store();
+            }
+        }
         function store() {
+            
             var data = {
                 enunciado: $scope.enunciado,
                 tipo: $scope.tipo,

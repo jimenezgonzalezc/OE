@@ -14,6 +14,9 @@
 	function EncuestadorController($scope, EncuestasFactory, $cookies, AplicacionesFactory, PersonasFactory, Auth) {
 		$scope.user = $cookies.getObject('session');
 
+		$scope.msgEncuestas = "Cargando encuestas...";
+		$scope.msgStyle = "text-center";
+
 		$scope.idsAplicaciones =  [];	//Ids Aplicaciones
 		$scope.aplicaciones =  null;	//Aplicaciones
         //Encuesta
@@ -101,7 +104,11 @@
 						if (persona.encuestas.length === 0) {
 							$scope.personas = EncuestasFactory.removeItem(persona, $scope.personas);
 						}
-					});					
+					});
+					if ($scope.personas.length === 0){
+						$scope.msgStyle = "info-box margin";
+						$scope.msgEncuestas = "No tiene encuestas asociadas";
+					}
 				});
 		}
 

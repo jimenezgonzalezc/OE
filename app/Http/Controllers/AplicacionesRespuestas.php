@@ -31,6 +31,8 @@ class AplicacionesRespuestas extends Controller
         $aplicacion_respuesta->respuesta = $request->input('respuesta');
         $aplicacion_respuesta->aplicacion_id = $request->input('aplicacion_id');
         $aplicacion_respuesta->comentarios = $request->input('comentario');
+        $aplicacion_respuesta->indicador_id = $request->input('indicador_id');
+        $aplicacion_respuesta->valor_respuesta = $request->input('valor_respuesta');
 
         $aplicacion_respuesta->save();
 

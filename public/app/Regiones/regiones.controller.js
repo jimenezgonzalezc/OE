@@ -13,12 +13,14 @@
 
     function RegionesController($scope, $timeout, $mdDialog,  RegionesFactory) {    	
     	$scope.store = store;
-      $scope.eliminar = eliminar;
-      $scope.editandoRegion = editandoRegion;
-      $scope.cancelEdit = cancelEdit;
-      $scope.modificar = modificar;
+        $scope.eliminar = eliminar;
+        $scope.editandoRegion = editandoRegion;
+        $scope.cancelEdit = cancelEdit;
+        $scope.modificar = modificar;
+        $scope.guardarRegion = guardarRegion;
 
-    //watch para validar datos
+
+        //watch para validar datos
     $scope.$watch('region.nombre', validate);
     $scope.$watch('region.descripcion', validate);
   	/*
@@ -60,6 +62,10 @@
               $scope.emptyData = false;
           }
       }
+        function guardarRegion() {
+            if(!$scope.emptyData)
+                store();
+        }
 
        /*
        * Almacenar una region

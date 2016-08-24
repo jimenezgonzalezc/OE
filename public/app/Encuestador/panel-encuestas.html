@@ -27,11 +27,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="info-box margin" ng-show="encuestas.length == 0">No hay encuestas registradas.</div>
             </div>
         </div>
-        <div class="text-center" ng-hide="personas.length > 0">
-            <label>Cargando encuestas...</label>
+        <div ng-class="msgStyle" ng-hide="personas.length > 0">
+            <label>{{msgEncuestas}}</label>
         </div>
         <div class="container">
             <div ui-view></div>

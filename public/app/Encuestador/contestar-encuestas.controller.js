@@ -97,23 +97,22 @@
 		 * Guarda las respuestas
 		 */
         function guardarRespuesta(pregunta, respuesta, comentario) {
-			//console.log('comentario',comentario);
 			if (comentario == null)
 				comentario = "";
-			//console.log('comentario',comentario);
 
 			var data = {
                 pregunta_id: pregunta.pregunta_id,
                 enunciado: pregunta.enunciado,
                 alternativa: respuesta.alternativa,
-                comentario: comentario
+                comentario: comentario,
+				indicador_id: pregunta.indicador_id
             };
 						
 			if ($scope.preguntasRespondidas === null)
 				$scope.preguntasRespondidas = [];
 
 			if (existePregunta($scope.preguntasRespondidas, pregunta.pregunta_id))
-				modificarPregunta($scope.preguntasRespondidas, pregunta.pregunta_id, respuesta.alternativa, comentario)
+				modificarPregunta($scope.preguntasRespondidas, pregunta.pregunta_id, respuesta.alternativa, comentario);
 			else
 				$scope.preguntasRespondidas.push(data);
         }
@@ -161,51 +160,59 @@
 		 * Guarda las respuestas de la encuesta
 		 */
 		function guardarEncuesta() {
-			//console.log('guardarEncuesta');
 
 			if ($scope.preguntasRespondidas === null){
-				//console.log('No se ha respondido ni una pregunta');
-
 				$scope.mensaje = true;
 				$scope.msgEnviarEncuesta = 'No se ha respondido ni una pregunta';
 				$scope.styleEnviarEncuesta = 'error-box';
 			}
 			else if ($scope.preguntasRespondidas.length < $scope.preguntasEncuesta.length){
-				//console.log('Faltan preguntas por responder');
-
 				$scope.mensaje = true;
 				$scope.msgEnviarEncuesta = 'Faltan preguntas por responder';
 				$scope.styleEnviarEncuesta = 'error-box';
 			}
 			else{
-				//console.log('forEach');
-
 				$scope.preguntasRespondidas.forEach(function(pregunta) {
-					enviarEncuesta(pregunta.enunciado, pregunta.alternativa, $scope.idAplicacion, pregunta.comentario);
-					AplicacionesFactory.update($scope.idAplicacion, $scope.encuestador.nombre + " " + $scope.encuestador.apellido1 + " " + $scope.encuestador.apellido2);
+					enviarEncuesta(pregunta.enunciado, pregunta.alternativa, $scope.idAplicacion, pregunta.comentario, pregunta.indicador_id);
 				});
+				AplicacionesFactory.update($scope.idAplicacion, $scope.encuestador.nombre + " " + $scope.encuestador.apellido1 + " " + $scope.encuestador.apellido2);
 			}
 			ocultarMensaje();
         }
 
+		function getValorRespuesta(respuesta){
+			if (respuesta === 'Muy bueno'){
+				return 1;
+			}
+			if (respuesta === 'Bueno'){
+				return 2;
+			}
+			if (respuesta === 'Regular'){
+				return 3;
+			}
+			if (respuesta === 'Malo'){
+				return 4;
+			}
+			if (respuesta === 'Muy malo'){
+				return 5;
+			}
+		}
+
 		/**
 		 * Guardas datos en el factory
 		 */
-		function enviarEncuesta(pregunta, respuesta, aplicacion_id, comentario) {
-			//console.log(pregunta, comentario);
-
-			var data = {pregunta: pregunta, respuesta: respuesta, aplicacion_id: aplicacion_id, comentario: comentario};
+		function enviarEncuesta(pregunta, respuesta, aplicacion_id, comentario, indicador_id) {
+			var valor_respuesta = getValorRespuesta(respuesta);
+			var data = {pregunta: pregunta, respuesta: respuesta, aplicacion_id: aplicacion_id, comentario: comentario, indicador_id: indicador_id, valor_respuesta: valor_respuesta};
 
             AplicacionesRespuestasFactory.store(data)
 				.then(function(response) {
 					if(response === 'true') {
-						//console.log('guardo');
 						$scope.mensaje = true;
 		                $scope.msgEnviarEncuesta = 'La encuesta ha sido guardada y enviada';
 		                $scope.styleEnviarEncuesta = 'success-box';
 						ocultarMensaje();
 					} else {
-						//console.log('Error al guardar');
 						$scope.mensaje = true;
 						$scope.msgEnviarEncuesta = 'Error al guardar la encuesta';
 						$scope.styleEnviarEncuesta = 'error-box';

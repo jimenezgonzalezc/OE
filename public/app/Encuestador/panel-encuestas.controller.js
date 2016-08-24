@@ -21,8 +21,7 @@
         $scope.encuestaDescripcion = "";
 		//Persona
 		$scope.personas = [];
-		// Funciones
-		$scope.getAplicaciones = getAplicaciones;
+		//Funciones
 		$scope.contestarEncuesta = contestarEncuesta;
 		$scope.logOut = logOut;
 

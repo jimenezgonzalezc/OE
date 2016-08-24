@@ -1,0 +1,188 @@
+﻿<div class="text-center margin">
+    <label class="title-1 kaushan">Análisis</label>
+</div>
+<div class="container">
+    <div class="col-md-12 perfil-box">
+    	<div class="portlet">
+            <div class="portlet-title">
+                <div class="caption caption-red">
+                    <i class="glyphicon glyphicon-stats"></i>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-target="#a" data-toggle="tab">ICE</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="portlet-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="a">
+                        <div>
+                            <label class="title-2">Índice general de Confianza Empresarial</label>
+                        </div>
+                        <div class="row border margin">
+                            <div>
+                                <div class="col-md-6 margin">
+                                    <label>Periodo</label>
+                                    <select class="form-control margin" ng-options="periodo as periodo.label for periodo in periodos track by periodo.id" ng-model="selectedPeriodo"></select>
+                                </div>
+                                <div class="col-md-12 margin">
+                                    <!--form id="selectionForm"-->
+                                        <span>
+                                            <label>Sectores <input type="checkbox" ng-click="selectAllSectores()" ng-model="allSectores"></label>
+                                        </span>
+                                        <div class="margin">
+                                            <span class="checkbox" ng-repeat="sector in sectores">
+                                                <label><input type="checkbox" ng-model="sector.selected" ng-change="selectSector()">{{sector.nombre}}</label>
+                                            </span>
+                                        </div>
+                                    <!--/form-->
+                                </div>
+                                <div class="col-md-12 margin">
+                                    <span>
+                                        <label>Indicadores <input type="checkbox" ng-click="selectAllIndicadores()" ng-model="allIndicadores"></label>
+                                    </span>
+                                    <div class="margin">
+                                        <span class="checkbox" ng-repeat="indicador in indicadores">
+                                            <label><input type="checkbox" ng-model="indicador.selected" ng-change="selectIndicador()">{{indicador.nombre}}</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 margin-top">
+                                    <div ng-show="showMsgAnalisis" class="animation animated-item-3 margin-top margin-around center-block" ng-class="styleMsgAnalisis">{{msgAnalisis}}</div>
+                                </div>
+                                <div class="col-md-12 margin-top">
+                                    <button class="btn btn-primary center-block" ng-click="getAnalisis();"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Ver análisis</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 margin-top text-left">
+                            <div class="">
+                                <table ng-show="analisis1.length > 0" class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="title-2 kaushan">Nombre</th>
+                                        <th class="title-2 kaushan">Ns</th>
+                                        <th class="title-2 kaushan">Ps</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="sector in analisis1">
+                                        <td ng-bind="sector.nombre"></td>
+                                        <td ng-bind="sector.ns"></td>
+                                        <td ng-bind="sector.ps"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="">
+                                <h2 ng-show="analisis2.length > 0">Nir</h2>
+                                <table ng-show="analisis2.length > 0" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="title-2 kaushan">Nombre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="indicador in analisis2">
+                                            <td ng-bind="indicador.nombre"></td>
+                                            <td ng-repeat-start="valores in indicador.nir" ng-repeat-end ng-bind="valores.valor_nir"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="">
+                                <h2 ng-show="analisis2.length > 0">Pir</h2>
+                                <table ng-show="analisis2.length > 0" class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="title-2 kaushan">Nombre</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="indicador in analisis2">
+                                        <td ng-bind="indicador.nombre"></td>
+                                        <td ng-repeat-start="valores in indicador.pir" ng-repeat-end ng-bind="valores.valor_pir"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="">
+                                <h2 ng-show="analisis2.length > 0">Xir</h2>
+                                <table ng-show="analisis2.length > 0" class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="title-2 kaushan">Nombre</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="indicador in analisis2">
+                                        <td ng-bind="indicador.nombre"></td>
+                                        <td ng-repeat-start="valores in indicador.xir" ng-repeat-end ng-bind="valores.valor_xir"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="" ng-repeat="analisis3Sector in analisis3">
+                                <h2 ng-show="analisis3.length > 0" ng-bind="analisis3Sector.nombre"></h2>
+                                <table ng-show="analisis3.length > 0" class="table">
+                                    <caption>Nsir</caption>
+                                    <thead>
+                                    <tr>
+                                        <th class="title-2 kaushan">Nombre</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="analisis3Indicador in analisis3Sector.nsir">
+                                        <td ng-bind="analisis3Indicador.nombre"></td>
+                                        <td ng-repeat-start="valores in analisis3Indicador.resultados" ng-repeat-end ng-bind="valores.valor_nsir"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table ng-show="analisis3.length > 0" class="table">
+                                    <caption>Psir</caption>
+                                    <thead>
+                                    <tr>
+                                        <th class="title-2 kaushan">Nombre</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="analisis3Indicador in analisis3Sector.psir">
+                                        <td ng-bind="analisis3Indicador.nombre"></td>
+                                        <td ng-repeat-start="valores in analisis3Indicador.resultados" ng-repeat-end ng-bind="valores.valor_psir"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table ng-show="analisis3.length > 0" class="table">
+                                    <caption>Xsir</caption>
+                                    <thead>
+                                    <tr>
+                                        <th class="title-2 kaushan">Nombre</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="analisis3Indicador in analisis3Sector.xsir">
+                                        <td ng-bind="analisis3Indicador.nombre"></td>
+                                        <td ng-repeat-start="valores in analisis3Indicador.resultados" ng-repeat-end ng-bind="valores.valor_xsir"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <hr class="style18">
+                            </div>
+
+                           <div class="info-box" ng-show="noResults">
+                               No hay resultados para mostrar.
+                           </div>
+                       </div>              
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

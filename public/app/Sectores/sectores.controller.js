@@ -22,7 +22,9 @@
     	$scope.modificar = modificar;
         $scope.selectTerritorio = selectTerritorio;
         $scope.selectTerritorioEdit = selectTerritorioEdit;
-    	//vars
+        $scope.guardarSector = guardarSector;
+
+        //vars
     	$scope.territorios = [];
     	$scope.regiones = [];
     	var todosTerritorios,
@@ -231,7 +233,7 @@
         * utiliza un arreglo con los ids de los territorios seleccionados y los envía a insertar,
         */
         function modificar(sector){    
-            var territorios = [] //lista de sectores a enviar para guardar
+            var territorios = []; //lista de sectores a enviar para guardar
             selectedTerritoriosEditar.forEach( function(territorio) {
                 if(territorio.state === true){
                     territorios.push(territorio.id);
@@ -280,7 +282,13 @@
                 $scope.msgEditar = 'Error, debe seleccionar al menos un territorio.';
                 $scope.styleEditar = 'error-box';
             }
-        }     
+        }
+
+        function guardarSector() {
+            if(!$scope.emptyData){
+                store();
+            }
+        }
 
         function store() {            
             $scope.registro = false;            
@@ -305,7 +313,7 @@
                     });
             }else{
                 $scope.registro = true;
-                $scope.msgRegistro = 'Error, debe seleccionar al menos un sector';
+                $scope.msgRegistro = 'Error. Existen errores en el formulario.';
                 $scope.styleRegistro = 'error-box';
             }
         }

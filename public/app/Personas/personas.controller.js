@@ -139,11 +139,11 @@
          * Almacenar un objeto persona en la base de datos, verifica si la persona existe por su cedula
          * si no existe entonces la almacena
          */
-        function store() {            
+        function store() {
             $scope.registro = false;
             validateEdit();
             $scope.persona.territorio_id = $scope.selectedTerritorio.id;
-            if ($scope.emptyData !== true) {
+            if ($scope.emptyData !== true && !$scope.errorcontrasena && !$scope.errorCorreo && !$scope.coincidenciaCedula) {
                 PersonasFactory.store($scope.persona)
                     .then(function(response) {
                         if (response === 'true') {
@@ -171,7 +171,7 @@
                     });
             }else{
                 $scope.registro = true;
-                $scope.msgRegistro = 'Error, debe seleccionar al menos un sector';
+                $scope.msgRegistro = 'Error. Existen errores en el formulario.';
                 $scope.styleRegistro = 'error-box';
             }
         }
@@ -180,7 +180,7 @@
          * obtener los sectores de la persona, para mostrar los seleccionados en la vista
          * @param{int} id de la persona que se debe buscar para editar
          */
-        function editandoPersona(persona) {        
+        function editandoPersona(persona) {
             $scope.persona = persona;     
 
             $scope.nueva = false;
@@ -279,7 +279,7 @@
          */
         function modificar(persona) {       
             validate();
-            var sectores = [] //lista de sectores a enviar para guardar
+            var sectores = []; //lista de sectores a enviar para guardar
 
 
             if ($scope.emptyData !== true) {
@@ -313,7 +313,7 @@
             }
             else{
                 $scope.editar = true;
-                $scope.msgEditar = 'Error, debe seleccionar al menos un sector.';
+                $scope.msgEditar = 'Error. Existen errores en el formulario.';
                 $scope.styleEditar = 'error-box';
             }                                        
         }

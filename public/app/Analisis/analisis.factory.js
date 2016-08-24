@@ -14,7 +14,8 @@
 	function AnalisisFactory($http, $q) {
 		var factory = {
 			get: get,
-			calculateICEBySector: calculateICEBySector,
+            getAnalisis: getAnalisis,
+            calculateICEBySector: calculateICEBySector,
 			groupByEntrepreneur: groupByEntrepreneur,
             calculateNs: calculateNs,
             calculatePs: calculatePs,
@@ -51,6 +52,23 @@
 			return defered.promise;
 		}
 
+        function getAnalisis(filtro) {
+            var defered = $q.defer();
+
+            $http({
+                method: 'POST',
+                url: 'api/analisis/getAnalisis',
+                data: filtro
+            })
+                .success(function(response) {
+                    defered.resolve(response);
+                })
+                .error(function(err) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
         function calculateValue(value){
             var result;
             switch (value){

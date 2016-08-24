@@ -29,6 +29,7 @@
 		$scope.nueva = false;
 		$scope.registro = false;
         $scope.agregar = agregar;
+        $scope.guardarEncuesta = guardarEncuesta;
         $scope.modificar = modificar;
         $scope.destroy = destroy;
         $scope.editandoEncuesta = editandoEncuesta;
@@ -50,10 +51,16 @@
             $scope.formEditarEncuesta.$setUntouched();
         }
 
+        function guardarEncuesta() {
+            if ($scope.descripcion !== "")
+                agregar();
+        }
+        
         /**
         * Agrega una encuesta.
         */
         function agregar() {
+
         	var fechaActual = $filter('date')(new Date(), 'yyyy-MM-dd'),
         	    encuesta = {
                     descripcion: $scope.descripcion,

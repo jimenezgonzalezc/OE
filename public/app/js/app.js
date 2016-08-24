@@ -251,8 +251,8 @@
             })
             .state('admin.analisis',{
                 url: '/analisis',
-                templateUrl: './app/Analisis/analisis.html',
-                controller: 'AnalisisController'
+                templateUrl: './app/Analisis/analisisCompleto.html',
+                controller: 'AnalisisCompletoController'
             })
             .state('empresario.analisis',{
                 url: '/analisis',
