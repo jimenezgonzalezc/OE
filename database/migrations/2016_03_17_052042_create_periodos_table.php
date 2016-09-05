@@ -15,7 +15,9 @@ class CreatePeriodosTable extends Migration
         Schema::create('periodos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('anio');
-            $table->integer('cuatrimestre');
+            $table->integer('mes_inicio');
+            $table->integer('mes_fin');
+            $table->string('modo_periodicidad', 20);
             $table->timestamps();
         });
     }

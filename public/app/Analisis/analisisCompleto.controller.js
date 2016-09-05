@@ -76,6 +76,12 @@
 				 });
 		 }
 
+		 function createHeaderSector(indicador){
+			 indicador.forEach(function (indice) {
+
+			 });
+		 }
+
 		 function getAnalisis() {
 			 var filtroSectores = [];
 			 $scope.sectores.forEach(function (sector) {
@@ -123,8 +129,11 @@
 							 $scope.analisis1 = $scope.analisis[0].analisis1;
 							 $scope.analisis2 = $scope.analisis[0].analisis2;
 							 $scope.analisis3 = $scope.analisis[0].analisis3;
+							 $scope.analisis4 = $scope.analisis[0].analisis4;
+							 if ($scope.analisis4.length > 0)
+							 	$scope.headerSector = $scope.analisis4[0].resultados;
+							 $scope.totales = $scope.analisis[0].totales;
 						 }
-
 					 })
 					 .catch(function(err) { });
 			 }

@@ -26,7 +26,7 @@ class Analisis extends Controller
 
 	public  function getAnalisis(){
 		$analisis = [];
-		$analisis[] = array('n' => -1, 'analisis1' => array(), 'analisis2' => array(), 'analisis3' => array());
+		$analisis[] = array('n' => -1, 'analisis1' => array(), 'analisis2' => array(), 'analisis3' => array(), 'analisis4' => array(), 'totales' => array());
 		return $analisis;
 	}
 
@@ -66,6 +66,33 @@ class Analisis extends Controller
 		return $analizadoresSir;
 	}
 
+	public function createJSON3($indicadores, $sectores){
+		$analisisIndices = [];
+
+		for( $i= 0 ; $i < count($indicadores) ; $i++ )
+		{
+			$analisisIndices[] = array('indicador_id' => $indicadores[$i]['id'], 'nombre' => $indicadores[$i]['nombre'],
+				'resultados' => array(),
+				'total_indicador' => 0);
+			for( $s= 0 ; $s < count($sectores) ; $s++ )
+			{
+				$analisisIndices[$i]['resultados'][] = array('sector_id' => $sectores[$s]['id'], 'nombre' => $sectores[$s]['nombre'], 'valor' => 0);
+			}
+		}
+		return $analisisIndices;
+	}
+
+	public function createJSONTotales($sectores){
+		$analisisTotal = ['resultados' => array(), 'total_columna_indicador' => 0];
+
+		for( $s = 0 ; $s < count($sectores) ; $s++ )
+		{
+			$analisisTotal['resultados'][] = array('sector_id' => $sectores[$s]['id'], 'nombre' => $sectores[$s]['nombre'],
+				'valor' => 0);
+		}
+		return $analisisTotal;
+	}
+
 	public function insertAnalisisNir($analisis, $indicador_id, $valor_respuesta, $nir){
 		for( $i= 0 ; $i < count($analisis) ; $i++ )
 		{
@@ -85,6 +112,8 @@ class Analisis extends Controller
 		$analisis = self::getNs($request->input('filtroSectores'), $request->input('periodo_id'));
 		$analisis = self::getNir($analisis, $request->input('filtroIndicadores'), $request->input('periodo_id'));
 		$analisis = self::getNsir($analisis, $request->input('filtroIndicadores'), $request->input('filtroSectores'), $request->input('periodo_id'));
+		$analisis = self::getER($analisis, $request->input('filtroIndicadores'), $request->input('filtroSectores'));
+		$analisis = self::calcularTotalesSector($analisis, $request->input('filtroSectores'));
 		return $analisis;
 	}
 
@@ -236,6 +265,120 @@ class Analisis extends Controller
 				}
 			}
 		}
+		return $analisis;
+	}
+
+	public function insertER($analisis4, $indicador_id, $sector_id, $valor){
+		for( $i= 0 ; $i < count($analisis4); $i++ )//indicador
+		{
+			if ($analisis4[$i]['indicador_id'] == $indicador_id)
+			{
+				for( $s= 0 ; $s < count($analisis4[$i]['resultados']) ; $s++ )//sector
+				{
+					if ($analisis4[$i]['resultados'][$s]['sector_id'] == $sector_id)
+					{
+						$analisis4[$i]['resultados'][$s]['valor'] = $valor;
+					}
+				}
+			}
+
+		}
+		return $analisis4;
+	}
+
+	public function getER($analisis, $indicadores, $sectores){
+		$analisis4 = self::createJSON3($indicadores, $sectores);
+
+		for( $s= 0 ; $s < count($analisis[0]['analisis3']) ; $s++ )//sector
+		{
+			for($i= 0 ; $i < count($analisis[0]['analisis3'][$s]['xsir']); $i++ )//indicador
+			{
+				$resXsir = 0;
+				for( $r= 0 ; $r < count($analisis[0]['analisis3'][$s]['xsir'][$i]['resultados']) ; $r++ )//resultados
+				{
+					$resXsir += $analisis[0]['analisis3'][$s]['xsir'][$i]['resultados'][$r]['valor_xsir'];
+				}
+				$resIndicador = ($resXsir * 2)-100;
+				$analisis4 =  self::insertER($analisis4, $analisis[0]['analisis3'][$s]['xsir'][$i]['indicador_id'], $analisis[0]['analisis3'][$s]['sector_id'], $resIndicador);
+			}
+		}
+		$analisis4 = self::calcularTotalesIndicador($analisis4);
+		$analisis[0]['analisis4'] = $analisis4;
+		return $analisis;
+	}
+
+	public function insertTotalesIndicador($analisis4, $indicador_id, $valor){
+		for( $i= 0 ; $i < count($analisis4); $i++ )//indicador
+		{
+			if ($analisis4[$i]['indicador_id'] == $indicador_id)
+			{
+				$analisis4[$i]['total_indicador'] = $valor;
+			}
+		}
+		return $analisis4;
+	}
+
+	public function calcularTotalesIndicador($analisis4){
+		foreach ($analisis4 as $indicador) {
+			$totalIndicador = 0;
+			foreach ($indicador['resultados'] as $sector) {
+				$totalIndicador += $sector['valor'];
+			}
+			$valor = $totalIndicador / count($indicador['resultados']);
+			$analisis4 = self::insertTotalesIndicador($analisis4, $indicador['indicador_id'], $valor);
+		}
+		return $analisis4;
+	}
+
+	public function insertTotalesSector($analisisTotal, $sector_id, $valor){
+		$con = 0;
+		for( $i= 0 ; $i < count($analisisTotal['resultados']); $i++ )
+		{
+			if ($analisisTotal['resultados'][$i]['sector_id'] == $sector_id)
+			{
+				$analisisTotal['resultados'][$i]['valor'] = $analisisTotal['resultados'][$i]['valor'] + $valor;
+			}
+			$con+=1;
+		}
+		return $analisisTotal;
+	}
+
+	public function getPs($analisis, $sector_id){
+		$ps = 0;
+		for( $i= 0 ; $i < count($analisis[0]['analisis1']); $i++ ){
+			if ($analisis[0]['analisis1'][$i]['id'] == $sector_id){
+				$ps = $analisis[0]['analisis1'][$i]['ps'];
+				break;
+			}
+		}
+		return $ps;
+	}
+
+	public function calcularTotalesSector($analisis, $sectores){
+		$analisisTotal = self::createJSONTotales($sectores);
+		$contadorIndicadores = count($analisis[0]['analisis4']);
+		for( $i= 0 ; $i < count($analisis[0]['analisis4']); $i++ )//indicador
+		{
+			for( $s= 0 ; $s < count($analisis[0]['analisis4'][$i]['resultados']) ; $s++ )//sector
+			{
+				$analisisTotal = self::insertTotalesSector($analisisTotal, $analisis[0]['analisis4'][$i]['resultados'][$s]['sector_id'], $analisis[0]['analisis4'][$i]['resultados'][$s]['valor']);
+			}
+		}
+
+		for( $i= 0 ; $i < count($analisisTotal['resultados']); $i++ )
+		{
+			$analisisTotal['resultados'][$i]['valor'] = $analisisTotal['resultados'][$i]['valor'] / $contadorIndicadores;
+		}
+		$analisis[0]['totales'] = $analisisTotal;
+
+		$tci = 0;
+		for( $i= 0 ; $i < count($analisisTotal['resultados']); $i++ )
+		{
+			$ps = self::getPs($analisis, $analisisTotal['resultados'][$i]['sector_id']);
+			$tci = $tci + $analisisTotal['resultados'][$i]['valor'] * $ps;
+		}
+		$analisisTotal['total_columna_indicador'] = $tci;
+		$analisis[0]['totales'] = $analisisTotal;
 		return $analisis;
 	}
 }

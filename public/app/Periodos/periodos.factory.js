@@ -21,9 +21,11 @@
 		var factory = {
 			store: store,
 			remove: remove,
+			deleteByYear : deleteByYear,
 			update: update,
 			getAll: getAll,
-			generateyYears: generateyYears
+			generateyYears: generateyYears,
+			validarPeriodicidad : validarPeriodicidad
 		};
 
 		return factory;
@@ -46,7 +48,7 @@
 			})
 			.error(function(err) {
 				defered.reject(err);
-			})
+			});
 
 			return defered.promise;
 		}
@@ -68,7 +70,24 @@
 			})
 			.error(function(err) {
 				defered.reject(err);
+			});
+
+			return defered.promise;
+		}
+
+		function deleteByYear(anio) {
+			var defered = $q.defer();
+
+			$http({
+				method: 'DELETE',
+				url: 'api/periodos/deleteByYear/' + anio
 			})
+			.success(function(response) {
+				defered.resolve(response);
+			})
+			.error(function(err) {
+				defered.reject(err);
+			});
 
 			return defered.promise;
 		}
@@ -134,6 +153,23 @@
 			}
 
 			return years;
+		}
+
+		function validarPeriodicidad(anio) {
+			var defered = $q.defer();
+
+			$http({
+				method: 'GET',
+				url: 'api/periodos/validarPeriodicidad/' + anio
+			})
+				.success(function(response) {
+					defered.resolve(response);
+				})
+				.error(function(err) {
+					defered.reject(err);
+				});
+
+			return defered.promise;
 		}
 	}
 })();

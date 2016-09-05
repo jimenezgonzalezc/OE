@@ -114,7 +114,10 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/periodos/getAll','Periodos@getAll');
     Route::post('/periodos/store','Periodos@store');
     Route::delete('/periodos/destroy/{id}','Periodos@destroy');
+    Route::delete('/periodos/deleteByYear/{anio}','Periodos@deleteByYear');
+
     Route::post('/periodos/update','Periodos@update');
+    Route::get('/periodos/validarPeriodicidad/{anio}','Periodos@validarPeriodicidad');
 
     // PersonasSectores
     Route::post('personasSectores/registro','PersonasSectores@store');

@@ -18,7 +18,7 @@
 	* @param {Object} Servicio que proporciona autenticación y renderización de vistas.
 	*/
 	function LoginController($scope, LoginFactory, Auth) {
-		$scope.email = 'fauri@gmail.com';
+		$scope.email = 'carlos@gmail.com';
 		$scope.contrasena = '12345';
 		$scope.error = false;
 		$scope.logIn = logIn;

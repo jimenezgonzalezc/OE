@@ -176,6 +176,29 @@
                                 <hr class="style18">
                             </div>
 
+                            <table ng-show="analisis4.length > 0" class="table">
+                                <caption><h1>Totales</h1></caption>
+                                <thead>
+                                <tr>
+                                    <th class="title-2 kaushan">Nombre</th>
+                                    <th ng-repeat="sector in headerSector" ng-bind="sector.nombre"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="indicador in analisis4">
+                                    <td ng-bind="indicador.nombre"></td>
+                                    <td ng-repeat-start="sector in indicador.resultados" ng-repeat-end ng-bind="sector.valor"></td>
+                                    <td style="border-left: 2px solid #000000;" ng-bind="indicador.total_indicador"></td>
+                                </tr>
+                                <tr style="border-top: 2px solid #000000;">
+                                    <td></td>
+                                    <td ng-repeat-start="sector in totales.resultados" ng-repeat-end ng-bind="sector.valor"></td>
+                                    <td ng-bind="totales.total_columna_indicador"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr ng-show="analisis4.length > 0" class="style18">
+
                            <div class="info-box" ng-show="noResults">
                                No hay resultados para mostrar.
                            </div>
