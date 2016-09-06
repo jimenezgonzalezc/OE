@@ -17,6 +17,7 @@
 			store: store,
 			destroy: destroy,
 			update: update,
+			getRegionesTerritorios: getRegionesTerritorios
 		};
 
 		return factory;
@@ -36,7 +37,20 @@
 			return promise;
 		}
 
-		
+			function getRegionesTerritorios() {
+				var defered = $q.defer();
+				var promise = defered.promise;
+
+				$http.get('/api/regiones/regionesTerritorios')
+					.success(function(response) {
+						defered.resolve(response);
+					})
+					.error(function(err) {
+						defered.reject(err);
+					});
+
+				return promise;
+			}
 
 		/**
 		* Almacenar una region

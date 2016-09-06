@@ -8,7 +8,7 @@ use App\Territorio;
 
 class Territorios extends Controller
 {
-    public function getAll() {     
+    public function getAll() {
         return Territorio::all();
     }
 

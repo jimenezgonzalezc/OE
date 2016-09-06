@@ -56,4 +56,11 @@ class Regiones extends Controller
 
         return 'true';
     }
+
+    public function getRegionesTerritorios() {
+        $regionesTerritorioAux = Regione::join('territorios', 'regiones.id', '=', 'territorios.region_id')
+            ->select('regiones.id as region_id', 'regiones.nombre as r_nombre', 'regiones.descripcion as r_descripcion', 'territorios.id', 'territorios.nombre', 'territorios.descripcion')
+            ->get();
+        return $regionesTerritorioAux;
+    }
 }

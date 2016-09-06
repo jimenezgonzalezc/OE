@@ -51,7 +51,7 @@
 
 
       /*
-      * Valida que no existan espacion en blanco
+      * Valida que no existan espacios en blanco
       */
       function validate () {
         $scope.emptyData = false;                
@@ -73,7 +73,7 @@
       function store () {
         $scope.registro = false;
         //si los campos no están vacíos
-        if($scope.emptyData === false){         
+        if($scope.emptyData === false){
            	 RegionesFactory.store($scope.region)
            	 	.then(function (response) {       	 		 
        	 		 	   //registro guardado exitosamente
@@ -83,8 +83,7 @@
                   $scope.styleRegistro = "success-box";
 
                 }
-                // error en el registro
-                else{
+                else{// error en el registro
                   $scope.registro = true;
                   $scope.msgRegistro = "Error registrando la región";
                   $scope.styleRegistro = "error-box";
@@ -92,12 +91,13 @@
 
                 $timeout(function () {
                    $scope.registro = false
-                },5000);              
+                },5000);
+                //refrescar información
+                setData();
+                getRegiones();
          	 	})
-          }       
-          //refrescar información
-          setData();            
-          getRegiones();
+          }
+
        }
 
       function eliminar (ev,id) {
@@ -139,7 +139,7 @@
 
                 $timeout(function () {
                    $scope.editar = false
-                },5000);    
+                },5000);
 
                 //refrescar información
                 setData();

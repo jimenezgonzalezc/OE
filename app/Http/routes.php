@@ -95,9 +95,9 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('regiones/registro','Regiones@store');
     Route::delete('regiones/destroy/{id}', 'Regiones@destroy');
     Route::post('regiones/editar', 'Regiones@update');
+    Route::get('regiones/regionesTerritorios','Regiones@getRegionesTerritorios');
 
     // Territorios.
-    Route::get('territorios/todos','Territorios@getAll');
     Route::get('territorios/todos','Territorios@getAll');
     Route::post('territorios/registro','Territorios@store');
     Route::delete('territorios/destroy/{id}', 'Territorios@destroy');

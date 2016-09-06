@@ -16,7 +16,7 @@
 			getAll: getAll,
 			store: store,
 			update: update,
-			destroy: destroy,
+			destroy: destroy
 		};
 
 		return factory;

@@ -31,6 +31,7 @@
 	<script type="text/javascript" src="<?= asset('node_modules/angular-ui-router/release/angular-ui-router.min.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/angular-cookies/angular-cookies.min.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/angular-material/angular-material.min.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('node_modules/angular-filter/angular-filter.js') ?>"></script>
 
 	<!-- Application Scripts -->
 	<script type="text/javascript" src="<?= asset('app/js/app.js') ?>"></script>

@@ -11,13 +11,14 @@
         .module('observatoryApp')
         .controller('TerritoriosController', TerritoriosController);
 
-    function TerritoriosController($scope, $timeout, $mdDialog,  TerritoriosFactory, RegionesFactory) {    	
+    function TerritoriosController($scope, $timeout, $mdDialog,  TerritoriosFactory, RegionesFactory) {
     	$scope.store = store;
         $scope.eliminar = eliminar;
         $scope.editandoTerritorio = editandoTerritorio;
         $scope.cancelEdit = cancelEdit;
         $scope.modificar = modificar;
         $scope.guardarTerritorio = guardarTerritorio;
+        $scope.getRegionesTerritorios =getRegionesTerritorios;
 
 
         //watch para validar datos
@@ -46,11 +47,22 @@
             $scope.errorConn = true;
         });       	 	
     }    
-    getTerritorios();
+    //getTerritorios();
 
-    /*
-    * Obtener la lista de regiones almacenadas en la base de datos y asignarla a la lista de eterritorios del scope.
-    */
+        function getRegionesTerritorios () {
+            RegionesFactory.getRegionesTerritorios()
+                .then(function (response) {
+                    $scope.regionesterritorios = response;
+                })
+                .catch(function(err) {
+                    $scope.regionesterritorios = true;
+                    $scope.errorConn = true;
+                });
+        }
+        getRegionesTerritorios();
+        /*
+        * Obtener la lista de regiones almacenadas en la base de datos y asignarla a la lista de territorios del scope.
+        */
     function getRegiones () {
       RegionesFactory.getAll()
         .then(function (response) {                                   
@@ -107,12 +119,13 @@
 
                 $timeout(function () {
                    $scope.registro = false
-                },5000);              
+                },5000);
+                //refrescar información
+                setData();
+                getTerritorios();
          	 	})
           }       
-          //refrescar información
-          setData();            
-          getTerritorios();
+
        }
 
       function eliminar (ev,id) {
@@ -127,7 +140,7 @@
               .then(function() {
                   TerritoriosFactory.destroy(id)
                       .then(function(response) {
-                          getTerritorios();
+                          getRegionesTerritorios();
                       });
               }, function() {});
        }
@@ -154,12 +167,12 @@
                 }
 
                 $timeout(function () {
-                   $scope.registro = false
+                   $scope.editar = false
                 },5000);    
 
                 //refrescar información
                 setData();
-                getTerritorios();
+                getRegionesTerritorios();
             })
       }
 
@@ -181,7 +194,7 @@
           $scope.selectedRegion = $scope.regiones[0];
         }
         setData();
-        getTerritorios();
+          getRegionesTerritorios();
       }
 
     }  	

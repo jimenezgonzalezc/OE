@@ -22,24 +22,27 @@
                     <div>
                         <label class="title-2">Territorios</label>                        
                     </div>
-                    <div class="col-md-12 col-sm-12 margin" ng-show="territorios.length > 0">
-                        <div class="col-md-4 col-sm-4 card-box" ng-repeat="territorio in territorios">
-                            <div class="inner">
-                                <div class="title-card">
-                                    <label class="title-3">{{territorio.nombre}}</label>
-                                </div>
-                                <div class="body-card">
-                                    <span class="glyphicon glyphicon-pencil" ng-click="editandoTerritorio(territorio)" data-toggle="modal" data-target="#editarterritorio" >
-                                    <md-tooltip md-direction="top">Editar</md-tooltip></span>
-                                    &nbsp;&nbsp;
-                                    <span class="glyphicon glyphicon-trash" ng-click="eliminar($event,territorio.id);">
-                                    <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                    <div style="width: 100%;" ng-repeat="(regionNombre, region) in regionesterritorios | groupBy:'r_nombre'">
+                        <label>{{regionNombre}}</label>
+                        <div class="col-md-12 col-sm-12 margin" ng-show="regionesterritorios.length > 0">
+                            <div class="col-md-4 col-sm-4 card-box" ng-repeat="territorio in region">
+                                <div class="inner">
+                                    <div class="title-card">
+                                        <label class="title-3">{{territorio.nombre}}</label>
+                                    </div>
+                                    <div class="body-card">
+                                        <span class="glyphicon glyphicon-pencil" ng-click="editandoTerritorio(territorio)" data-toggle="modal" data-target="#editarterritorio" >
+                                        <md-tooltip md-direction="top">Editar</md-tooltip></span>
+                                        &nbsp;&nbsp;
+                                        <span class="glyphicon glyphicon-trash" ng-click="eliminar($event,territorio.id);">
+                                        <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="info-box margin" ng-show="territorios.length == 0">No hay territorios registrados.</div> 
-                    <div class="text-center margin" ng-hide="territorios">
+                    <div class="info-box margin" ng-show="regionesterritorios.length == 0">No hay territorios registrados.</div>
+                    <div class="text-center margin" ng-hide="regionesterritorios">
                         <label>Cargando territorios...</label>
                     </div>             
                 </div>

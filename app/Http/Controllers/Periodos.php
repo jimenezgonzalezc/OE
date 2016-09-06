@@ -58,22 +58,6 @@ class Periodos extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function update(Request $request) {
-        $periodo = Periodo::find($request->input('id'));
-        $periodo->anio = $request->input('year');  
-        $periodo->cuatrimestre = $request->input('quarter');                
-        
-        $periodo->save();
-
-        return 'true';
-    }
-
-    /**
      * Valida si se ha definido la periodicidad de un año
      *
      * @param  Request  $request

@@ -8,7 +8,7 @@
 	'use strict';
 
 	angular
-		.module('observatoryApp', ['ngCookies', 'ngMaterial', 'ui.router', 'dndLists'])
+		.module('observatoryApp', ['ngCookies', 'ngMaterial', 'ui.router', 'dndLists', 'angular.filter'])
 		.factory('Auth', Auth)
         .filter('user', user)
         .filter('estado', estado)
