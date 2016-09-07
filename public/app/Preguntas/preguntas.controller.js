@@ -88,8 +88,6 @@
                     $scope.selectedIndicador = indicador;
                 }
             });
-
-            console.log(pregunta);
         }
 
         function getTipo(tipo){

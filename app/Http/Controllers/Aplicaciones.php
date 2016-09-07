@@ -96,7 +96,7 @@ class Aplicaciones extends Controller
           ->select('aplicaciones.id', 'aplicaciones.fechaAplicacion', 'aplicaciones.encuesta_id', 'aplicaciones.persona_id', 'aplicaciones.periodo_id')
           ->where('persona_id', $idPersona)
           ->where('periodos.anio',(int)$year)
-          ->where('periodos.cuatrimestre',(int)$periodo)
+          //->where('periodos.cuatrimestre',(int)$periodo)
           ->get();
       return $aplicacion;
     }
@@ -117,7 +117,7 @@ class Aplicaciones extends Controller
                 'encuestas.fechaModificacion', 'personas.nombre', 
                 'personas.apellido1', 'personas.apellido2', 'personas.tipo')
             ->where('periodos.anio',(int)$year)
-            ->where('periodos.cuatrimestre',(int)$periodo)
+            //->where('periodos.cuatrimestre',(int)$periodo)
             ->where('aplicaciones.encuestador', '=', '')
             ->get();
     }

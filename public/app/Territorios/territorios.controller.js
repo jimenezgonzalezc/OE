@@ -122,7 +122,7 @@
                 },5000);
                 //refrescar información
                 setData();
-                getTerritorios();
+                    getRegionesTerritorios();
          	 	})
           }       
 

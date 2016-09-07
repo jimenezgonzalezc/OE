@@ -20,9 +20,9 @@
 	 * @param {Object} AplicacionesRespuestasFactory. Servicio que brinda funciones de las aplicaciones-espuestas que ayudan a la funcionalidad del controlador.
 	 * @param {Object} $timeout. Promesa que resolverá cierto trozo de código cuando determinado tiempo ha pasado.
 	 */
-	function ContestarEncuestasController($scope, EncuestasFactory, $cookies, AplicacionesFactory, AplicacionesRespuestasFactory, $timeout) {
+	function ContestarEncuestasController($scope, EncuestasFactory, $cookies, AplicacionesFactory, AplicacionesRespuestasFactory, $timeout, $mdDialog) {
 		$scope.encuestador =  $cookies.getObject('session');
-
+		$scope.botonEnviar = true;
 
 		$scope.idAplicacion = 0;
         //Encuesta
@@ -45,11 +45,11 @@
 		$scope.msgEnviarEncuesta = "";
 
         $scope.opcionesRespuesta = [
-            {"id": 1, "alternativa": "Muy bueno"},
-            {"id": 2, "alternativa": "Bueno"},
-            {"id": 3, "alternativa": "Regular"},
-            {"id": 4, "alternativa": "Malo"},
-            {"id": 5, "alternativa": "Muy malo"}
+            {"id": 1, "alternativa": "Muy bueno", "valor": 1},
+            {"id": 2, "alternativa": "Bueno", "valor": 2},
+            {"id": 3, "alternativa": "Regular", "valor": 3},
+            {"id": 4, "alternativa": "Malo", "valor": 4},
+            {"id": 5, "alternativa": "Muy malo", "valor": 5}
         ];
 
         $scope.getpreguntasByEncuesta = getpreguntasByEncuesta;
@@ -97,9 +97,10 @@
 		 * Guarda las respuestas
 		 */
         function guardarRespuesta(pregunta, respuesta, comentario) {
+
+
 			if (comentario == null)
 				comentario = "";
-
 			var data = {
                 pregunta_id: pregunta.pregunta_id,
                 enunciado: pregunta.enunciado,
@@ -159,11 +160,10 @@
 		/**
 		 * Guarda las respuestas de la encuesta
 		 */
-		function guardarEncuesta() {
-
+		function guardarEncuesta(ev) {
 			if ($scope.preguntasRespondidas === null){
 				$scope.mensaje = true;
-				$scope.msgEnviarEncuesta = 'No se ha respondido ni una pregunta';
+				$scope.msgEnviarEncuesta = 'No se ha respondido ninguna pregunta';
 				$scope.styleEnviarEncuesta = 'error-box';
 			}
 			else if ($scope.preguntasRespondidas.length < $scope.preguntasEncuesta.length){
@@ -172,12 +172,24 @@
 				$scope.styleEnviarEncuesta = 'error-box';
 			}
 			else{
-				$scope.preguntasRespondidas.forEach(function(pregunta) {
-					enviarEncuesta(pregunta.enunciado, pregunta.alternativa, $scope.idAplicacion, pregunta.comentario, pregunta.indicador_id);
-				});
-				AplicacionesFactory.update($scope.idAplicacion, $scope.encuestador.nombre + " " + $scope.encuestador.apellido1 + " " + $scope.encuestador.apellido2);
+				var confirm = $mdDialog.confirm('?')
+					.title('Enviar encuesta')
+					.textContent('La encuesta sera enviada y guardada. Una vez enviada no se podrá modificar. ¿Desea Continuar?')
+					.ariaLabel('Lucky day')
+					.targetEvent(ev)
+					.ok('Sí')
+					.cancel('No');
+				$mdDialog.show(confirm)
+					.then(function() {
+						$scope.botonEnviar = false;
+						$scope.preguntasRespondidas.forEach(function(pregunta) {
+							enviarEncuesta(pregunta.enunciado, pregunta.alternativa, $scope.idAplicacion, pregunta.comentario, pregunta.indicador_id);
+						});
+						AplicacionesFactory.update($scope.idAplicacion, $scope.encuestador.nombre + " " + $scope.encuestador.apellido1 + " " + $scope.encuestador.apellido2);
+
+						ocultarMensaje();
+					}, function() {});
 			}
-			ocultarMensaje();
         }
 
 		function getValorRespuesta(respuesta){
@@ -227,7 +239,7 @@
 		function ocultarMensaje() {
 			$timeout(function() {
 				$scope.mensaje = false;
-			}, 5000);
+			}, 6000);
 		}
 	}
 })();

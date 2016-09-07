@@ -70,14 +70,14 @@
                                             <label>Enunciado</label>
                                             <textarea ng-model="enunciado" class="form-control" name="enunciado" ng-required="true" placeholder="Enunciado" title="Por favor ingrese el enunciado de la pregunta" rows="7"></textarea>
                                             <p class="help-inline red" ng-show="formEditarPregunta.enunciado.$invalid && formEditarPregunta.enunciado.$touched">Ingrese una descripción.</p>
-                                        </div class="form-group">
-                                        <div>
+                                        </div>
+                                        <div class="form-group">
                                             <label>Tipo</label>
                                             <md-radio-group ng-model="tipo">
                                                 <md-radio-button value="true" class="md-primary" ng-true-value="'true'" ng-false-value="'false'">Abierta</md-radio-button>
                                                 <md-radio-button value="false" class="md-primary" ng-true-value="'false'" ng-false-value="'true'">Cerrada</md-radio-button>
                                             </md-radio-group>
-                                        </div class="form-group">
+                                        </div>
                                         <div>
                                             <label class="">Indicador</label>
                                             <select class="form-control margin" ng-options="indicador as indicador.nombre for indicador in indicadores track by indicador.id" ng-model="selectedIndicador"></select>
