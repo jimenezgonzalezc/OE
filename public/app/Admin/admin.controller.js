@@ -96,8 +96,8 @@
 		/**
 		* Realiza el log out.
 		*/
-		function logOut() {
-			Auth.logOut();
+		function logOut(ev) {
+			Auth.logOut(ev);
 		}
 	}
 

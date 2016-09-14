@@ -23,14 +23,14 @@
     * @param {Object} Servicio que permite la unión entre el HTML y el controlador a un nivel superior.
     * @returns {Object} Objeto con los metodos del factory.
     */
-    function Auth($cookies, $location, $rootScope) {
+    function Auth($cookies, $location, $rootScope, $mdDialog) {
         var cont = 0,
 	        factory = {
     	        logIn: logIn,
     	        logOut: logOut,
     	        checkStatus: checkStatus,
     	        inArray: inArray
-	        }
+	        };
 
         return factory;
 
@@ -71,9 +71,19 @@
         /**
         * Remueve las cookies del usuario y renderiza a la vista de log in.
         */
-        function logOut() {
-            $cookies.remove('session');
-            $location.path('login');
+        function logOut(ev) {
+            var confirm = $mdDialog.confirm('?')
+                .title('Cerrar sesion')
+                .textContent('¿Desea cerrar sesion?')
+                .ariaLabel('Lucky day')
+                .targetEvent(ev)
+                .ok('Sí')
+                .cancel('No');
+            $mdDialog.show(confirm)
+                .then(function() {
+                    $cookies.remove('session');
+                    $location.path('login');
+                }, function() {});
         }
 
         /**

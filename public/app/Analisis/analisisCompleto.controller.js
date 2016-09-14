@@ -29,26 +29,35 @@
 		 $scope.selectAllSectores = function() {
 			 var toggleStatus = $scope.allSectores;
 			 angular.forEach($scope.sectores, function(sector){ sector.selected = toggleStatus; });
+			 $scope.showMsgAnalisis = false;
 		 };
 
 		 $scope.selectSector = function(){
-			 $scope.allSectores = $scope.sectores.every(function(sector){ return sector.selected; })
+			 $scope.allSectores = $scope.sectores.every(function(sector){ return sector.selected; });
+			 $scope.showMsgAnalisis = false;
 		 };
 
 		 $scope.selectAllIndicadores = function() {
 			 var toggleStatus = $scope.allIndicadores;
 			 angular.forEach($scope.indicadores, function(indicador){ indicador.selected = toggleStatus; });
+			 $scope.showMsgAnalisis = false;
 		 };
 
 		 $scope.selectIndicador = function(){
-			 $scope.allIndicadores = $scope.indicadores.every(function(indicador){ return indicador.selected; })
+			 $scope.allIndicadores = $scope.indicadores.every(function(indicador){ return indicador.selected; });
+			 $scope.showMsgAnalisis = false;
 		 };
+
+		 function getMes(numMes) {
+			 var meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+			 return meses[numMes-1];
+		 }
 
 		 function getPeriodos() {
 			 PeriodosFactory.getAll()
 				 .then(function(response) {
 					 response.forEach(function(periodo) {
-						 periodo.label = 'Cuatrimestre ' + periodo.cuatrimestre +', ' + periodo.anio;
+						 periodo.label = periodo.modo_periodicidad + ' ' + getMes(periodo.mes_inicio) + ' - ' + getMes(periodo.mes_fin) +', ' + periodo.anio;
 					 });
 					 $scope.periodos = response;
 					 $scope.selectedPeriodo = $scope.periodos[0];
@@ -76,10 +85,19 @@
 				 });
 		 }
 
-		 function createHeaderSector(indicador){
-			 indicador.forEach(function (indice) {
-
+		 function createInformacion(filtro){
+			 $scope.msgInfoAnalisis = "";
+			 $scope.showMsgInfoAnalisis = true;
+			 var indicadores = '';
+			 filtro.filtroIndicadores.forEach(function (indice) {
+				 indicadores += indice.nombre + ', ';
 			 });
+			 var sectores = '';
+			 filtro.filtroSectores.forEach(function (sector) {
+				 sectores += sector.nombre + ', ';
+			 });
+			 $scope.msgInfoAnalisis = 'El análisis generado es del periodo: ' +$scope.selectedPeriodo.label
+			 + ', de los sectores: ' + sectores +  ' de los indicadores: '+ indicadores.slice(0, -2);
 		 }
 
 		 function getAnalisis() {
@@ -126,6 +144,8 @@
 							 $scope.tiempoMsg = 6000;
 						 }
 						 else{
+							 createInformacion(filtro);
+							 $('#configuracionAnalisis').modal('hide');
 							 $scope.analisis1 = $scope.analisis[0].analisis1;
 							 $scope.analisis2 = $scope.analisis[0].analisis2;
 							 $scope.analisis3 = $scope.analisis[0].analisis3;

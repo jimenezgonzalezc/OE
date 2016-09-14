@@ -6,7 +6,7 @@
         <div ng-show="personas.length > 0">
             <div ng-repeat="persona in personas">
                 <div>
-                    <label class="subtitle baskerville margin">{{persona.nombre}}</label>
+                    <label class="subtitle baskerville margin">Empresario: {{persona.nombre}}</label>
                     <div class="col-md-12 col-sm-12 margin" ng-show="persona.encuestas">
                         <div class="col-md-4 col-sm-4 card-box" ng-repeat="encuesta in persona.encuestas" ng-if="encuesta.estado">
                             <div class="inner">

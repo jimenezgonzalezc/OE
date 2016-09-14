@@ -60,6 +60,8 @@
 	<script type="text/javascript" src="<?= asset('app/Indicadores/indicadores.factory.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Aplicaciones/aplicaciones.factory.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Aplicaciones/aplicaciones-respuestas.factory.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('app/Aplicaciones/aplicaciones-respuestas-ee.factory.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('app/RespaldoAplicacionesRespuestas/respaldo-aplicaciones-respuestas.factory.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Autenticacion/autenticacion.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Periodos/periodos.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Periodos/periodos.factory.js') ?>"></script>

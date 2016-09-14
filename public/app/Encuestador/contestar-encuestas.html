@@ -1,84 +1,50 @@
-<div class="text-center margin">
+<!--div class="text-center margin">
     <label class="title-1 kaushan">Contestando encuesta</label>
-</div>
-<div class="col-md-12 gestion-box">
-    <center>
-        <div class="margin">
-            <div ng-repeat="pregunta in preguntasEncuesta">
-                <div><h3 ng-bind="($index+1) + ' ' + pregunta.enunciado"></h3></div>
+</div-->
+<!--div class="col-md-12 gestion-box">
+    <center-->
+        <div ng-show="preguntasEncuesta">
+            <div><h2 class="subrayado">Evolución Real</h2></div>
+            <div class="panelHorizontal" ng-repeat="pregunta in preguntasEncuesta">
+                <div><h3 ng-bind="($index+1) + ' - ' + pregunta.enunciado"></h3></div>
                 <div class="form-group">
                     <md-radio-group>
                         <div style="display: inline-block; text-align: left">
-                            <md-radio-button ng-repeat="opciones in opcionesRespuesta" data-ng-value="opciones.valor" class="md-primary" ng-true-value="'true'" ng-false-value="'false'" data-ng-click="guardarRespuesta(pregunta, opciones, comentario);">{{opciones.alternativa}}</md-radio-button>
+                            <md-radio-button ng-repeat="opciones in opcionesRespuesta" data-ng-value="opciones.valor" class="md-primary" ng-true-value="'true'" ng-false-value="'false'" data-ng-click="guardarRespuesta(pregunta, opciones, comentario, 1);">{{opciones.alternativa}}</md-radio-button>
                         </div>
                     </md-radio-group>
                 </div>
                 <div>
-                    <textarea ng-model="comentario" ng-show="pregunta.tipo" class="animation animated-item-3 margin-top form-control margin-around" name="enunciado" ng-required="true" placeholder="Comentarios" title="Comentarios" rows="3" maxlength="250"></textarea>
-                </div>
-            </div>
-            <div ng-show="mensaje" ng-class="styleEnviarEncuesta">{{msgEnviarEncuesta}}</div>
-            <div class="margin-top" ng-show="botonEnviar">
-                <h4>Guardar y enviar encuesta</h4>
-                <div class="btn-group">
-                    <button data-ng-click="guardarEncuesta($event);" type="button" class="btn btn-primary">Enviar</button>
+                    <textarea id="er-{{pregunta.pregunta_id}}" ng-show="pregunta.tipo" class="form-control marginH" name="enunciado" ng-required="true" placeholder="Comentarios" title="Comentarios" rows="3" maxlength="250"></textarea>
                 </div>
             </div>
         </div>
-    </center>
-</div>
-<section id="main-slider" style="margin-bottom: 40px;" data-interval="false" ng-show="false">
-    <div class="carousel slide wet-asphalt">
-        <ol class="carousel-indicators list-group">
-            <li class="{{pregunta.clase}}" ng-repeat="pregunta in preguntasEncuesta" data-target="#main-slider" data-slide-to="{{pregunta.vistaId}}"></li>
-            <li data-target="#main-slider" data-slide-to="{{preguntasEncuesta.length}}"></li>
-        </ol>
-
-        <div class="carousel-inner">
-
-            <div class="item {{pregunta.clase}}"  ng-repeat="pregunta in preguntasEncuesta" style="background-color:#AF3030;">
-                <div class="container">
-                    <div class="row">
-                        <div style="text-align: center;vertical-align: middle;margin-top: 20%;">
-                            <div class="carousel-content center centered">
-                                <h2 class="animation animated-item-1">{{pregunta.enunciado}}</h2>
-                                <div class="btn-group animation animated-item-2">
-                                    <button data-ng-click="guardarRespuesta(pregunta, opciones, comentario);" ng-repeat="opciones in opcionesRespuesta" type="button" class="btn btn-primary">{{opciones.alternativa}}</button>
-                                </div>
-                                <center>
-                                    <div>
-                                        <textarea ng-model="comentario" ng-show="pregunta.tipo" class="animation animated-item-3 margin-top form-control margin-around" name="enunciado" ng-required="true" placeholder="Comentarios" title="Comentarios" rows="3" maxlength="250"></textarea>
-                                    </div>
-                                </center>
-                            </div>
+        <hr class="style1">
+        <div class="margin" ng-show="preguntasEncuestaEE">
+            <div><h2 class="subrayado">Evolución Esperada</h2></div>
+            <div class="panelHorizontal" ng-repeat="pregunta in preguntasEncuestaEE">
+                <div><h3 ng-bind="($index+1) + ' - ' + pregunta.enunciado"></h3></div>
+                <div class="form-group">
+                    <md-radio-group>
+                        <div style="display: inline-block; text-align: left">
+                            <md-radio-button ng-repeat="opciones in opcionesRespuesta" data-ng-value="opciones.valor" class="md-primary" ng-true-value="'true'" ng-false-value="'false'" data-ng-click="guardarRespuesta(pregunta, opciones, comentario, 2);">{{opciones.alternativa}}</md-radio-button>
                         </div>
-                    </div>
+                    </md-radio-group>
                 </div>
-            </div><!--/.item-->
-            <div class="item" style="background-color:#AF3030;">
-              <div class="container">
-                  <div class="row">
-                      <div style="text-align: center;vertical-align: middle;margin-top: 20%;">
-                          <div class="carousel-content center centered">
-                              <h2 class="animation animated-item-1">Guardar y enviar encuesta</h2>
-                              <div class="btn-group animation animated-item-2">
-                                  <button data-ng-click="guardarEncuesta();" type="button" class="btn btn-primary">Enviar</button>
-                              </div>
-                              <center>
-                                <div ng-show="mensaje" class="animation animated-item-3 margin-top margin-around" ng-class="styleEnviarEncuesta">{{msgEnviarEncuesta}}</div>
-                              </center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div><!--/.item-->
-        </div><!--/.carousel-inner-->
-    </div><!--/.carousel-->
-
-    <a class="prev hidden-xs" style="cursor: pointer" data-target="#main-slider" data-slide="prev">
-        <i class="icon-angle-left"></i>
-    </a>
-    <a class="next hidden-xs" style="cursor: pointer" data-target="#main-slider" data-slide="next">
-        <i class="icon-angle-right"></i>
-    </a>
-</section><!--/#main-slider-->
+                <div>
+                    <textarea id="ee-{{pregunta.pregunta_id}}" ng-show="pregunta.tipo" class="form-control marginH" name="enunciado" ng-required="true" placeholder="Comentarios" title="Comentarios" rows="3" maxlength="250"></textarea>
+                </div>
+            </div>
+        </div>
+        <hr class="style1">
+        <div ng-show="mensaje" ng-class="styleEnviarEncuesta">{{msgEnviarEncuesta}}</div>
+        <div class="margin-top" ng-show="botonEnviar">
+            <center>
+            <div class="border">
+                <button data-ng-click="guardarEncuesta($event);" type="button" class="btn btn-primary">Enviar</button>
+                <button data-ng-click="cancelarEncuesta($event);" type="button" class="btn btn-cancel">Cancelar</button>
+            </div>
+            </center>
+        </div>
+    <!--/center>
+</div-->

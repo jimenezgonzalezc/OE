@@ -449,7 +449,7 @@
 
 			$http({
 				method: 'GET',
-				url: 'api/encuestasPreguntas/getNumberOfQuestions/' + idEncuesta,
+				url: 'api/encuestasPreguntas/getNumberOfQuestions/' + idEncuesta
 			})
 				.success(function(response) {
 					defered.resolve(response);

@@ -77,7 +77,18 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/aplicaciones-respuestas/todas', 'AplicacionesRespuestas@getAll');
     Route::post('/aplicaciones-respuestas/store', 'AplicacionesRespuestas@store');
     Route::post('/aplicaciones-respuestas/remove', 'AplicacionesRespuestas@remove');
-
+    // AplicacionesRespuestasEE - Evolucion esperada.
+    Route::get('/aplicaciones-respuestas-ee/todas', 'AplicacionesRespuestasEE@getAll');
+    Route::post('/aplicaciones-respuestas-ee/store', 'AplicacionesRespuestasEE@store');
+    Route::post('/aplicaciones-respuestas-ee/remove', 'AplicacionesRespuestasEE@remove');
+    // RespaldoAplicacionesRespuestas.
+    Route::get('/respaldo-aplicaciones-respuestas/todas', 'RespaldoAplicacionesRespuestas@getAll');
+    Route::get('/respaldo-aplicaciones-respuestas/get/{aplicacion_id}', 'RespaldoAplicacionesRespuestas@getByAplicacionId');
+    Route::post('/respaldo-aplicaciones-respuestas/store', 'RespaldoAplicacionesRespuestas@store');
+    Route::post('/respaldo-aplicaciones-respuestas/update', 'RespaldoAplicacionesRespuestas@update');
+    Route::post('/respaldo-aplicaciones-respuestas/remove', 'RespaldoAplicacionesRespuestas@remove');
+    Route::delete('/respaldo-aplicaciones-respuestas/remove/{aplicacion_id}', 'RespaldoAplicacionesRespuestas@removeByAplicacionId');
+    
     // Indicadores.
     Route::get('/indicadores/todos', 'Indicadores@getAll');
     Route::post('/indicadores/store', 'Indicadores@store');
