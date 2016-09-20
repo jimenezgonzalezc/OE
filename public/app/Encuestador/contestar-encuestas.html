@@ -8,11 +8,9 @@
             <div class="panelHorizontal" ng-repeat="pregunta in preguntasEncuesta">
                 <div><h3 ng-bind="($index+1) + ' - ' + pregunta.enunciado"></h3></div>
                 <div class="form-group">
-                    <md-radio-group>
-                        <div style="display: inline-block; text-align: left">
-                            <md-radio-button ng-repeat="opciones in opcionesRespuesta" data-ng-value="opciones.valor" class="md-primary" ng-true-value="'true'" ng-false-value="'false'" data-ng-click="guardarRespuesta(pregunta, opciones, comentario, 1);">{{opciones.alternativa}}</md-radio-button>
-                        </div>
-                    </md-radio-group>
+                    <label class="radio-button-vertical" data-ng-repeat="opciones in opcionesRespuesta">
+                        <input data-ng-click="guardarRespuesta(pregunta, opciones, comentario, 1);" type="radio" value="opciones.valor" name="respuesta-er-{{pregunta.pregunta_id}}" ng-checked="getValor(pregunta.pregunta_id, 1, opciones.valor)"/> {{opciones.alternativa}}
+                    </label>
                 </div>
                 <div>
                     <textarea id="er-{{pregunta.pregunta_id}}" ng-show="pregunta.tipo" class="form-control marginH" name="enunciado" ng-required="true" placeholder="Comentarios" title="Comentarios" rows="3" maxlength="250"></textarea>
@@ -25,11 +23,9 @@
             <div class="panelHorizontal" ng-repeat="pregunta in preguntasEncuestaEE">
                 <div><h3 ng-bind="($index+1) + ' - ' + pregunta.enunciado"></h3></div>
                 <div class="form-group">
-                    <md-radio-group>
-                        <div style="display: inline-block; text-align: left">
-                            <md-radio-button ng-repeat="opciones in opcionesRespuesta" data-ng-value="opciones.valor" class="md-primary" ng-true-value="'true'" ng-false-value="'false'" data-ng-click="guardarRespuesta(pregunta, opciones, comentario, 2);">{{opciones.alternativa}}</md-radio-button>
-                        </div>
-                    </md-radio-group>
+                    <label class="radio-button-vertical" data-ng-repeat="opciones in opcionesRespuesta">
+                        <input data-ng-click="guardarRespuesta(pregunta, opciones, comentario, 2);" type="radio" value="opciones.valor" name="respuesta-ee-{{pregunta.pregunta_id}}" ng-checked="getValor(pregunta.pregunta_id, 2, opciones.valor)"/> {{opciones.alternativa}}
+                    </label>
                 </div>
                 <div>
                     <textarea id="ee-{{pregunta.pregunta_id}}" ng-show="pregunta.tipo" class="form-control marginH" name="enunciado" ng-required="true" placeholder="Comentarios" title="Comentarios" rows="3" maxlength="250"></textarea>

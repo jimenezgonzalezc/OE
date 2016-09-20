@@ -40,6 +40,7 @@
         $scope.preguntasEncuesta = null;
         $scope.preguntasRespondidas = null;
 		$scope.preguntasRespondidasEE = null;
+		$scope.respaldoRespuestas = null;
 		// Mensaje
 		$scope.mensaje = false;
 		$scope.styleEnviarEncuesta = "";
@@ -61,7 +62,8 @@
 		$scope.cancelarEncuesta = cancelarEncuesta;
 		$scope.guardarRespaldo = guardarRespaldo;
 		$scope.modificarRespaldo = modificarRespaldo;
-
+		$scope.getValor = getValor;
+		$scope.guardarRespuestaRespaldo = guardarRespuestaRespaldo;
 		/**
 		 * Obtiene datos del factory
 		 */
@@ -69,7 +71,7 @@
             $scope.encuestaId = EncuestasFactory.getId();
             $scope.encuestaDescripcion = EncuestasFactory.getDescripcion();
 			$scope.idAplicacion = EncuestasFactory.getIdAplicacion();
-            getpreguntasByEncuesta($scope.encuestaId);
+            getpreguntasByEncuesta($scope.encuestaId, $scope.idAplicacion);
         }
 
 		getEncuesta();
@@ -77,7 +79,7 @@
 		/**
 		 * Obtiene las preguntas de la encuesta seleccionada
 		 */
-        function getpreguntasByEncuesta(id) {
+        function getpreguntasByEncuesta(id, idAplicacion) {
             EncuestasFactory.getpreguntasEncuestas(id)
                 .then(function(response) {
                     $scope.preguntasEncuesta = response;
@@ -97,13 +99,38 @@
 					});
 
                 });
+			RespaldoAplicacionesRespuestasFactory.getByAplicacionId(idAplicacion)
+				.then(function(response) {
+					$scope.respaldoRespuestas = response;
+				});
         }
+
+		function getValor(pregunta_id, tipo, valor){
+			var check = false;
+			if ($scope.respaldoRespuestas !== null){
+				for(var i=0; i<$scope.respaldoRespuestas.length; i++){
+					if ($scope.respaldoRespuestas[i].pregunta_id === pregunta_id && $scope.respaldoRespuestas[i].tipo_evolucion === tipo && $scope.respaldoRespuestas[i]. 	valor_respuesta === valor){
+						check = true;
+
+						var pregunta = {
+							pregunta_id : $scope.respaldoRespuestas[i].pregunta_id,
+							enunciado : $scope.respaldoRespuestas[i].pregunta,
+							indicador_id : $scope.respaldoRespuestas[i].indicador_id
+						};
+						guardarRespuestaRespaldo(pregunta, $scope.respaldoRespuestas[i].respuesta, $scope.respaldoRespuestas[i].comentarios, $scope.respaldoRespuestas[i].tipo_evolucion);
+						i = $scope.respaldoRespuestas.length;
+					}
+				}
+			}
+			return check;
+		}
+
+
 
 		/**
 		 * Guarda las respuestas
 		 */
         function guardarRespuesta(pregunta, respuesta, comentario, tipo) {
-
 			if (tipo === 1) {// Tipo 1: Evolucion Real
 				$scope.preguntasRespondidasAux = $scope.preguntasRespondidas;
 			}
@@ -142,6 +169,42 @@
 			}
         }
 
+		function guardarRespuestaRespaldo(pregunta, respuesta, comentario, tipo) {
+			if (tipo === 1) {// Tipo 1: Evolucion Real
+				$scope.preguntasRespondidasAux = $scope.preguntasRespondidas;
+			}
+			else {// Tipo 2: Evolucion Esperada
+				$scope.preguntasRespondidasAux = $scope.preguntasRespondidasEE;
+			}
+
+			if (comentario == null)
+				comentario = "";
+			var data = {
+				pregunta_id: pregunta.pregunta_id,
+				enunciado: pregunta.enunciado,
+				alternativa: respuesta.alternativa,
+				comentario: comentario,
+				indicador_id: pregunta.indicador_id
+			};
+
+			if ($scope.preguntasRespondidasAux === null)
+				$scope.preguntasRespondidasAux = [];
+
+			if (existePregunta($scope.preguntasRespondidasAux, pregunta.pregunta_id)) {
+				modificarPregunta($scope.preguntasRespondidasAux, pregunta.pregunta_id, respuesta.alternativa, comentario);
+			}
+			else{
+				$scope.preguntasRespondidasAux.push(data);
+			}
+
+
+			if (tipo===1){// Tipo 1: Evolucion Real
+				$scope.preguntasRespondidas = $scope.preguntasRespondidasAux;
+			}
+			else{// Tipo 2: Evolucion Esperada
+				$scope.preguntasRespondidasEE = $scope.preguntasRespondidasAux;
+			}
+		}
 		function guardarRespaldo(pregunta, respuesta, comentario, tipo) {
 			var data = {
 				pregunta_id: pregunta.pregunta_id,
@@ -156,10 +219,10 @@
 			RespaldoAplicacionesRespuestasFactory.store(data)
 				.then(function(response) {
 					if(response === 'true') {
-						console.log('guardo la respuesta');
+						//console.log('guardo la respuesta');
 					}
 				}, function(err) {
-					console.log('error al guardar la respuesta:', err);
+					//console.log('error al guardar la respuesta:', err);
 				});
 		}
 
@@ -169,15 +232,16 @@
 				respuesta: respuesta,
 				valor_respuesta: getValorRespuesta(respuesta),
 				comentario: comentario,
-				tipo_evolucion: tipo
+				tipo_evolucion: tipo,
+				aplicacion_id: $scope.idAplicacion
 			};
 			RespaldoAplicacionesRespuestasFactory.update(data)
 				.then(function(response) {
 					if(response === 'true') {
-						console.log('modifico la respuesta');
+						//console.log('modifico la respuesta');
 					}
 				}, function(err) {
-					console.log('error al modificar la respuesta:', err);
+					//console.log('error al modificar la respuesta:', err);
 				});
 		}
 
@@ -253,16 +317,19 @@
 						});
 						$scope.preguntasRespondidasEE.forEach(function(pregunta) {
 							pregunta.comentario = $('textarea#ee-' + pregunta.pregunta_id).val();
-							//enviarEncuestaEE(pregunta.enunciado, pregunta.alternativa, $scope.idAplicacion, pregunta.comentario, pregunta.indicador_id);
+							enviarEncuestaEE(pregunta.enunciado, pregunta.alternativa, $scope.idAplicacion, pregunta.comentario, pregunta.indicador_id);
 						});
 						//AplicacionesFactory.update($scope.idAplicacion, $scope.encuestador.nombre + " " + $scope.encuestador.apellido1 + " " + $scope.encuestador.apellido2);
 						ocultarMensaje();
+						RespaldoAplicacionesRespuestasFactory.removeByAplicacionId($scope.idAplicacion)
+							.then(function(response) {
+								//console.log('se han eliminado los respaldos');
+							});
 					}, function() {});
 			}
         }
 
 		function cancelarEncuesta(ev){
-			//ui-sref="encuestador.encuestas"
 			var confirm = $mdDialog.confirm('?')
 				.title('¿Esta seguro que desea salir de la encuesta?')
 				.textContent('Ninguna respuesta de la encuesta se guardará')
