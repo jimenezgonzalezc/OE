@@ -1,0 +1,108 @@
+<div class="text-center margin">
+    <label class="title-1 kaushan">Gestión de cantones</label>
+</div>
+<div class="col-md-12 perfil-box">
+	<div class="portlet">
+        <div class="portlet-title">
+            <div class="caption caption-red">
+                <i class="fa fa-map-o"></i>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-target="#cantones" data-toggle="tab">Cantones</a>
+                </li>
+                <li>
+                    <a data-target="#nuevoCanton" data-toggle="tab">Nuevo</a>
+                </li>
+            </ul>
+        </div>
+        <div class="portlet-body">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="cantones">
+                    <div>
+                        <label class="title-2">Cantones</label>
+                    </div>
+                    <!--div style="width: 100%;" ng-repeat=""-->
+                        <div class="col-md-12 col-sm-12 margin" ng-show="cantones.length > 0">
+                            <div class="col-md-4 col-sm-4 card-box" ng-repeat="canton in cantones">
+                                <div class="inner">
+                                    <div class="title-card">
+                                        <label class="title-3">{{canton.nombre}}</label>
+                                    </div>
+                                    <div class="body-card">
+                                        <span class="glyphicon glyphicon-pencil" ng-click="editandoCanton(canton)" data-toggle="modal" data-target="#editarcanton" >
+                                        <md-tooltip md-direction="top">Editar</md-tooltip></span>
+                                        &nbsp;&nbsp;
+                                        <span class="glyphicon glyphicon-trash" ng-click="eliminarCanton($event,canton.id);">
+                                        <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <!--/div-->
+                    <div class="info-box margin" ng-show="cantones.length == 0">No hay cantones registrados.</div>
+                    <div class="text-center margin" ng-hide="cantones">
+                        <label>Cargando cantones...</label>
+                    </div>             
+                </div>
+
+                <div class="tab-pane fade" id="nuevoCanton">
+                    <div>
+                        <label class="title-2">Agregar Canton</label>
+                    </div>
+                    <div class="container">
+                        <form class="margin" autocomplete="off">
+                            <div class="col-md-offset-3 col-md-6">
+                                <div ng-show="registro" class="margin" ng-class="styleRegistro">{{msgRegistro}}</div>
+                                <div>
+                                    <p>
+                                        <label for="nombre">Nombre</label>
+                                        <input ng-model="nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus ng-blur="">
+                                    </p>
+                                </div>
+                                <br>
+                                <div>
+                                    <center>
+                                        <button class="btn btn-success" ng-click="guardarCanton(nombre);"><span class="glyphicon glyphicon-floppy-disk" ></span>&nbsp;&nbsp;Guardar</button>
+                                    </center>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="editarcanton" class="modal fade" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <div class="modal-header montserrat">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancelEdit()">&times;</button>
+                                <label class="title">Editar cantón</label>
+                            </div>
+                            <div class="modal-body">
+                                <form class="margin" autocomplete="off">	
+			                        <div>
+                                        <div ng-show="registro" class="margin" ng-class="styleRegistro">{{msgRegistro}}</div>
+			                            <div>
+			                                <p>
+			                                    <label for="nombre">Nombre</label>
+			                                    <input ng-model="canton.nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus ng-blur="">
+		                                    </p>
+			                            </div>
+		                           </div>   
+		                       </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-cancel margin-top" data-dismiss="modal" ng-click="cancelEdit();"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                                <button class="btn btn-success margin-top" ng-disabled="emptyData" data-ng-click="editarCanton(canton); $event.stopPropagation()"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+    Ha ocurrido un error inesperado al cargar los territorios, inténtelo de nuevo
+</div>

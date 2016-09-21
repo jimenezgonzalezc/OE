@@ -313,13 +313,13 @@
 						$scope.botonEnviar = false;
 						$scope.preguntasRespondidas.forEach(function(pregunta) {
 							pregunta.comentario = $('textarea#er-' + pregunta.pregunta_id).val();
-							//enviarEncuesta(pregunta.enunciado, pregunta.alternativa, $scope.idAplicacion, pregunta.comentario, pregunta.indicador_id);
+							enviarEncuesta(pregunta.enunciado, pregunta.alternativa, $scope.idAplicacion, pregunta.comentario, pregunta.indicador_id);
 						});
 						$scope.preguntasRespondidasEE.forEach(function(pregunta) {
 							pregunta.comentario = $('textarea#ee-' + pregunta.pregunta_id).val();
 							enviarEncuestaEE(pregunta.enunciado, pregunta.alternativa, $scope.idAplicacion, pregunta.comentario, pregunta.indicador_id);
 						});
-						//AplicacionesFactory.update($scope.idAplicacion, $scope.encuestador.nombre + " " + $scope.encuestador.apellido1 + " " + $scope.encuestador.apellido2);
+						AplicacionesFactory.update($scope.idAplicacion, $scope.encuestador.nombre + " " + $scope.encuestador.apellido1 + " " + $scope.encuestador.apellido2);
 						ocultarMensaje();
 						RespaldoAplicacionesRespuestasFactory.removeByAplicacionId($scope.idAplicacion)
 							.then(function(response) {

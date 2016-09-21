@@ -72,6 +72,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/aplicaciones/update', 'Aplicaciones@update');
     Route::post('/aplicaciones/getAplicacionesByPersona', 'Aplicaciones@getAplicacionesByPersona');
     Route::get('/aplicaciones/personasEncuestas', 'Aplicaciones@getAplicacionesPersonasEncuestas');
+    Route::get('/aplicaciones/byPeriodo/{anio}', 'Aplicaciones@getAplicacionesByPeriodo');
 
     // AplicacionesRespuestas.
     Route::get('/aplicaciones-respuestas/todas', 'AplicacionesRespuestas@getAll');
@@ -113,6 +114,12 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('territorios/registro','Territorios@store');
     Route::delete('territorios/destroy/{id}', 'Territorios@destroy');
     Route::post('territorios/editar', 'Territorios@update');
+
+    // Cantones.
+    Route::get('cantones/todos','Cantones@getAll');
+    Route::post('cantones/registro','Cantones@store');
+    Route::delete('cantones/eliminar/{id}', 'Cantones@destroy');
+    Route::post('cantones/editar', 'Cantones@update');
 
     //TerritoriosSectores
     Route::post('territoriosSectores/registro','TerritoriosSectores@store');

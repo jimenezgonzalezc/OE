@@ -155,4 +155,12 @@ class Aplicaciones extends Controller
         else
             return 3;
     }
+
+    /**
+     * Se utiliza para validar si un periodo se puede modificar o eliminar, tomando en cuenta si tiene datos(aplicaciones) asociadas
+     */
+    function getAplicacionesByPeriodo($anio){
+        return Aplicacione::join('periodos', 'periodos.id', '=', 'aplicaciones.periodo_id')
+            ->where('periodos.anio', '=', $anio)->get()->count();
+    }
 }

@@ -264,6 +264,11 @@
                 templateUrl: './app/Analisis/analisisCompleto.html',
                 controller: 'AnalisisCompletoController'
             })
+            .state('admin.cantones',{
+                url: '/cantones',
+                templateUrl: './app/Cantones/cantones.html',
+                controller: 'CantonesController'
+            })
             .state('empresario.analisis',{
                 url: '/analisis',
                 templateUrl: './app/Analisis/analisis.html',

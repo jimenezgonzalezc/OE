@@ -31,6 +31,9 @@
                                         <label class="title-3">{{territorio.nombre}}</label>
                                     </div>
                                     <div class="body-card">
+                                        Cantón: {{territorio.nombreCanton}}
+                                    </div>
+                                    <div class="footer-card-box">
                                         <span class="glyphicon glyphicon-pencil" ng-click="editandoTerritorio(territorio)" data-toggle="modal" data-target="#editarterritorio" >
                                         <md-tooltip md-direction="top">Editar</md-tooltip></span>
                                         &nbsp;&nbsp;
@@ -74,7 +77,13 @@
                                                 <label for="Region">Región</label>
                                                 <select class="form-control margin text-center" ng-options = "region as region.nombre for region in regiones track by region.id" ng-model="selectedRegion" name="Region"></select>     
                                             </p>                                    
-                                        </div>                                          
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <label for="Canton">Cantón</label>
+                                                <select class="form-control margin text-center" ng-options = "canton as canton.nombre for canton in cantones track by canton.id" ng-model="selectedCanton" name="Canton"></select>
+                                            </p>
+                                        </div>
 		                           </div>   
 		                       </form>
                             </div>
@@ -93,30 +102,36 @@
                     <form class="margin" autocomplete="off">	
                         <div class="col-md-offset-3 col-md-6">        
                        		<div ng-show="registro" class="margin" ng-class="styleRegistro">{{msgRegistro}}</div>
-	                            <div>
-	                                <p>
-	                                    <label for="nombre">Nombre</label>
-	                                    <input ng-model="territorio.nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus ng-blur="">
-                                    </p>
-	                            </div>
-	                            <div>
-	                                <p>
-	                                    <label for="descripcion">Descripción</label>
-	                                    <textarea ng-model="territorio.descripcion" class="form-control" rows="5" name="descripcion" id="descripcion" required autofocus ng-blur=""></textarea> 	
-	                                </p>	                                
-	                            </div>  
-                                <div>
-                                    <p>
-                                        <label for="Region">Región</label>
-                                        <select class="form-control margin text-center" ng-options = "region as region.nombre for region in regiones track by region.id" ng-model="selectedRegion" name="Region"></select>     
-                                    </p>                                    
-                                </div>                          		                            
-                                <br>
-                                <div>
-                                    <center>
-	                                   <button class="btn btn-success" ng-click="guardarTerritorio();"><span class="glyphicon glyphicon-floppy-disk" ></span>&nbsp;&nbsp;Guardar</button>
-                                   </center>
-                                </div>
+                            <div>
+                                <p>
+                                    <label for="nombre">Nombre</label>
+                                    <input ng-model="territorio.nombre" class="form-control" type="text" name="nombre" id="nombre" required autofocus ng-blur="">
+                                </p>
+                            </div>
+                            <div>
+                                <p>
+                                    <label for="descripcion">Descripción</label>
+                                    <textarea ng-model="territorio.descripcion" class="form-control" rows="5" name="descripcion" id="descripcion" required autofocus ng-blur=""></textarea>
+                                </p>
+                            </div>
+                            <div>
+                                <p>
+                                    <label for="Region">Región</label>
+                                    <select class="form-control margin text-center" ng-options = "region as region.nombre for region in regiones track by region.id" ng-model="selectedRegion" name="Region"></select>
+                                </p>
+                            </div>
+                            <div>
+                                <p>
+                                    <label for="Canton">Cantón</label>
+                                    <select class="form-control margin text-center" ng-options = "canton as canton.nombre for canton in cantones track by canton.id" ng-model="selectedCanton" name="Canton"></select>
+                                </p>
+                            </div>
+                            <br>
+                            <div>
+                                <center>
+                                   <button class="btn btn-success" ng-click="guardarTerritorio();"><span class="glyphicon glyphicon-floppy-disk" ></span>&nbsp;&nbsp;Guardar</button>
+                               </center>
+                            </div>
                            </div>                                 
                        </form>
                     </div>

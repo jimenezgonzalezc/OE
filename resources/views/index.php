@@ -38,6 +38,8 @@
 	<script type="text/javascript" src="<?= asset('app/js/pagination.factory.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Login/login.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Admin/admin.controller.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('app/Cantones/cantones.controller.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('app/Cantones/cantones.factory.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Encuestador/encuestador.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Empresario/empresario.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/TerritoriosSectores/territoriosSectores.factory.js') ?>"></script>

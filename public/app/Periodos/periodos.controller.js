@@ -18,7 +18,7 @@
     * @param {Object} Servicio utilizado para mostrar ventanas de confirmación.
     * @param {Object} Servicio que brinda funciones de los periodos que ayudan a la funcionalidad del controlador.
     */
-	function PeriodosController($scope, $timeout, $mdDialog, PeriodosFactory) {
+	function PeriodosController($scope, $timeout, $mdDialog, PeriodosFactory, AplicacionesFactory) {
 		$scope.store = store;
 		$scope.editandoPeriodo = editandoPeriodo;
 		$scope.remove = remove;
@@ -28,6 +28,7 @@
 		$scope.getMes = getMes;
 		$scope.validarPeriodicidad = validarPeriodicidad;
 		$scope.p = [{value: "4", label: "Cuatrimestre"}, {value: "6", label: "Semestre"}, {value: "12", label: "Anual"}];
+		$scope.periodoMsg = '';
 		/**
 		 * Almacena un nuevo periodo en la base de datos.
 		 * @return {String} Resultado de almacenar el periodo.
@@ -94,18 +95,36 @@
 		 * @return {String} Resultado de eliminar el periodo.
 		 */
 		function remove(ev, anio) {
-			var confirm = $mdDialog.confirm('?')
-                .title('¿Esta seguro que desea eliminar este periodo?')
-                .textContent('Se eliminaran todos los periodos del año: ' + anio)
-                .ariaLabel('Lucky day')
-                .targetEvent(ev)
-                .ok('Sí')
-                .cancel('No');
+			AplicacionesFactory.getAplicacionesByPeriodo(anio)
+				.then(function(response) {
+					if (response === "0") {
+						var confirm = $mdDialog.confirm('?')
+							.title('¿Esta seguro que desea eliminar este periodo?')
+							.textContent('Se eliminaran todos los periodos del año: ' + anio)
+							.ariaLabel('Lucky day')
+							.targetEvent(ev)
+							.ok('Sí')
+							.cancel('No');
 
-            $mdDialog.show(confirm)
-                .then(function() {
-					deleteByYear(anio);
-                }, function() {});
+						$mdDialog.show(confirm)
+							.then(function() {
+								deleteByYear(anio);
+							}, function() {});
+					}
+					else{
+						var confirm = $mdDialog.confirm('?')
+							.title('No se puede eliminar este periodo de este año.')
+							.textContent('El año: ' + anio + ' tiene asociado aplicaciones de encuestas.')
+							.ariaLabel('Lucky day')
+							.targetEvent(ev)
+							.ok('Continuar')
+							.cancel('Cancelar');
+
+						$mdDialog.show(confirm)
+							.then(function() {
+							}, function() {});
+					}
+				});
 		}
 
 		function deleteByYear(anio) {
@@ -121,13 +140,26 @@
 		 */
 		function update() {
 			$scope.periodoMsg = '';
-			deleteByYear($scope.selectedYear.year);
-			definirPeriodicidad();
-			$scope.periodoMsg = 'El periodo se ha editado correctamente.';
-			$scope.peridoClass = 'alert success-box';
-			$timeout(function() {
-				$scope.periodoMsg = '';
-			}, 5000);
+			AplicacionesFactory.getAplicacionesByPeriodo($scope.selectedYear.year)
+				.then(function(response) {
+					if (response === "0") {
+						deleteByYear($scope.selectedYear.year);
+						definirPeriodicidad();
+						$scope.periodoMsg = 'El periodo se ha editado correctamente.';
+						$scope.peridoClass = 'alert success-box';
+						$timeout(function() {
+							$scope.periodoMsg = '';
+						}, 5000);
+					}
+					else{
+						$scope.periodoMsg = 'El año: ' + $scope.selectedYear.year + ' tiene asociado aplicaciones de encuestas. No se puede modificar la periodicidad de este año.';
+						$scope.peridoClass = 'alert success-box';
+						$timeout(function() {
+							$scope.periodoMsg = '';
+						}, 7000);
+
+					}
+				});
 		}
 
 		/**
@@ -136,6 +168,7 @@
 		function setData() {
 			$scope.periodicidad = $scope.p[0];
 			$scope.selectedYear = $scope.years[0];
+			$scope.periodoMsg = '';
 		}
 
 		/**

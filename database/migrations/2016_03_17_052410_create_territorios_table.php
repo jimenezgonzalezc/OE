@@ -17,11 +17,13 @@ class CreateTerritoriosTable extends Migration
             $table->string('nombre', 50);
             $table->string('descripcion', 50);
             $table->integer('region_id')->unsigned();
+            $table->integer('canton_id')->unsigned();
             $table->timestamps();
 
         });
         Schema::table('territorios', function (Blueprint $table) {
             $table->foreign('region_id')->references('id')->on('regiones')->onDelete('cascade');
+            $table->foreign('canton_id')->references('id')->on('cantones')->onDelete('cascade');
         });
     }
 

@@ -9,7 +9,9 @@ use App\Territorio;
 class Territorios extends Controller
 {
     public function getAll() {
-        return Territorio::all();
+        return Territorio::join('cantones', 'cantones.id', '=', 'territorios.canton_id')
+            ->select('territorios.id', 'territorios.nombre', 'cantones.nombre as nombreCanton')
+            ->get();
     }
 
     /**
@@ -23,6 +25,7 @@ class Territorios extends Controller
         $territorio->nombre = $request->input('nombre');
         $territorio->descripcion = $request->input('descripcion');
         $territorio->region_id = $request->input('region_id');
+        $territorio->canton_id = $request->input('canton_id');
 
         $territorio->save();
 
@@ -53,7 +56,8 @@ class Territorios extends Controller
         $territorio->nombre = $request->input('nombre');  
         $territorio->descripcion = $request->input('descripcion');                
         $territorio->region_id = $request->input('region_id');
-        
+        $territorio->canton_id = $request->input('canton_id');
+
         $territorio->save();
 
         return 'true';

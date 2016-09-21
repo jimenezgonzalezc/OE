@@ -25,7 +25,8 @@
 			remove: remove,
 			update: update,
 			getAplicacionesByPersona : getAplicacionesByPersona,
-			getAplicacionesPersonasEncuestas: getAplicacionesPersonasEncuestas
+			getAplicacionesPersonasEncuestas: getAplicacionesPersonasEncuestas,
+			getAplicacionesByPeriodo : getAplicacionesByPeriodo
 		};
 
 		return factory;
@@ -187,6 +188,27 @@
 			.error(function(err) {
 				defered.reject(err);
 			});
+
+			return defered.promise;
+		}
+
+		/**
+		 * Se utiliza para validar si un periodo se puede modificar o eliminar,
+		 * tomando en cuenta si tiene datos(aplicaciones) asociadas
+		 */
+		function getAplicacionesByPeriodo(anio) {
+			var defered = $q.defer();
+
+			$http({
+				method: 'GET',
+				url: 'api/aplicaciones/byPeriodo/' + anio
+			})
+				.success(function(response) {
+					defered.resolve(response);
+				})
+				.error(function(err) {
+					defered.reject(err);
+				});
 
 			return defered.promise;
 		}
