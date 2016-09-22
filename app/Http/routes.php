@@ -148,6 +148,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/sectoresIndicadores/getForIndicador/{id}','SectoresIndicadores@getForIndicador');
 
     // Analisis
-    Route::get('/analisis/get/{idPeriodo}/{idTerritorio}','Analisis@get');
+    //Route::get('/analisis/get/{idPeriodo}/{idTerritorio}','Analisis@get');
     Route::post('/analisis/getAnalisis','Analisis@getICE');
 });

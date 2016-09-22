@@ -7,23 +7,11 @@ use App\Http\Requests;
 use App\Aplicacione;
 use App\Sectore;
 use App\AplicacionesRespuesta;
+use App\AplicacionesRespuestaEE;
 use Illuminate\Support\Facades\DB;
 
 class Analisis extends Controller
 {
-    /*function get($idPeriodo, $idTerritorio) {
-    	return Aplicacione::join('aplicaciones_respuestas', 'aplicaciones.id', '=', 'aplicaciones_respuestas.aplicacion_id')
-    			->join('preguntas', 'preguntas.enunciado', '=', 'aplicaciones_respuestas.pregunta')
-    			->join('indicadores', 'indicadores.id', '=', 'preguntas.indicador_id')
-    			->join('personas_sectores', 'personas_sectores.persona_id', '=', 'aplicaciones.persona_id')
-    			->join('sectores', 'sectores.id', '=', 'personas_sectores.sector_id')
-                ->join('personas', 'personas.id', '=', 'aplicaciones.persona_id')
-    			->select('aplicaciones.id', 'aplicaciones_respuestas.respuesta', 'indicadores.nombre', 'sectores.nombre as sector')
-    			->where('aplicaciones.periodo_id', '=', $idPeriodo)
-                ->where('personas.territorio_id', '=', $idTerritorio)
-    			->get();
-    }*/
-
 	public  function getAnalisis(){
 		$analisis = [];
 		$analisis[] = array('n' => -1, 'analisis1' => array(), 'analisis2' => array(), 'analisis3' => array(), 'analisis4' => array(), 'totales' => array());
@@ -109,23 +97,29 @@ class Analisis extends Controller
 	}
 
 	public function getICE(Request $request){
-		$analisis = self::getNs($request->input('filtroSectores'), $request->input('periodo_id'));
-		$analisis = self::getNir($analisis, $request->input('filtroIndicadores'), $request->input('periodo_id'));
-		$analisis = self::getNsir($analisis, $request->input('filtroIndicadores'), $request->input('filtroSectores'), $request->input('periodo_id'));
+		$analisis = self::getNs($request->input('filtroSectores'), $request->input('periodo_id'), $request->input('evolucion'));
+		$analisis = self::getNir($analisis, $request->input('filtroIndicadores'), $request->input('periodo_id'), $request->input('evolucion'));
+		$analisis = self::getNsir($analisis, $request->input('filtroIndicadores'), $request->input('filtroSectores'), $request->input('periodo_id'), $request->input('evolucion'));
 		$analisis = self::getER($analisis, $request->input('filtroIndicadores'), $request->input('filtroSectores'));
 		$analisis = self::calcularTotalesSector($analisis, $request->input('filtroSectores'));
 		return $analisis;
 	}
 
-	public function getNs($sectores, $periodo){
+	public function getNs($sectores, $periodo, $evolucion){
 		$analisis = self::getAnalisis();
 		$sectores_id = self::getSectoresID($sectores);
 		$ns = array();
+
+		if ($evolucion == 1)
+			$tabla = 'aplicaciones_respuestas';
+		else
+			$tabla = 'aplicaciones_respuestas_ee';
+
 		for( $i= 0 ; $i < count($analisis) ; $i++ ){
 			$ns = Sectore::select('sectores.id', 'sectores.nombre', DB::raw('count(distinct aplicaciones.id) as ns, 0 as ps'))
 				->join('encuestas', 'encuestas.sector_id', '=', 'sectores.id')
 				->join('aplicaciones', 'aplicaciones.encuesta_id', '=', 'encuestas.id')
-				->join('aplicaciones_respuestas', 'aplicaciones_respuestas.aplicacion_id', '=', 'aplicaciones.id')
+				->join($tabla, $tabla.'.aplicacion_id', '=', 'aplicaciones.id')
 				->whereIn('sectores.id', $sectores_id)
 				->where('aplicaciones.periodo_id', '=', $periodo)
 				->groupby('encuestas.sector_id')
@@ -157,17 +151,22 @@ class Analisis extends Controller
 		return $nsAux;
 	}
 
-	public function getNir($analisis, $indicadores, $periodo){
+	public function getNir($analisis, $indicadores, $periodo, $evolucion){
 		$analisis2 = self::createJSON1($indicadores);
+
+		if ($evolucion == 1)
+			$tabla = 'aplicaciones_respuestas';
+		else
+			$tabla = 'aplicaciones_respuestas_ee';
 
 		for( $i= 0 ; $i < count($indicadores) ; $i++ )//indicador
 		{
 			for( $r= 1 ; $r < 6 ; $r++ )//respuesta
 			{
-				$nir = AplicacionesRespuesta::select('aplicaciones_respuestas.id')
-					->join('aplicaciones', 'aplicaciones_respuestas.aplicacion_id', '=', 'aplicaciones.id')
-					->where('aplicaciones_respuestas.valor_respuesta', '=', $r)
-					->where('aplicaciones_respuestas.indicador_id', '=', $indicadores[$i]['id'])
+				$nir = AplicacionesRespuesta::select($tabla.'.id')
+					->join('aplicaciones', $tabla.'.aplicacion_id', '=', 'aplicaciones.id')
+					->where($tabla.'.valor_respuesta', '=', $r)
+					->where($tabla.'.indicador_id', '=', $indicadores[$i]['id'])
 					->where('aplicaciones.periodo_id', '=', $periodo)
 					->get()->count();
 
@@ -206,8 +205,13 @@ class Analisis extends Controller
 		return $analisis;
 	}
 
-	public function getNsir($analisis, $indicadores, $sectores, $periodo){
+	public function getNsir($analisis, $indicadores, $sectores, $periodo, $evolucion){
 		$analisis3 = self::createJSON2($indicadores, $sectores);
+
+		if ($evolucion == 1)
+			$tabla = 'aplicaciones_respuestas';
+		else
+			$tabla = 'aplicaciones_respuestas_ee';
 
 		for( $s= 0 ; $s < count($analisis3) ; $s++ )//sector
 		{
@@ -215,13 +219,13 @@ class Analisis extends Controller
 			{
 				for( $r= 1 ; $r < 6 ; $r++ )//respuesta
 				{
-					$nsir = AplicacionesRespuesta::select('aplicaciones_respuestas.id')
-						->join('aplicaciones', 'aplicaciones.id', '=', 'aplicaciones_respuestas.aplicacion_id')
+					$nsir = AplicacionesRespuesta::select($tabla.'.id')
+						->join('aplicaciones', 'aplicaciones.id', '=', $tabla.'.aplicacion_id')
 						->join('encuestas', 'encuestas.id', '=', 'aplicaciones.encuesta_id')
 						->join('sectores', 'sectores.id', '=', 'encuestas.sector_id')
-						->where('aplicaciones_respuestas.indicador_id', '=', $analisis3[$s]['nsir'][$i]['indicador_id'])
+						->where($tabla.'.indicador_id', '=', $analisis3[$s]['nsir'][$i]['indicador_id'])
 						->where('sectores.id', '=', $analisis3[$s]['sector_id'])
-						->where('aplicaciones_respuestas.valor_respuesta', '=', $r)
+						->where($tabla.'.valor_respuesta', '=', $r)
 						->where('aplicaciones.periodo_id', '=', $periodo)
 						->get()->count();
 					//$nsir = self::getNsirAux($analizadoresSir[$s]['sector_id'], $analizadoresSir[$s]['nsir'][$i]['indicador_id'], $r);
