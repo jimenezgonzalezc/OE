@@ -15,9 +15,11 @@
 	* @param {Object} Servicio que permite la unión entre el HTML y el controlador.
 	* @param {Object} Servicio que brinda funciones del analisis al controlador.
 	*/
-	 function AnalisisCompletoController ($scope, AnalisisFactory, IndicadoresFactory, SectoresFactory, PeriodosFactory, TerritoriosFactory, $timeout) {
+	 function AnalisisCompletoController ($scope, AnalisisFactory, IndicadoresFactory, SectoresFactory, PeriodosFactory, TerritoriosFactory, $timeout, DatosGraficosFactory, $mdDialog) {
 		 $scope.getAnalisis = getAnalisis;
 		 $scope.generarGrafico = generarGrafico;
+		 $scope.guardarDatosGraficos = guardarDatosGraficos;
+
 		 $scope.analisis1 = null;
 		 $scope.analisis2 = null;
 		 $scope.analisis3 = null;
@@ -101,6 +103,45 @@
 			 + ', de los sectores: ' + sectores +  ' de los indicadores: '+ indicadores.slice(0, -2) + '.';
 		 }
 
+		 function guardarDatosGraficos(ev) {
+
+			 var confirm = $mdDialog.confirm('?')
+				 .title('Guardar datos del análisis')
+				 .textContent('¿Esta seguro que desea guardar los datos del análisis?')
+				 .ariaLabel('Lucky day')
+				 .targetEvent(ev)
+				 .ok('Sí')
+				 .cancel('No');
+
+			 $mdDialog.show(confirm)
+				 .then(function() {
+					 $scope.an = false;
+					 var periodo_id = $scope.selectedPeriodo.id;
+					 $scope.total.total1.resultados.forEach(function (resultado) {
+						 var datosGrafico = {periodo_id: periodo_id, nombre_sector: resultado.nombre, sector_id: resultado.sector_id, valor: resultado.valor,
+							 total_columna_indicador: $scope.total.total1.total_columna_indicador, tipo_evolucion: $scope.total.total1.tipo, descripcion: $scope.msgInfoAnalisis};
+						 DatosGraficosFactory.store(datosGrafico)
+							 .then(function (response) {})
+					 });
+
+					 $scope.total.total2.resultados.forEach(function (resultado) {
+						 var datosGrafico = {periodo_id: periodo_id, nombre_sector: resultado.nombre, sector_id: resultado.sector_id, valor: resultado.valor,
+							 total_columna_indicador: $scope.total.total2.total_columna_indicador, tipo_evolucion: $scope.total.total2.tipo, descripcion: $scope.msgInfoAnalisis};
+						 DatosGraficosFactory.store(datosGrafico)
+							 .then(function (response) {})
+					 });
+					 $scope.showMsgDatosGrafico = true;
+					 $scope.msgDatosGrafico = 'Los datos del análisis se guardaron'
+					 ocultarMensaje(6000);
+				 }, function() {});
+		 }
+
+		 function ocultarMensaje(milisegundos) {
+			 $timeout(function() {
+				 $scope.showMsgDatosGrafico = false;
+			 }, milisegundos);
+		 }
+
 		 function getAnalisis() {
 			 var filtroSectores = [];
 			 $scope.sectores.forEach(function (sector) {
@@ -134,7 +175,7 @@
 				 $scope.tiempoMsg = 5000;
 			 }
 			 else{
-				 var an = false;
+				 $scope.an = false;
 				 AnalisisFactory.getAnalisis(filtro)
 					 .then(function (response) {
 						 $scope.analisis = response;
@@ -144,10 +185,10 @@
 							 $scope.msgAnalisis = "No hay resultados que mostrar";
 							 $scope.styleMsgAnalisis = "info-box";
 							 $scope.tiempoMsg = 6000;
-							 an = false;
+							 $scope.an = false;
 						 }
 						 else{
-							 an = true;
+							 $scope.an = true;
 							 createInformacion(filtro);
 							 $('#configuracionAnalisis').modal('hide');
 							 $scope.analisis1 = $scope.analisis[0].analisis1;
@@ -158,7 +199,7 @@
 								 $scope.headerSector = $scope.analisis4[0].resultados;
 							 $scope.totales = $scope.analisis[0].totales;
 						 }
-						 if (an){
+						 if ($scope.an){
 							 filtro.evolucion=1;// evolucion esperada
 
 							 AnalisisFactory.getAnalisis(filtro)
@@ -172,13 +213,16 @@
 									 if ($scope.analisisEE4.length > 0)
 										 $scope.headerSectorEE = $scope.analisisEE4[0].resultados;
 									 $scope.totalesEE = $scope.analisisEE[0].totales;
+									 $scope.totales.tipo = 1;
 									 $scope.totales.evolucion = 'Evolución real';
+									 $scope.totalesEE.tipo = 2;
 									 $scope.totalesEE.evolucion = 'Evolución esperada';
 
-									 var totales = {total1: $scope.totales, total2: $scope.totalesEE};
-									 generarGrafico(totales);
+									 $scope.total = {total1: $scope.totales, total2: $scope.totalesEE};
+
+									 generarGrafico($scope.total);
 								 })
-								 .catch(function(err) { console.log('error');});
+								 .catch(function(err) {});
 						 }
 					 })
 					 .catch(function(err) { });

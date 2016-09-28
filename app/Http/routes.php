@@ -150,4 +150,12 @@ Route::group(['prefix' => 'api'], function () {
     // Analisis
     //Route::get('/analisis/get/{idPeriodo}/{idTerritorio}','Analisis@get');
     Route::post('/analisis/getAnalisis','Analisis@getICE');
+
+    // DatosGraficos.
+    Route::get('datosGraficos/parametros','DatosGraficos@getParametros');
+    Route::get('datosGraficos/todosByPeriodo','DatosGraficos@getDatosGraficoPeriodo');
+    Route::get('datosGraficos/getDatosGrafico/{periodo_id}/{tipo_evolucion}', 'DatosGraficos@getDatosGrafico');
+    Route::post('datosGraficos/registro','DatosGraficos@store');
+    Route::delete('datosGraficos/eliminar/{id}', 'DatosGraficos@destroy');
+    Route::post('datosGraficos/editar', 'DatosGraficos@update');
 });

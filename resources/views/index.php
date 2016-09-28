@@ -74,6 +74,8 @@
 	<script type="text/javascript" src="<?= asset('app/Analisis/analisis.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Analisis/analisisCompleto.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Analisis/analisis.factory.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('app/Graficos/datosGraficos.controller.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('app/Graficos/datosGraficos.factory.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Perfil/perfil.controller.js') ?>"></script>
 </body>
 </html>

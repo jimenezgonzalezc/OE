@@ -269,6 +269,11 @@
                 templateUrl: './app/Cantones/cantones.html',
                 controller: 'CantonesController'
             })
+            .state('admin.graficos',{
+                url: '/graficos',
+                templateUrl: './app/Graficos/datosGraficos.html',
+                controller: 'DatosGraficosController'
+            })
             .state('empresario.analisis',{
                 url: '/analisis',
                 templateUrl: './app/Analisis/analisis.html',

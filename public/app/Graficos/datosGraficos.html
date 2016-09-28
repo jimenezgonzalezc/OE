@@ -1,0 +1,76 @@
+<div class="text-center margin">
+    <label class="title-1 kaushan">Gráficos</label>
+</div>
+<div class="col-md-12 perfil-box">
+	<div class="portlet">
+        <div class="portlet-title">
+            <div class="caption caption-red">
+                <i class="fa fa-map-o"></i>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-target="#gestion" data-toggle="tab">Gestión</a>
+                </li>
+                <li>
+                    <a data-target="#grafico" data-toggle="tab">Gráfico</a>
+                </li>
+            </ul>
+        </div>
+        <div class="portlet-body">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="gestion">
+                    <div>
+                        <label class="title-2">Gestión</label>
+                    </div>
+                        <div class="col-md-12 col-sm-12 margin" ng-show="datosGraficos.length > 0">
+                            <div class="col-md-4 col-sm-4 card-box" ng-repeat="datoGrafico in datosGraficos">
+                                <div class="inner">
+                                    <div class="title-card">
+                                        <label class="title-3">{{datoGrafico.anio}}</label>
+                                    </div>
+                                    <div class="body-card">
+                                        <p>{{datoGrafico.descripcion}}</p>
+                                    </div>
+                                    <div class="footer-card-box">
+                                        <span class="glyphicon glyphicon-trash" ng-click="eliminarDatosGraficos($event,datoGrafico.id);">
+                                        <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="info-box margin" ng-show="datosGraficos.length == 0">No hay registros.</div>
+                    <div class="text-center margin" ng-hide="datosGraficos">
+                        <label>Cargando registros...</label>
+                    </div>             
+                </div>
+
+                <div class="tab-pane fade" id="grafico">
+                    <div>
+                        <label class="title-2">Generar gráficos</label>
+                        <p>¿Cuales datos desea graficar?</p>
+                    </div>
+                    <div class="container">
+                        <form class="margin" autocomplete="off">
+                            <div class="col-md-offset-3 col-md-6">
+                                <!--div ng-show="registro" class="margin" ng-class="styleRegistro">{{msgRegistro}}</div-->
+                                <div ng-repeat="dato in datosGraficos" class="margin-top">
+                                    <label>{{dato.anio}} {{getMes(dato.mes_inicio)}} - {{getMes(dato.mes_fin)}}</label>
+                                    <div>
+                                        <span class="checkbox" ng-repeat="evolucion in dato.evoluciones">
+                                            <label><input type="checkbox" ng-model="ckcTipo" ng-change="selectEvolucion(dato.periodo_id, evolucion.tipo_evolucion)">Evolución {{getEvolucion(evolucion.tipo_evolucion)}}</label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
+    Ha ocurrido un error inesperado al cargar los registros, inténtelo de nuevo
+</div>

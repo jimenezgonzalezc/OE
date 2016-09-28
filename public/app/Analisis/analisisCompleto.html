@@ -42,9 +42,6 @@
                                         <div class="col-md-12 margin-top">
                                             <div ng-show="showMsgAnalisis" class="animation animated-item-3 margin-top margin-around center-block" ng-class="styleMsgAnalisis">{{msgAnalisis}}</div>
                                         </div>
-                                        <div class="col-md-12 margin-top">
-
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +80,11 @@
                         </div>
                         <div class="panelHorizontal">
                             <button class="btn btn-primary" data-toggle="modal" data-target="#configuracionAnalisis" ><span class="glyphicon glyphicon-modal-window"></span>&nbsp;Análisis</button>
+                            <button ng-click="guardarDatosGraficos($event)" ng-show="an" class="btn btn-primary" title="Guardar análisis para la generación de gráficos"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Guardar análisis</button>
                             <!--button class="btn btn-primary" ><span class="glyphicon glyphicon-equalizer"></span>&nbsp;&nbsp;Gráficos</button-->
+                        </div>
+                        <div class="info-box margin" ng-show="showMsgDatosGrafico">
+                            <p ng-bind="msgDatosGrafico"></p>
                         </div>
                         <div class="margin-top">
                             <p ng-bind="msgInfoAnalisis" ng-show="showMsgInfoAnalisis"></p>
