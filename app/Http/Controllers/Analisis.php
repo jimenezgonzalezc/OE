@@ -154,22 +154,31 @@ class Analisis extends Controller
 	public function getNir($analisis, $indicadores, $periodo, $evolucion){
 		$analisis2 = self::createJSON1($indicadores);
 
-		if ($evolucion == 1)
+		/*if ($evolucion == 1)
 			$tabla = 'aplicaciones_respuestas';
 		else
-			$tabla = 'aplicaciones_respuestas_ee';
+			$tabla = 'aplicaciones_respuestas_ee';*/
 
 		for( $i= 0 ; $i < count($indicadores) ; $i++ )//indicador
 		{
 			for( $r= 1 ; $r < 6 ; $r++ )//respuesta
 			{
-				$nir = AplicacionesRespuesta::select($tabla.'.id')
-					->join('aplicaciones', $tabla.'.aplicacion_id', '=', 'aplicaciones.id')
-					->where($tabla.'.valor_respuesta', '=', $r)
-					->where($tabla.'.indicador_id', '=', $indicadores[$i]['id'])
-					->where('aplicaciones.periodo_id', '=', $periodo)
-					->get()->count();
-
+				if ($evolucion == 1){
+					$nir = AplicacionesRespuesta::select('aplicaciones_respuestas.id')
+						->join('aplicaciones', 'aplicaciones_respuestas.aplicacion_id', '=', 'aplicaciones.id')
+						->where('aplicaciones_respuestas.valor_respuesta', '=', $r)
+						->where('aplicaciones_respuestas.indicador_id', '=', $indicadores[$i]['id'])
+						->where('aplicaciones.periodo_id', '=', $periodo)
+						->get()->count();
+				}
+				else{
+					$nir = AplicacionesRespuestaEE::select('aplicaciones_respuestas_ee.id')
+						->join('aplicaciones', 'aplicaciones_respuestas_ee.aplicacion_id', '=', 'aplicaciones.id')
+						->where('aplicaciones_respuestas_ee.valor_respuesta', '=', $r)
+						->where('aplicaciones_respuestas_ee.indicador_id', '=', $indicadores[$i]['id'])
+						->where('aplicaciones.periodo_id', '=', $periodo)
+						->get()->count();
+				}
 				$analisis2 = self::insertAnalisisNir($analisis2, $indicadores[$i]['id'], $r, $nir);
 			}
 		}
@@ -208,10 +217,10 @@ class Analisis extends Controller
 	public function getNsir($analisis, $indicadores, $sectores, $periodo, $evolucion){
 		$analisis3 = self::createJSON2($indicadores, $sectores);
 
-		if ($evolucion == 1)
+		/*if ($evolucion == 1)
 			$tabla = 'aplicaciones_respuestas';
 		else
-			$tabla = 'aplicaciones_respuestas_ee';
+			$tabla = 'aplicaciones_respuestas_ee';*/
 
 		for( $s= 0 ; $s < count($analisis3) ; $s++ )//sector
 		{
@@ -219,15 +228,28 @@ class Analisis extends Controller
 			{
 				for( $r= 1 ; $r < 6 ; $r++ )//respuesta
 				{
-					$nsir = AplicacionesRespuesta::select($tabla.'.id')
-						->join('aplicaciones', 'aplicaciones.id', '=', $tabla.'.aplicacion_id')
-						->join('encuestas', 'encuestas.id', '=', 'aplicaciones.encuesta_id')
-						->join('sectores', 'sectores.id', '=', 'encuestas.sector_id')
-						->where($tabla.'.indicador_id', '=', $analisis3[$s]['nsir'][$i]['indicador_id'])
-						->where('sectores.id', '=', $analisis3[$s]['sector_id'])
-						->where($tabla.'.valor_respuesta', '=', $r)
-						->where('aplicaciones.periodo_id', '=', $periodo)
-						->get()->count();
+					if ($evolucion == 1){
+						$nsir = AplicacionesRespuesta::select('aplicaciones_respuestas.id')
+							->join('aplicaciones', 'aplicaciones.id', '=', 'aplicaciones_respuestas.aplicacion_id')
+							->join('encuestas', 'encuestas.id', '=', 'aplicaciones.encuesta_id')
+							->join('sectores', 'sectores.id', '=', 'encuestas.sector_id')
+							->where('aplicaciones_respuestas.indicador_id', '=', $analisis3[$s]['nsir'][$i]['indicador_id'])
+							->where('sectores.id', '=', $analisis3[$s]['sector_id'])
+							->where('aplicaciones_respuestas.valor_respuesta', '=', $r)
+							->where('aplicaciones.periodo_id', '=', $periodo)
+							->get()->count();
+					}
+					else{
+						$nsir = AplicacionesRespuestaEE::select('aplicaciones_respuestas_ee.id')
+							->join('aplicaciones', 'aplicaciones.id', '=', 'aplicaciones_respuestas_ee.aplicacion_id')
+							->join('encuestas', 'encuestas.id', '=', 'aplicaciones.encuesta_id')
+							->join('sectores', 'sectores.id', '=', 'encuestas.sector_id')
+							->where('aplicaciones_respuestas_ee.indicador_id', '=', $analisis3[$s]['nsir'][$i]['indicador_id'])
+							->where('sectores.id', '=', $analisis3[$s]['sector_id'])
+							->where('aplicaciones_respuestas_ee.valor_respuesta', '=', $r)
+							->where('aplicaciones.periodo_id', '=', $periodo)
+							->get()->count();
+					}
 					//$nsir = self::getNsirAux($analizadoresSir[$s]['sector_id'], $analizadoresSir[$s]['nsir'][$i]['indicador_id'], $r);
 					$analisis3[$s]['nsir'][$i]['resultados'][] = array('valor_respuesta' => $r, 'valor_nsir' => $nsir);
 				}

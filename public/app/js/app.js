@@ -9,6 +9,7 @@
 
 	angular
 		.module('observatoryApp', ['ngCookies', 'ngMaterial', 'ui.router', 'dndLists', 'angular.filter'])
+        .constant('API_URL', '/OE/public')
 		.factory('Auth', Auth)
         .filter('user', user)
         .filter('estado', estado)

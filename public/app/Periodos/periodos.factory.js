@@ -17,7 +17,7 @@
 	* @param {Object} Servicio que ayuda a ejecutar funciones de forma asíncrona.
 	* @returns {Object} Objeto con los metodos del factory.
 	*/
-	function PeriodosFactory($http, $q) {
+	function PeriodosFactory($http, $q, API_URL) {
 		var factory = {
 			store: store,
 			remove: remove,
@@ -40,7 +40,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/periodos/store',
+				url: API_URL + '/api/periodos/store',
 				data: periodo
 			})
 			.success(function(response) {
@@ -63,7 +63,7 @@
 
 			$http({
 				method: 'DELETE',
-				url: 'api/periodos/destroy/' + id
+				url: API_URL + '/api/periodos/destroy/' + id
 			})
 			.success(function(response) {
 				defered.resolve(response);
@@ -80,7 +80,7 @@
 
 			$http({
 				method: 'DELETE',
-				url: 'api/periodos/deleteByYear/' + anio
+				url: API_URL + '/api/periodos/deleteByYear/' + anio
 			})
 			.success(function(response) {
 				defered.resolve(response);
@@ -102,7 +102,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/periodos/update',
+				url: API_URL + '/api/periodos/update',
 				data: periodo
 			})
 			.success(function(response) {
@@ -124,7 +124,7 @@
 
 			$http({
 				method: 'GET',
-				url: 'api/periodos/getAll'
+				url: API_URL + '/api/periodos/getAll'
 			})
 			.success(function(response) {
 				defered.resolve(response);
@@ -160,7 +160,7 @@
 
 			$http({
 				method: 'GET',
-				url: 'api/periodos/validarPeriodicidad/' + anio
+				url: API_URL + '/api/periodos/validarPeriodicidad/' + anio
 			})
 				.success(function(response) {
 					defered.resolve(response);

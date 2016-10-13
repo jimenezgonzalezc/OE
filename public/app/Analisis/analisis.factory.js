@@ -11,7 +11,7 @@
 		.module('observatoryApp')
 		.factory('AnalisisFactory', AnalisisFactory);
 
-	function AnalisisFactory($http, $q) {
+	function AnalisisFactory($http, $q, API_URL) {
 		var factory = {
 			get: get,
             getAnalisis: getAnalisis,
@@ -30,10 +30,29 @@
             calculateITS: calculateITS,
             calculateITI: calculateITI,
             prom: prom,
-            manipulateInfo: manipulateInfo
+            manipulateInfo: manipulateInfo,
+            guardarDatosGraficos: guardarDatosGraficos
 		};
 
 		return factory;
+
+        function guardarDatosGraficos(datosGraficos) {
+            var defered = $q.defer();
+
+            $http({
+                method: 'POST',
+                url: API_URL + '/api/datosGraficos/guardarDatosGraficos',
+                data: datosGraficos
+            })
+                .success(function(response) {
+                    defered.resolve(response);
+                })
+                .error(function(err) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
 
 		function get(idPeriodo, idTerritorio) {
 			var defered = $q.defer();

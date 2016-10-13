@@ -17,7 +17,7 @@
     * @param {Object} Servicio que ayuda a ejecutar funciones de forma asíncrona.
     * @returns {Object} Objeto con los metodos del factory.
     */
-    function IndicadoresFactory($http, $q) {
+    function IndicadoresFactory($http, $q, API_URL) {
         var factory = {
             getAll: getAll,
             store: store,
@@ -30,7 +30,7 @@
         function getAll() {
             var defered = $q.defer();
 
-            $http.get('/api/indicadores/todos')
+            $http.get(API_URL + '/api/indicadores/todos')
                 .success(function(response) {
                     defered.resolve(response);
                 })
@@ -51,7 +51,7 @@
 
             $http({
                 method: 'POST',
-                url: 'api/indicadores/store',
+                url: API_URL + '/api/indicadores/store',
                 data: indicador
             })
             .success(function(response) {
@@ -74,7 +74,7 @@
 
             $http({
                 method: 'DELETE',
-                url: 'api/indicadores/destroy/' + id
+                url: API_URL + '/api/indicadores/destroy/' + id
             })
             .success(function(response) {
                 defered.resolve(response);
@@ -96,7 +96,7 @@
 
             $http({
                 method: 'POST',
-                url: 'api/indicadores/update',
+                url: API_URL + '/api/indicadores/update',
                 data: periodo
             })
             .success(function(response) {
@@ -104,7 +104,7 @@
             })
             .error(function(err) {
                 defered.reject(er);
-            })
+            });
 
             return defered.promise;
         }

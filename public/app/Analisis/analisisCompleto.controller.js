@@ -117,22 +117,21 @@
 				 .then(function() {
 					 $scope.an = false;
 					 var periodo_id = $scope.selectedPeriodo.id;
-					 $scope.total.total1.resultados.forEach(function (resultado) {
-						 var datosGrafico = {periodo_id: periodo_id, nombre_sector: resultado.nombre, sector_id: resultado.sector_id, valor: resultado.valor,
-							 total_columna_indicador: $scope.total.total1.total_columna_indicador, tipo_evolucion: $scope.total.total1.tipo, descripcion: $scope.msgInfoAnalisis};
-						 DatosGraficosFactory.store(datosGrafico)
-							 .then(function (response) {})
-					 });
-
-					 $scope.total.total2.resultados.forEach(function (resultado) {
-						 var datosGrafico = {periodo_id: periodo_id, nombre_sector: resultado.nombre, sector_id: resultado.sector_id, valor: resultado.valor,
-							 total_columna_indicador: $scope.total.total2.total_columna_indicador, tipo_evolucion: $scope.total.total2.tipo, descripcion: $scope.msgInfoAnalisis};
-						 DatosGraficosFactory.store(datosGrafico)
-							 .then(function (response) {})
-					 });
-					 $scope.showMsgDatosGrafico = true;
-					 $scope.msgDatosGrafico = 'Los datos del análisis se guardaron'
-					 ocultarMensaje(6000);
+					 var datos = {datos1: $scope.analisis4, datos2: $scope.analisisEE4};
+					 var datosGraficos = {datosGraficos: datos, periodo_id: periodo_id, descripcion: $scope.msgInfoAnalisis, totales: $scope.total};
+					 AnalisisFactory.guardarDatosGraficos(datosGraficos)
+						 .then(function (response) {
+							 if (response === 'true'){
+								 $scope.showMsgDatosGrafico = true;
+								 $scope.msgDatosGrafico = 'Los datos del análisis se guardaron';
+								 ocultarMensaje(6000);
+							 }
+						 }, function (err) {
+							 $scope.showMsgDatosGrafico = true;
+							 $scope.msgDatosGrafico = 'Ocurrió un error al guardar los datos del análisis';
+							 ocultarMensaje(6000);
+							 console.log(err);
+						 });
 				 }, function() {});
 		 }
 
@@ -195,12 +194,13 @@
 							 $scope.analisis2 = $scope.analisis[0].analisis2;
 							 $scope.analisis3 = $scope.analisis[0].analisis3;
 							 $scope.analisis4 = $scope.analisis[0].analisis4;
+
 							 if ($scope.analisis4.length > 0)
 								 $scope.headerSector = $scope.analisis4[0].resultados;
 							 $scope.totales = $scope.analisis[0].totales;
 						 }
 						 if ($scope.an){
-							 filtro.evolucion=1;// evolucion esperada
+							 filtro.evolucion = 2;// evolucion esperada
 
 							 AnalisisFactory.getAnalisis(filtro)
 								 .then(function (response) {
@@ -213,16 +213,16 @@
 									 if ($scope.analisisEE4.length > 0)
 										 $scope.headerSectorEE = $scope.analisisEE4[0].resultados;
 									 $scope.totalesEE = $scope.analisisEE[0].totales;
-									 $scope.totales.tipo = 1;
+									 $scope.totales.tipo_evolucion = 1;
 									 $scope.totales.evolucion = 'Evolución real';
-									 $scope.totalesEE.tipo = 2;
+									 $scope.totalesEE.tipo_evolucion = 2;
 									 $scope.totalesEE.evolucion = 'Evolución esperada';
-
 									 $scope.total = {total1: $scope.totales, total2: $scope.totalesEE};
-
 									 generarGrafico($scope.total);
 								 })
-								 .catch(function(err) {});
+								 .catch(function(err) {
+									 console.log(err);
+								 });
 						 }
 					 })
 					 .catch(function(err) { });

@@ -17,7 +17,7 @@
 	* @param {Object} Servicio que ayuda a ejecutar funciones de forma asíncrona.
 	* @returns {Object} Objeto con los metodos del factory.
 	*/
-	function EncuestasFactory($http, $q) {
+	function EncuestasFactory($http, $q, API_URL) {
 		var factory = {
 			store: store,
 			getAll: getAll,
@@ -80,7 +80,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/encuestas/registro',
+				url: API_URL + '/api/encuestas/registro',
 				data: encuesta
 			})
 			.success(function(response) {
@@ -100,7 +100,7 @@
 		function getAll() {
 			var defered = $q.defer();
 
-			$http.get('api/encuestas/todas')
+			$http.get(API_URL + '/api/encuestas/todas')
 			.success(function(response) {
 				defered.resolve(response);
 			})
@@ -127,7 +127,7 @@
 			};
 			$http({
 	            method: 'POST',
-	            url: 'api/encuestas/update',
+	            url: API_URL + '/api/encuestas/update',
 	            data: data
 	        })
 			.success(function(response) {
@@ -150,7 +150,7 @@
 
 			$http({
 				method: 'DELETE',
-				url: 'api/encuestas/destroy/' + id,
+				url: API_URL + '/api/encuestas/destroy/' + id
 			})
 			.success(function(response) {
 				defered.resolve(response);
@@ -177,7 +177,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/encuestas/changeState',
+				url: API_URL + '/api/encuestas/changeState',
 				data: data
 			})
 			.success(function(response) {
@@ -200,7 +200,7 @@
 
 			$http({
 				method: 'GET',
-				url: 'api/encuestas/getQuestions/' + id
+				url: API_URL + '/api/encuestas/getQuestions/' + id
 			})
 			.success(function(response) {
 				defered.resolve(response);
@@ -318,7 +318,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/encuestasPreguntas/store',
+				url: API_URL + '/api/encuestasPreguntas/store',
 				data: data
 			})
 			.success(function(response) {
@@ -341,7 +341,7 @@
 
 			$http({
 				method: 'DELETE',
-				url: 'api/encuestasPreguntas/destroy/' + questions,
+				url: API_URL + '/api/encuestasPreguntas/destroy/' + questions
 			})
 			.success(function(response) {
 				defered.resolve(response);
@@ -410,7 +410,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/preguntas/encuesta',
+				url: API_URL + '/api/preguntas/encuesta',
 				data: data
 			})
 			.success(function(response) {
@@ -431,7 +431,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/encuestas/getEncuestas',
+				url: API_URL + '/api/encuestas/getEncuestas',
 				data: data
 			})
 				.success(function(response) {
@@ -449,7 +449,7 @@
 
 			$http({
 				method: 'GET',
-				url: 'api/encuestasPreguntas/getNumberOfQuestions/' + idEncuesta
+				url: API_URL + '/api/encuestasPreguntas/getNumberOfQuestions/' + idEncuesta
 			})
 				.success(function(response) {
 					defered.resolve(response);

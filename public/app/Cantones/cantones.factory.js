@@ -11,7 +11,7 @@
 		.module('observatoryApp')
 		.factory('CantonesFactory', CantonesFactory);
 
-	function CantonesFactory($http, $q) {
+	function CantonesFactory($http, $q, API_URL) {
 		var factory = {
 			getAll: getAll,
 			store: store,
@@ -25,7 +25,7 @@
 			var defered = $q.defer();
 			var promise = defered.promise;
 			
-			$http.get('/api/cantones/todos')
+			$http.get(API_URL + '/api/cantones/todos')
 			.success(function(response) {				
 				defered.resolve(response);
 			})
@@ -47,7 +47,7 @@
 			 var promise = defered.promise;			 			
  			 $http({
 			 	'method': 'POST',
-			 	'url' : 'api/cantones/registro',
+			 	'url' : API_URL + '/api/cantones/registro',
 			 	'data' : canton
 			 })
 			 	.success(function (response) {			 	
@@ -71,7 +71,7 @@
 			 var promise = defered.promise;			 
  			 $http({
 			 	'method': 'DELETE',
-			 	'url' : 'api/cantones/eliminar/'+id
+			 	'url' : API_URL + '/api/cantones/eliminar/'+id
 			 })
 			 	.success(function (response) {			 	
 				 	defered.resolve(response);
@@ -94,7 +94,7 @@
 			var promise =  defered.promise;			
 			$http({
 				method: 'POST',
-				url: 'api/cantones/editar/',
+				url: API_URL + '/api/cantones/editar/',
 				data: canton
 			})
 				.success(function(response){					

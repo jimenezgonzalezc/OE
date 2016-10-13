@@ -11,7 +11,7 @@
         .module('observatoryApp')
         .factory('PreguntasFactory', PreguntasFactory);
 
-    function PreguntasFactory($http, $q) {
+    function PreguntasFactory($http, $q, API_URL) {
         var factory = {
             store: store,
             edit: edit,
@@ -27,7 +27,7 @@
 
             $http({
                 method: 'POST',
-                url: '/api/preguntas/registro',
+                url: API_URL + '/api/preguntas/registro',
                 data: pregunta
             })
                 .success(function(response) {
@@ -44,7 +44,7 @@
             var defered = $q.defer();
             var promise = defered.promise;
 
-            $http.get('/api/preguntas/todas')
+            $http.get(API_URL + '/api/preguntas/todas')
                 .success(function(response) {
                     defered.resolve(response);
                 })
@@ -60,7 +60,7 @@
 
             $http({
                 method: 'POST',
-                url: "/api/preguntas/editar",
+                url: API_URL + "/api/preguntas/editar",
                 data: pregunta
                 
             }).success(function(response) {
@@ -78,7 +78,7 @@
 
             $http({
                 method: 'DELETE',
-                url: '/api/preguntas/destroy/' + id,
+                url: API_URL + '/api/preguntas/destroy/' + id,
             })
             .success(function(response){
                     defered.resolve(response);

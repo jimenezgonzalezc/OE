@@ -26,7 +26,9 @@
         $scope.cancelEdit = cancelEdit;
         $scope.update = update;
         //vars
-        $scope.territorios = [];        
+        $scope.territorios = [];
+
+        $scope.selectedRegion = false;
 
         var currentEmail = "",
         currentCedula = "",

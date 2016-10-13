@@ -11,7 +11,7 @@
 		.module('observatoryApp')
 		.factory('TerritoriosSectoresFactory', TerritoriosSectoresFactory);
 
-		function TerritoriosSectoresFactory($http, $q) {
+		function TerritoriosSectoresFactory($http, $q, API_URL) {
 		var factory = {						
 			store: store,
 			update: update,
@@ -38,7 +38,7 @@
 			
 			$http({
 				method: 'POST',
-				url: 'api/territoriosSectores/registro',
+				url: API_URL + '/api/territoriosSectores/registro',
 				data: data
 			})
 				.success(function(response){
@@ -68,7 +68,7 @@
 			
 			$http({
 				method: 'POST',
-				url: 'api/territoriosSectores/editar',
+				url: API_URL + '/api/territoriosSectores/editar',
 				data: data
 			})
 				.success(function(response){					
@@ -97,7 +97,7 @@
 			
 			$http({
 				method: 'GET',
-				url: 'api/territoriosSectores/ifExist',
+				url: API_URL + '/api/territoriosSectores/ifExist',
 				data: data
 			})
 				.success(function(response){
@@ -124,7 +124,7 @@
 			 };
 			 $http({
 			 	method: 'POST',
-			 	url:'api/territoriosSectores/getBySectorId',
+			 	url: API_URL + '/api/territoriosSectores/getBySectorId',
 			 	data: data
 			 }).success(function(response){			 
 			 	defered.resolve(response);

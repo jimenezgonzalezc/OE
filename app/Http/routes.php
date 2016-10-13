@@ -152,10 +152,16 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/analisis/getAnalisis','Analisis@getICE');
 
     // DatosGraficos.
-    Route::get('datosGraficos/parametros','DatosGraficos@getParametros');
-    Route::get('datosGraficos/todosByPeriodo','DatosGraficos@getDatosGraficoPeriodo');
-    Route::get('datosGraficos/getDatosGrafico/{periodo_id}/{tipo_evolucion}', 'DatosGraficos@getDatosGrafico');
-    Route::post('datosGraficos/registro','DatosGraficos@store');
+    Route::post('datosGraficos/guardarDatosGraficos','DatosGraficos@guardarDatosGraficos');
+    //Route::get('datosGraficos/parametros','DatosGraficos@getParametros');
+    //Route::get('datosGraficos/todosByPeriodo','DatosGraficos@getDatosGraficoPeriodo');
+    Route::get('datosGraficos/getDatosGraficos', 'DatosGraficos@getDatosGraficos');
+    //Route::post('datosGraficos/registro','DatosGraficos@store');
     Route::delete('datosGraficos/eliminar/{id}', 'DatosGraficos@destroy');
-    Route::post('datosGraficos/editar', 'DatosGraficos@update');
+    Route::delete('datosGraficos/eliminarDatos/{anio}', 'DatosGraficos@destroyByAnio');
+    //Route::post('datosGraficos/editar', 'DatosGraficos@update');
+    Route::get('datosGraficos/getDatosGenerales','DatosGraficos@getDatosGenerales');
+    Route::get('datosGraficos/getDatosSectores','DatosGraficos@getDatosSectores');
+    Route::get('datosGraficos/getDatosIndicadores','DatosGraficos@getDatosIndicadores');
+
 });

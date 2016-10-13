@@ -11,7 +11,7 @@
 		.module('observatoryApp')
 		.factory('PersonasSectoresFactory', PersonasSectoresFactory);
 
-		function PersonasSectoresFactory($http, $q) {
+		function PersonasSectoresFactory($http, $q, API_URL) {
 		var factory = {
 			store: store,
 			getByPersonId: getByPersonId,
@@ -29,7 +29,7 @@
 				};							
 			$http({				
 				method: 'POST',
-				url: '/api/personasSectores/registro',
+				url: API_URL + '/api/personasSectores/registro',
 				data: data
 			})
 			.success(function(response) {
@@ -55,7 +55,7 @@
 			 };
 			 $http({
 			 	method: 'POST',
-			 	url:'api/personasSectores/getByPersonId',
+			 	url: API_URL + '/api/personasSectores/getByPersonId',
 			 	data: data
 			 }).success(function(response){			 
 			 	defered.resolve(response);
@@ -79,7 +79,7 @@
 				};
             $http({
 				method: 'POST',
-				url: '/api/personasSectores/update',
+				url: API_URL + '/api/personasSectores/update',
 				data: data
 			})
             .success(function(response){

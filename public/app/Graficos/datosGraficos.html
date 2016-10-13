@@ -12,7 +12,7 @@
                     <a data-target="#gestion" data-toggle="tab">Gestión</a>
                 </li>
                 <li>
-                    <a data-target="#grafico" data-toggle="tab">Gráfico</a>
+                    <a data-target="#generargrafico" data-toggle="tab" ng-click="generarGrafico();">Gráfico</a>
                 </li>
             </ul>
         </div>
@@ -32,9 +32,9 @@
                                         <p>{{datoGrafico.descripcion}}</p>
                                     </div>
                                     <div class="footer-card-box">
-                                        <span class="glyphicon glyphicon-trash" ng-click="eliminarDatosGraficos($event,datoGrafico.id);">
+                                        <span class="glyphicon glyphicon-trash" ng-click="eliminarDatosGraficos($event, datoGrafico.anio);">
                                         <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
-                                    </div>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -44,28 +44,113 @@
                     </div>             
                 </div>
 
-                <div class="tab-pane fade" id="grafico">
+                <div class="tab-pane fade" id="generargrafico">
                     <div>
                         <label class="title-2">Generar gráficos</label>
                         <p>¿Cuales datos desea graficar?</p>
                     </div>
                     <div class="container">
                         <form class="margin" autocomplete="off">
-                            <div class="col-md-offset-3 col-md-6">
-                                <!--div ng-show="registro" class="margin" ng-class="styleRegistro">{{msgRegistro}}</div-->
-                                <div ng-repeat="dato in datosGraficos" class="margin-top">
+                            <div class="col-md-offset-4 col-md-7">
+                                <div>
+                                    <div>
+                                        <h3>Gráficos generales</h3>
+                                        <div data-ng-repeat="datoGeneral in datosGenerales">
+                                            <label>{{datoGeneral.anio}} {{getMes(datoGeneral.mes_inicio)}} - {{getMes(datoGeneral.mes_fin)}}</label>
+                                            <div>
+                                                <span class="checkbox" data-ng-repeat="evoluciones in datoGeneral.tipo_evoluciones">
+                                                    <label><input type="checkbox" ng-model="evoluciones.selected">Evolución {{getEvolucion(evoluciones.tipo_evolucion)}}</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3>Gráficos por sector</h3>
+                                        <div data-ng-repeat="datoSector in datosSectores">
+                                            <label>{{datoSector.anio}} {{getMes(datoSector.mes_inicio)}} - {{getMes(datoSector.mes_fin)}}</label>
+                                            <div>
+                                                <span class="checkbox" data-ng-repeat="evoluciones in datoSector.tipo_evoluciones">
+                                                    <label><input type="checkbox" ng-model="evoluciones.selected">Evolución {{getEvolucion(evoluciones.tipo_evolucion)}}</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3>Gráficos por indicador</h3>
+                                        <div data-ng-repeat="datoIndicador in datosIndicadores">
+                                            <label>{{datoIndicador.anio}} {{getMes(datoIndicador.mes_inicio)}} - {{getMes(datoIndicador.mes_fin)}}</label>
+                                            <div>
+                                                <span class="checkbox" data-ng-repeat="evoluciones in datoIndicador.tipo_evoluciones">
+                                                    <label><input type="checkbox" ng-model="evoluciones.selected">Evolución {{getEvolucion(evoluciones.tipo_evolucion)}}</label>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <button class=" col-md-offset-1 col-md-3 margin-top btn btn-primary" ng-click="createDataSet();"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Ver Gráfico</button>
+                            </div>
+                            <!--div class="col-md-offset-4 col-md-7">
+                                <!--div ng-show="registro" class="margin" ng-class="styleRegistro">{{msgRegistro}}</div>
+                                <div ng-repeat="dato in datosGenerales" class="margin-top">
                                     <label>{{dato.anio}} {{getMes(dato.mes_inicio)}} - {{getMes(dato.mes_fin)}}</label>
                                     <div>
-                                        <span class="checkbox" ng-repeat="evolucion in dato.evoluciones">
-                                            <label><input type="checkbox" ng-model="ckcTipo" ng-change="selectEvolucion(dato.periodo_id, evolucion.tipo_evolucion)">Evolución {{getEvolucion(evolucion.tipo_evolucion)}}</label>
+                                        <span class="checkbox" ng-repeat="evolucion in dato.tipo_evolucion">
+                                            <!---dato.periodo_id, evolucion.tipo_evolucion>
+                                            <label><input type="checkbox" ng-model="evolucion.selected">Evolución {{getEvolucion(evolucion.tipo_evolucion)}}</label>
                                         </span>
                                     </div>
                                 </div>
-                            </div>
+                                <button class=" col-md-offset-1 col-md-3 margin-top btn btn-primary" ng-click="createDataSet();"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Ver Gráfico</button>
+                            </div-->
                         </form>
                     </div>
-                </div>
+                    <div id="divGraficoICE1">
+                        <canvas id="graficoICE1"></canvas>
+                    </div>
+                    <div ng-show="btnDescargar" class="margin-top">
+                        <a class="col-md-offset-5 col-md-7  button" id="imgGrafico1" ng-click="saveCanvas(1);">Descargar gráfico</a>
+                    </div>
+                    <div id="divGraficoICE2" class="margin-top-ld">
+                        <canvas id="graficoICE2"></canvas>
+                    </div>
+                    <div ng-show="btnDescargar" class="margin-top">
+                        <a class="col-md-offset-5 col-md-7  button" id="imgGrafico2" ng-click="saveCanvas(2);">Descargar gráfico</a>
+                    </div>
 
+                    <div id="divGraficoSector1" class="margin-top-ld">
+                        <canvas id="graficoSector1"></canvas>
+                    </div>
+                    <div id="divGraficoSector2" class="margin-top-ld">
+                        <canvas id="graficoSector2"></canvas>
+                    </div>
+                    <div id="divGraficoSector3" class="margin-top-ld">
+                        <canvas id="graficoSector3"></canvas>
+                    </div>
+                    <div id="divGraficoSector4" class="margin-top-ld">
+                        <canvas id="graficoSector4"></canvas>
+                    </div>
+                    <div id="divGraficoSector5" class="margin-top-ld">
+                        <canvas id="graficoSector5"></canvas>
+                    </div>
+
+
+                    <div id="divGraficoIndicador1" class="margin-top-ld">
+                        <canvas id="graficoIndicador1"></canvas>
+                    </div>
+                    <div id="divGraficoIndicador2" class="margin-top-ld">
+                        <canvas id="graficoIndicador2"></canvas>
+                    </div>
+                    <div id="divGraficoIndicador3" class="margin-top-ld">
+                        <canvas id="graficoIndicador3"></canvas>
+                    </div>
+                    <div id="divGraficoIndicador4" class="margin-top-ld">
+                        <canvas id="graficoIndicador4"></canvas>
+                    </div>
+                    <div id="divGraficoIndicador5" class="margin-top-ld">
+                        <canvas id="graficoIndicador5"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

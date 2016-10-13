@@ -11,12 +11,12 @@
 		.module('observatoryApp')
 		.factory('SectoresFactory', SectoresFactory);
 
-		function SectoresFactory($http, $q) {
+		function SectoresFactory($http, $q, API_URL) {
 		var factory = {
 			getAll: getAll,
 			destroy: destroy,
 			store: store,
-			update: update,
+			update: update
 		};
 
 		return factory;
@@ -25,7 +25,7 @@
 			var defered = $q.defer();
 			var promise = defered.promise;
 			
-			$http.get('/api/sectores/todos')
+			$http.get(API_URL + '/api/sectores/todos')
 			.success(function(response) {				
 				defered.resolve(response);
 			})
@@ -47,7 +47,7 @@
 			
 			$http({
 				method: 'POST',
-				url: 'api/sectores/registro',
+				url: API_URL + '/api/sectores/registro',
 				data: sector
 			})
 				.success(function(response){
@@ -73,7 +73,7 @@
 			
 			$http({
 				method: 'POST',
-				url: 'api/sectores/editar/',
+				url: API_URL + '/api/sectores/editar/',
 				data: sector
 			})
 				.success(function(response){
@@ -97,7 +97,7 @@
 
 			$http({
 				method: 'DELETE',
-				url: 'api/sectores/destroy/' + id,
+				url: API_URL + '/api/sectores/destroy/' + id
 			})
 				.success(function(response){
 					defered.resolve(response);

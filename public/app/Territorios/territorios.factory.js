@@ -11,7 +11,7 @@
 		.module('observatoryApp')
 		.factory('TerritoriosFactory', TerritoriosFactory);
 
-	function TerritoriosFactory($http, $q) {
+	function TerritoriosFactory($http, $q, API_URL) {
 		var factory = {
 			getAll: getAll,
 			store: store,
@@ -25,7 +25,7 @@
 			var defered = $q.defer();
 			var promise = defered.promise;
 			
-			$http.get('/api/territorios/todos')
+			$http.get(API_URL + '/api/territorios/todos')
 			.success(function(response) {				
 				defered.resolve(response);
 			})
@@ -47,7 +47,7 @@
 			 var promise = defered.promise;			 			
  			 $http({
 			 	'method': 'POST',
-			 	'url' : 'api/territorios/registro',
+			 	'url' : API_URL + '/api/territorios/registro',
 			 	'data' : territorio
 			 })
 			 	.success(function (response) {			 	
@@ -71,7 +71,7 @@
 			 var promise = defered.promise;			 
  			 $http({
 			 	'method': 'DELETE',
-			 	'url' : 'api/territorios/destroy/'+id
+			 	'url' : API_URL + '/api/territorios/destroy/'+id
 			 })
 			 	.success(function (response) {			 	
 				 	defered.resolve(response);
@@ -94,7 +94,7 @@
 			var promise =  defered.promise;			
 			$http({
 				method: 'POST',
-				url: 'api/territorios/editar/',
+				url: API_URL + '/api/territorios/editar/',
 				data: region
 			})
 				.success(function(response){					

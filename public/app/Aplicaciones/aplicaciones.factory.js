@@ -17,7 +17,7 @@
 	* @param {Object} Servicio que ayuda a ejecutar funciones de forma asíncrona.
 	* @returns {Object} Objeto con los metodos del factory.
 	*/
-	function AplicacionesFactory($http, $q) {
+	function AplicacionesFactory($http, $q, API_URL) {
 		var factory = {
 			getAll: getAll,
 			getForSurvey: getForSurvey,
@@ -38,7 +38,7 @@
 		function getAll() {
 			var defered = $q.defer();
 
-			$http.get('api/aplicaciones/todas')
+			$http.get(API_URL + '/api/aplicaciones/todas')
 				.success(function(response) {
 					defered.resolve(response);
 				})
@@ -62,7 +62,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/aplicaciones/getForSurvey',
+				url: API_URL + '/api/aplicaciones/getForSurvey',
 				data: data
 			})
 			.success(function(response) {
@@ -94,7 +94,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/aplicaciones/store',
+				url: API_URL + '/api/aplicaciones/store',
 				data: data
 			})
 			.success(function(response) {
@@ -117,7 +117,7 @@
 
 			$http({
 				method: 'DELETE',
-				url: 'api/aplicaciones/destroy/' + aplications
+				url: API_URL + '/api/aplicaciones/destroy/' + aplications
 			})
 			.success(function(response) {
 				defered.resolve(response);
@@ -142,7 +142,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/aplicaciones/getAplicacionesByPersona',
+				url: API_URL + '/api/aplicaciones/getAplicacionesByPersona',
 				data: data
 			})
 			.success(function(response) {
@@ -158,7 +158,7 @@
 		function getAplicacionesPersonasEncuestas() {
 			var defered = $q.defer();
 
-			$http.get('api/aplicaciones/personasEncuestas')
+			$http.get(API_URL + '/api/aplicaciones/personasEncuestas')
 			.success(function(response) {
 				defered.resolve(response);
 			})
@@ -179,7 +179,7 @@
 
 			$http({
 				method: 'POST',
-				url: 'api/aplicaciones/update',
+				url: API_URL + '/api/aplicaciones/update',
 				data: data
 			})
 			.success(function(response) {
@@ -201,7 +201,7 @@
 
 			$http({
 				method: 'GET',
-				url: 'api/aplicaciones/byPeriodo/' + anio
+				url: API_URL + '/api/aplicaciones/byPeriodo/' + anio
 			})
 				.success(function(response) {
 					defered.resolve(response);

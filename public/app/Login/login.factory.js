@@ -17,7 +17,7 @@
 	* @param {Object} Servicio que ayuda a ejecutar funciones de forma asíncrona.
 	* @returns {Object} Objeto con los metodos del factory.
 	*/
-	function LoginFactory($http, $q) {
+	function LoginFactory($http, $q, API_URL) {
 		var factory = {
 			logIn: logIn
 		};
@@ -41,7 +41,7 @@
 
 			$http({
 				method: 'POST',
-				url: '/api/login',
+				url: API_URL + '/api/login',
 				data: data
 			})
 			.success(function(response) {

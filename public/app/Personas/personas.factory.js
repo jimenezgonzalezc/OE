@@ -11,7 +11,7 @@
 		.module('observatoryApp')
 		.factory('PersonasFactory', PersonasFactory);
 
-	function PersonasFactory($http, $q) {
+	function PersonasFactory($http, $q, API_URL) {
 		var factory = {
 			store: store,
 			getAll: getAll,
@@ -36,7 +36,7 @@
 
 			$http({
 				method: 'POST',
-				url: '/api/personas/registro',
+				url: API_URL + '/api/personas/registro',
 				data: persona
 			})
 			.success(function(response) {				
@@ -52,7 +52,7 @@
             var defered = $q.defer();
             $http({
                 method: 'DELETE',
-                url: 'api/personas/destroy/' + id
+                url: API_URL + '/api/personas/destroy/' + id
             }).success(function(response){
                 defered.resolve(response);
             })
@@ -66,7 +66,7 @@
 			var defered = $q.defer();
 			var promise = defered.promise;
 			
-			$http.get('/api/personas/todas')
+			$http.get(API_URL + '/api/personas/todas')
 			.success(function(response) {
 				defered.resolve(response);
 			})
@@ -80,7 +80,7 @@
 		function getByType(type) {
 			var defered = $q.defer();
 
-			$http.get('/api/personas/getByType/' + type)
+			$http.get(API_URL + '/api/personas/getByType/' + type)
 			.success(function(response) {
 				defered.resolve(response);
 			})
@@ -95,7 +95,7 @@
         function getByTerritory(territory) {
             var defered = $q.defer();
 
-            $http.get('/api/personas/getByTerritory/' + territory)
+            $http.get(API_URL + '/api/personas/getByTerritory/' + territory)
             .success(function(response) {
                 defered.resolve(response);
             })
@@ -110,7 +110,7 @@
         function getBySector(sector) {
             var defered = $q.defer();
 
-            $http.get('/api/personas/getBySector/' + sector)
+            $http.get(API_URL + '/api/personas/getBySector/' + sector)
             .success(function(response) {
                 defered.resolve(response);
             })
@@ -126,7 +126,7 @@
 
 			$http({
 				method: 'POST',
-				url: '/api/personas/getPersona/',
+				url: API_URL + '/api/personas/getPersona/',
 				data: {id:idPersona}
 			})
 			.success(function(response) {
@@ -143,7 +143,7 @@
             var defered = $q.defer();            
             $http({
 				method: 'POST',
-				url: '/api/personas/ifExist',
+				url: API_URL + '/api/personas/ifExist',
 				data: {
 					field:field,
 					fieldToValidate: fieldToValidate }                
@@ -162,7 +162,7 @@
             console.log(persona);
             $http({
 				method: 'POST',
-				url: '/api/personas/update',
+				url: API_URL + '/api/personas/update',
 				data: persona
 			})
             .success(function(response){
@@ -179,7 +179,7 @@
 
         	$http({
         		method: 'GET',
-        		url: '/api/personas/isPass/' + id + '/'+ currentPass
+        		url: API_URL + '/api/personas/isPass/' + id + '/'+ currentPass
         	})
         	.success(function(response) {
         		defered.resolve(response[0]);
@@ -200,7 +200,7 @@
 
         	$http({
         		method: 'POST',
-        		url: '/api/personas/changePass',
+        		url: API_URL + '/api/personas/changePass',
         		data: data
         	})
         	.success(function(response) {
@@ -212,27 +212,6 @@
 
         	return defered.promise;
         }
-
-		// function getPersonas(aplicaciones) {
-		// 	var defered = $q.defer();
-        //
-		// 	var persona, personas = [];
-		// 	aplicaciones.forEach(function(aplicacion) {
-        //
-		// 		getPersona(aplicacion.persona_id)
-		// 		.then(function(response) {
-		// 			persona = response;
-		// 			console.log("persona",persona);
-		// 			persona.encuestas = [];
-		// 			personas.push(persona);
-		// 			defered.resolve(personas);
-        //
-		// 		})
-		// 	});
-		// 	console.log("factory",personas);
-        //
-		// 	return defered.promise;
-		// }
 
 		function getPersonas(aplicaciones) {
 			var deferred = $q.defer();

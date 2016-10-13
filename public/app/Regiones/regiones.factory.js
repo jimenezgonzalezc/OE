@@ -11,7 +11,7 @@
 		.module('observatoryApp')
 		.factory('RegionesFactory', RegionesFactory);
 
-		function RegionesFactory($http, $q) {
+		function RegionesFactory($http, $q, API_URL) {
 		var factory = {
 			getAll: getAll,
 			store: store,
@@ -26,7 +26,7 @@
 			var defered = $q.defer();
 			var promise = defered.promise;
 			
-			$http.get('/api/regiones/todas')
+			$http.get(API_URL + '/api/regiones/todas')
 			.success(function(response) {				
 				defered.resolve(response);
 			})
@@ -41,7 +41,7 @@
 				var defered = $q.defer();
 				var promise = defered.promise;
 
-				$http.get('/api/regiones/regionesTerritorios')
+				$http.get(API_URL + '/api/regiones/regionesTerritorios')
 					.success(function(response) {
 						defered.resolve(response);
 					})
@@ -63,7 +63,7 @@
 			 
  			 $http({
 			 	'method': 'POST',
-			 	'url' : 'api/regiones/registro',
+			 	'url' : API_URL + '/api/regiones/registro',
 			 	'data' : region
 			 })
 			 	.success(function (response) {			 	
@@ -87,7 +87,7 @@
 			 var promise = defered.promise;			 
  			 $http({
 			 	'method': 'DELETE',
-			 	'url' : 'api/regiones/destroy/'+id
+			 	'url' : API_URL + '/api/regiones/destroy/'+id
 			 })
 			 	.success(function (response) {			 	
 				 	defered.resolve(response);
@@ -110,7 +110,7 @@
 			var promise =  defered.promise;			
 			$http({
 				method: 'POST',
-				url: 'api/regiones/editar/',
+				url: API_URL + '/api/regiones/editar/',
 				data: region
 			})
 				.success(function(response){					

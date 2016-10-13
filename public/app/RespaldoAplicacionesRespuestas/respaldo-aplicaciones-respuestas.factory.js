@@ -17,7 +17,7 @@
      * @param {Object} Servicio que ayuda a ejecutar funciones de forma asíncrona.
      * @returns {Object} Objeto con los metodos del factory.
      */
-    function RespaldoAplicacionesRespuestasFactory($http, $q) {
+    function RespaldoAplicacionesRespuestasFactory($http, $q, API_URL) {
         var factory = {
             store: store,
             update: update,
@@ -37,7 +37,7 @@
 
             $http({
                 method: 'POST',
-                url: 'api/respaldo-aplicaciones-respuestas/store',
+                url: API_URL + '/api/respaldo-aplicaciones-respuestas/store',
                 data: data
             })
                 .success(function(response) {
@@ -58,7 +58,7 @@
 
             $http({
                 method: 'POST',
-                url: 'api/respaldo-aplicaciones-respuestas/update',
+                url: API_URL + '/api/respaldo-aplicaciones-respuestas/update',
                 data: data
             })
                 .success(function(response) {
@@ -79,7 +79,7 @@
 
             $http({
                 method: 'GET',
-                url: 'api/respaldo-aplicaciones-respuestas/get/' + aplicacion_id
+                url: API_URL + '/api/respaldo-aplicaciones-respuestas/get/' + aplicacion_id
             })
                 .success(function(response) {
                     defered.resolve(response);
@@ -96,7 +96,7 @@
 
             $http({
                 method: 'DELETE',
-                url: 'api/respaldo-aplicaciones-respuestas/remove/' + aplicacion_id
+                url: API_URL + '/api/respaldo-aplicaciones-respuestas/remove/' + aplicacion_id
             })
                 .success(function(response) {
                     defered.resolve(response);
