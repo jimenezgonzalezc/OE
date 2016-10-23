@@ -8,7 +8,7 @@
 	'use strict';
 
 	angular
-		.module('observatoryApp', ['ngCookies', 'ngMaterial', 'ui.router', 'dndLists', 'angular.filter'])
+		.module('observatoryApp', ['ngCookies', 'ngMaterial', 'ui.router', 'dndLists', 'angular.filter', 'ui.bootstrap'])
         .constant('API_URL', '/OE/public')
 		.factory('Auth', Auth)
         .filter('user', user)

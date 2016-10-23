@@ -554,7 +554,12 @@ footer {
     color: #00844A;
     font-size: 22px;
 }
-.glyphicon-trash:hover, .glyphicon-search:hover, .glyphicon-pencil:hover, .glyphicon-tasks:hover, .fa-toggle-on:hover, .fa-toggle-off:hover, .glyphicon-list-alt:hover {
+.glyphicon-download-alt {
+    color: #5858FA;
+    font-size: 20px;
+    cursor:pointer;
+}
+.glyphicon-trash:hover, .glyphicon-search:hover, .glyphicon-pencil:hover, .glyphicon-tasks:hover, .fa-toggle-on:hover, .fa-toggle-off:hover, .glyphicon-list-alt:hover, .glyphicon-download-alt:hover {
     transform: scale(1.2);
 }
 
@@ -833,4 +838,25 @@ hr.style18:before {
 
 a:hover {
     cursor:pointer;
+}
+
+.panel {
+    vertical-align: middle;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.align-left{
+    float: left;
+    cursor:pointer;
+
 }

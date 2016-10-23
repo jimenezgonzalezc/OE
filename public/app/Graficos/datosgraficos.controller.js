@@ -18,6 +18,10 @@
         $scope.etiquetas2 = '';
         $scope.btnDescargar = false;
 
+        $scope.graficosGenerales = false;
+        $scope.graficosSectores = false;
+        $scope.graficosIndicadores = false;
+
         function generarGrafico(ds, num, titulo, etiquetas) {
 
             var canvasGraf = '';
@@ -90,7 +94,7 @@
                     $scope.datosGenerales = response;
                 })
                 .catch(function(err) {
-                    $scope.datosGraficos = true;
+                    $scope.datosGenerales = true;
                     $scope.errorConn = true;
                 });
 
@@ -99,17 +103,16 @@
                     $scope.datosSectores = response;
                 })
                 .catch(function(err) {
-                    $scope.datosGraficos = true;
+                    $scope.datosSectores = true;
                     $scope.errorConn = true;
                 });
 
             DatosGraficosFactory.getDatosIndicadores()
                 .then(function (response) {
                     $scope.datosIndicadores = response;
-                    console.log(response);
                 })
                 .catch(function(err) {
-                    $scope.datosGraficos = true;
+                    $scope.datosIndicadores = true;
                     $scope.errorConn = true;
                 });
         }
@@ -119,11 +122,12 @@
         function createDataSet() {
             $scope.datasets1 = [];
             $scope.datasets2 = [];
-                
+            $scope.graficosGenerales = false;
+
             $scope.datosGenerales.forEach(function (analisis) {
                 analisis.tipo_evoluciones.forEach(function (evolucion) {
-
                     if(evolucion.selected === true){
+                        $scope.graficosGenerales = true;
                         if ($scope.etiquetas1 === ''){
                             $scope.etiquetas1 = DatosGraficosFactory.getLabels(evolucion.tipos[0].valores);
                         }
@@ -149,10 +153,12 @@
         }
 
         function generarDataSetSectores() {
+            $scope.graficosSectores = false;
             $scope.datasetsSectores = [];
             $scope.datosSectores.forEach(function (analisis) {
                 analisis.tipo_evoluciones.forEach(function (evolucion) {
                     if(evolucion.selected === true){
+                        $scope.graficosSectores = true;
                         evolucion.sectores.forEach(function (sector) {
                             if($scope.datasetsSectores.length === evolucion.sectores.length){
                                 $scope.datasetsSectores.forEach(function (sectorAux) {
@@ -163,7 +169,7 @@
                                 });
                             }
                             else{
-                                var grafico = {sector_id: 0,titulo: "", datasets: [], labels: ""};
+                                var grafico = {sector_id: 0, titulo: "", datasets: [], labels: ""};
                                 var titulo = analisis.anio + " " + getMes(analisis.mes_inicio) + " - " + getMes(analisis.mes_fin) + " Evolucion " + getEvolucion(evolucion.tipo_evolucion);;
                                 grafico.sector_id = sector.sector_id;
                                 grafico.titulo = sector.sector_nombre;
@@ -180,10 +186,12 @@
         }
 
         function generarDataSetIndicadores() {
+            $scope.graficosIndicadores = false;
             $scope.datasetsIndicadores = [];
             $scope.datosIndicadores.forEach(function (analisis) {
                 analisis.tipo_evoluciones.forEach(function (evolucion) {
                     if(evolucion.selected === true){
+                        $scope.graficosIndicadores = true;
                         evolucion.indicadores.forEach(function (indicador) {
                             if($scope.datasetsIndicadores.length === evolucion.indicadores.length){
                                 $scope.datasetsIndicadores.forEach(function (indicadorAux) {
@@ -194,7 +202,7 @@
                                 });
                             }
                             else{
-                                var grafico = {indicador_id: 0,titulo: "", datasets: [], labels: ""};
+                                var grafico = {indicador_id: 0, titulo: "", datasets: [], labels: ""};
                                 var titulo = analisis.anio + " " + getMes(analisis.mes_inicio) + " - " + getMes(analisis.mes_fin) + " Evolucion " + getEvolucion(evolucion.tipo_evolucion);
                                 grafico.indicador_id = indicador.indicador_id;
                                 grafico.titulo = indicador.indicador_nombre;
@@ -331,7 +339,7 @@
                 .then(function() {
                     DatosGraficosFactory.destroyByAnio(anio)
                         .then(function (response) {
-                            getDatosGraficosParametros();
+                            getDatosGraficos();
                         })
                 }, function() {});
         }
@@ -352,5 +360,47 @@
             button.href = document.getElementById(canvas).toDataURL();
             button.download = 'ICE.png';
         }
+
+        $scope.setDataGrafico = function (datoGrafico) {
+            $scope.datoGrafico_id = datoGrafico.datos_graficos_id;
+            $scope.generarDocumento();
+        };
+
+        $scope.generarDocumento = function () {
+            angular.forEach($scope.documentos, function(documento){
+                if (documento.selected) {
+                    console.log(documento.nombre);
+                    $scope.getDatosDocumentosGenerales();
+                    /*$scope.datosSectores = response;
+                    $scope.datosGenerales = response;
+                    $scope.datosIndicadores = response;*/
+                }
+            });
+        };
+
+        $scope.getDatosDocumentosGenerales = function () {
+            angular.forEach($scope.datosGenerales, function(datoGeneral) {
+                if (datoGeneral.datos_graficos_id === $scope.datoGrafico_id){
+                    console.log(datoGeneral);
+                }
+            });
+        };
+
+        $scope.documentos = [{selected: false, tipo: 1, nombre: " Documento de gráfico general"},
+            {selected: false, tipo: 2, nombre: " Documento de gráfico por Sector"}, {selected: false, tipo: 3, nombre: " Documento de gráfico por Indicador"}];
+
+        $scope.selectAllDocumentos = function() {
+            var toggleStatus = $scope.allDocumentos;
+            angular.forEach($scope.documentos, function(documento){ documento.selected = toggleStatus; });
+        };
+
+        $scope.selectDocumento = function(){
+            $scope.allDocumentos = $scope.documentos.every(function(documento){ return documento.selected; });
+        };
+
+        $scope.descargarDocumento = function () {
+            angular.forEach($scope.documentos, function(documento){ if (documento.selected)console.log(documento.nombre);});
+        };
+
     }
 })();

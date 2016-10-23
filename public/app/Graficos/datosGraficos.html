@@ -1,5 +1,5 @@
 <div class="text-center margin">
-    <label class="title-1 kaushan">Gráficos</label>
+    <label class="title-1 kaushan">Documentos</label>
 </div>
 <div class="col-md-12 perfil-box">
 	<div class="portlet">
@@ -12,7 +12,7 @@
                     <a data-target="#gestion" data-toggle="tab">Gestión</a>
                 </li>
                 <li>
-                    <a data-target="#generargrafico" data-toggle="tab" ng-click="generarGrafico();">Gráfico</a>
+                    <a data-target="#generargrafico" data-toggle="tab" ng-click="generarGrafico();">Gráficos</a>
                 </li>
             </ul>
         </div>
@@ -32,9 +32,11 @@
                                         <p>{{datoGrafico.descripcion}}</p>
                                     </div>
                                     <div class="footer-card-box">
-                                        <span class="glyphicon glyphicon-trash" ng-click="eliminarDatosGraficos($event, datoGrafico.anio);">
+                                        <span class="glyphicon glyphicon-trash" data-ng-click="eliminarDatosGraficos($event, datoGrafico.anio);">
                                         <md-tooltip md-direction="top">Eliminar</md-tooltip></span>
-                                        </div>
+                                        <span class="glyphicon glyphicon-download-alt" data-ng-click="setDataGrafico(datoGrafico)" data-toggle="modal" data-target="#seleccionDocumentos">
+                                        <md-tooltip md-direction="top">Descargar</md-tooltip></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -51,104 +53,96 @@
                     </div>
                     <div class="container">
                         <form class="margin" autocomplete="off">
-                            <div class="col-md-offset-4 col-md-7">
+                            <div>
                                 <div>
-                                    <div>
-                                        <h3>Gráficos generales</h3>
-                                        <div data-ng-repeat="datoGeneral in datosGenerales">
-                                            <label>{{datoGeneral.anio}} {{getMes(datoGeneral.mes_inicio)}} - {{getMes(datoGeneral.mes_fin)}}</label>
-                                            <div>
-                                                <span class="checkbox" data-ng-repeat="evoluciones in datoGeneral.tipo_evoluciones">
-                                                    <label><input type="checkbox" ng-model="evoluciones.selected">Evolución {{getEvolucion(evoluciones.tipo_evolucion)}}</label>
-                                                </span>
+                                    <uib-accordion close-others="false">
+                                        <div uib-accordion-group class="text-center panel-default panel" heading="Gráficos generales">
+                                            <div data-ng-repeat="datoGeneral in datosGenerales">
+                                                <label>{{datoGeneral.anio}} {{getMes(datoGeneral.mes_inicio)}} - {{getMes(datoGeneral.mes_fin)}}</label>
+                                                <div>
+                                                    <span class="checkbox" data-ng-repeat="evoluciones in datoGeneral.tipo_evoluciones">
+                                                        <label><input type="checkbox" ng-model="evoluciones.selected">Evolución {{getEvolucion(evoluciones.tipo_evolucion)}}</label>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <h3>Gráficos por sector</h3>
-                                        <div data-ng-repeat="datoSector in datosSectores">
-                                            <label>{{datoSector.anio}} {{getMes(datoSector.mes_inicio)}} - {{getMes(datoSector.mes_fin)}}</label>
-                                            <div>
-                                                <span class="checkbox" data-ng-repeat="evoluciones in datoSector.tipo_evoluciones">
-                                                    <label><input type="checkbox" ng-model="evoluciones.selected">Evolución {{getEvolucion(evoluciones.tipo_evolucion)}}</label>
-                                                </span>
+                                        <div uib-accordion-group class="text-center panel-default panel" heading="Gráficos por sector">
+                                            <div data-ng-repeat="datoSector in datosSectores">
+                                                <label>{{datoSector.anio}} {{getMes(datoSector.mes_inicio)}} - {{getMes(datoSector.mes_fin)}}</label>
+                                                <div>
+                                                    <span class="checkbox" data-ng-repeat="evoluciones in datoSector.tipo_evoluciones">
+                                                        <label><input type="checkbox" ng-model="evoluciones.selected">Evolución {{getEvolucion(evoluciones.tipo_evolucion)}}</label>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <h3>Gráficos por indicador</h3>
-                                        <div data-ng-repeat="datoIndicador in datosIndicadores">
-                                            <label>{{datoIndicador.anio}} {{getMes(datoIndicador.mes_inicio)}} - {{getMes(datoIndicador.mes_fin)}}</label>
-                                            <div>
-                                                <span class="checkbox" data-ng-repeat="evoluciones in datoIndicador.tipo_evoluciones">
-                                                    <label><input type="checkbox" ng-model="evoluciones.selected">Evolución {{getEvolucion(evoluciones.tipo_evolucion)}}</label>
-                                                </span>
+                                        <div uib-accordion-group class="text-center panel-default panel" heading="Gráficos por indicador">
+                                            <div data-ng-repeat="datoIndicador in datosIndicadores">
+                                                <label>{{datoIndicador.anio}} {{getMes(datoIndicador.mes_inicio)}} - {{getMes(datoIndicador.mes_fin)}}</label>
+                                                <div>
+                                                    <span class="checkbox" data-ng-repeat="evoluciones in datoIndicador.tipo_evoluciones">
+                                                        <label><input type="checkbox" ng-model="evoluciones.selected">Evolución {{getEvolucion(evoluciones.tipo_evolucion)}}</label>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-
-                                    </div>
+                                    </uib-accordion>
+                                    <center>
+                                        <button class="margin-top btn btn-primary panel" ng-click="createDataSet();"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Ver Gráfico</button>
+                                    </center>
                                 </div>
-                                <button class=" col-md-offset-1 col-md-3 margin-top btn btn-primary" ng-click="createDataSet();"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Ver Gráfico</button>
                             </div>
-                            <!--div class="col-md-offset-4 col-md-7">
-                                <!--div ng-show="registro" class="margin" ng-class="styleRegistro">{{msgRegistro}}</div>
-                                <div ng-repeat="dato in datosGenerales" class="margin-top">
-                                    <label>{{dato.anio}} {{getMes(dato.mes_inicio)}} - {{getMes(dato.mes_fin)}}</label>
-                                    <div>
-                                        <span class="checkbox" ng-repeat="evolucion in dato.tipo_evolucion">
-                                            <!---dato.periodo_id, evolucion.tipo_evolucion>
-                                            <label><input type="checkbox" ng-model="evolucion.selected">Evolución {{getEvolucion(evolucion.tipo_evolucion)}}</label>
-                                        </span>
-                                    </div>
-                                </div>
-                                <button class=" col-md-offset-1 col-md-3 margin-top btn btn-primary" ng-click="createDataSet();"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Ver Gráfico</button>
-                            </div-->
                         </form>
                     </div>
-                    <div id="divGraficoICE1">
-                        <canvas id="graficoICE1"></canvas>
-                    </div>
-                    <div ng-show="btnDescargar" class="margin-top">
-                        <a class="col-md-offset-5 col-md-7  button" id="imgGrafico1" ng-click="saveCanvas(1);">Descargar gráfico</a>
-                    </div>
-                    <div id="divGraficoICE2" class="margin-top-ld">
-                        <canvas id="graficoICE2"></canvas>
-                    </div>
-                    <div ng-show="btnDescargar" class="margin-top">
-                        <a class="col-md-offset-5 col-md-7  button" id="imgGrafico2" ng-click="saveCanvas(2);">Descargar gráfico</a>
-                    </div>
-
-                    <div id="divGraficoSector1" class="margin-top-ld">
-                        <canvas id="graficoSector1"></canvas>
-                    </div>
-                    <div id="divGraficoSector2" class="margin-top-ld">
-                        <canvas id="graficoSector2"></canvas>
-                    </div>
-                    <div id="divGraficoSector3" class="margin-top-ld">
-                        <canvas id="graficoSector3"></canvas>
-                    </div>
-                    <div id="divGraficoSector4" class="margin-top-ld">
-                        <canvas id="graficoSector4"></canvas>
-                    </div>
-                    <div id="divGraficoSector5" class="margin-top-ld">
-                        <canvas id="graficoSector5"></canvas>
+                    <div ng-show="graficosGenerales">
+                        <div id="divGraficoICE1">
+                            <canvas id="graficoICE1"></canvas>
+                        </div>
+                        <div ng-show="btnDescargar" class="margin-top">
+                            <a class="col-md-offset-5 col-md-7  button" id="imgGrafico1" ng-click="saveCanvas(1);">Descargar gráfico</a>
+                        </div>
+                        <div id="divGraficoICE2" class="margin-top-ld">
+                            <canvas id="graficoICE2"></canvas>
+                        </div>
+                        <div ng-show="btnDescargar" class="margin-top">
+                            <a class="col-md-offset-5 col-md-7  button" id="imgGrafico2" ng-click="saveCanvas(2);">Descargar gráfico</a>
+                        </div>
                     </div>
 
+                    <div ng-show="graficosSectores">
+                        <div id="divGraficoSector1" class="margin-top-ld">
+                            <canvas id="graficoSector1"></canvas>
+                        </div>
+                        <div id="divGraficoSector2" class="margin-top-ld">
+                            <canvas id="graficoSector2"></canvas>
+                        </div>
+                        <div id="divGraficoSector3" class="margin-top-ld">
+                            <canvas id="graficoSector3"></canvas>
+                        </div>
+                        <div id="divGraficoSector4" class="margin-top-ld">
+                            <canvas id="graficoSector4"></canvas>
+                        </div>
+                        <div id="divGraficoSector5" class="margin-top-ld">
+                            <canvas id="graficoSector5"></canvas>
+                        </div>
+                    </div>
 
-                    <div id="divGraficoIndicador1" class="margin-top-ld">
-                        <canvas id="graficoIndicador1"></canvas>
-                    </div>
-                    <div id="divGraficoIndicador2" class="margin-top-ld">
-                        <canvas id="graficoIndicador2"></canvas>
-                    </div>
-                    <div id="divGraficoIndicador3" class="margin-top-ld">
-                        <canvas id="graficoIndicador3"></canvas>
-                    </div>
-                    <div id="divGraficoIndicador4" class="margin-top-ld">
-                        <canvas id="graficoIndicador4"></canvas>
-                    </div>
-                    <div id="divGraficoIndicador5" class="margin-top-ld">
-                        <canvas id="graficoIndicador5"></canvas>
+                    <div ng-show="graficosIndicadores">
+                        <div id="divGraficoIndicador1" class="margin-top-ld">
+                            <canvas id="graficoIndicador1"></canvas>
+                        </div>
+                        <div id="divGraficoIndicador2" class="margin-top-ld">
+                            <canvas id="graficoIndicador2"></canvas>
+                        </div>
+                        <div id="divGraficoIndicador3" class="margin-top-ld">
+                            <canvas id="graficoIndicador3"></canvas>
+                        </div>
+                        <div id="divGraficoIndicador4" class="margin-top-ld">
+                            <canvas id="graficoIndicador4"></canvas>
+                        </div>
+                        <div id="divGraficoIndicador5" class="margin-top-ld">
+                            <canvas id="graficoIndicador5"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -158,4 +152,45 @@
 <div ng-show="errorConn" id="info-message" class="alert alert-danger fade in">
     <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;
     Ha ocurrido un error inesperado al cargar los registros, inténtelo de nuevo
+</div>
+
+<div id="seleccionDocumentos" class="modal fade" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header montserrat">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <label class="title">Selección de documentos</label>
+            </div>
+            <div class="modal-body">
+                <div class="simpleDemo margin">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="panel-body">
+                                <div class="row border margin">
+                                    <center>
+                                        <div class="panelHorizontal">
+                                            <div class="align-left"><label><input type="checkbox" ng-click="selectAllDocumentos()" ng-model="allDocumentos"> Seleccionar todos</label></div>
+                                            <br>
+                                            <div class="align-left"><label><input type="checkbox" ng-model="documentos[0].selected" ng-change="selectDocumento()">{{documentos[0].nombre}}</label></div>
+                                            <br>
+                                            <div class="align-left"><label><input type="checkbox" ng-model="documentos[1].selected" ng-change="selectDocumento()">{{documentos[1].nombre}}</label></div>
+                                            <br>
+                                            <div class="align-left"><label><input type="checkbox" ng-model="documentos[2].selected" ng-change="selectDocumento()">{{documentos[2].nombre}}</label></div>
+                                        </div>
+                                    </center>
+                                    <div class="col-md-12 margin-top">
+                                        <div class="animation animated-item-3 margin-top margin-around center-block" ng-class="styleMsgAnalisis">{{msgAnalisis}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border: none;">
+                <button data-dismiss="modal" class="btn btn-cancel"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Cancelar</button>
+                <button class="btn btn-primary" data-ng-click="generarDocumento()"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Descargar documento</button>
+            </div>
+        </div>
+    </div>
 </div>
