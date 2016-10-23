@@ -359,7 +359,7 @@
             var button = document.getElementById(a);
             button.href = document.getElementById(canvas).toDataURL();
             button.download = 'ICE.png';
-        }
+        } 
 
         $scope.setDataGrafico = function (datoGrafico) {
             $scope.datoGrafico_id = datoGrafico.datos_graficos_id;
