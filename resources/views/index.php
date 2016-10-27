@@ -7,10 +7,6 @@
 	<link rel="stylesheet" type="text/css" href="<?= asset('node_modules/bootstrap/dist/css/bootstrap.min.css') ?>">
 	<link rel="stylesheet" type="text/css" href="<?= asset('node_modules/font-awesome/css/font-awesome.min.css') ?>">
 	<link rel="stylesheet" type="text/css" href="<?= asset('node_modules/angular-material/angular-material.min.css') ?>">
-	<link rel="stylesheet" type="text/css" href="<?= asset('app/css/main.css') ?>">
-	<link rel="stylesheet" type="text/css" href="<?= asset('node_modules/carousel/css/font-awesome.min.css') ?>">
-	<link rel="stylesheet" type="text/css" href="<?= asset('node_modules/carousel/css/prettyPhoto.css') ?>">
-	<link rel="stylesheet" type="text/css" href="<?= asset('node_modules/carousel/css/animate.css') ?>">
 	<link rel="stylesheet" type="text/css" href="<?= asset('app/css/styles.css') ?>">
 	<link rel="stylesheet" type="text/css" href='<?= asset('app/css/roboto.css') ?>'>
 	<link rel="stylesheet" type="text/css" href='<?= asset('app/css/kaushan.css') ?>'>
@@ -20,20 +16,21 @@
 
 	<!-- Application Dependencies -->
 	<script type="text/javascript" src="<?= asset('node_modules/angular/angular.min.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('node_modules/ui-bootstrap/ui-bootstrap.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/angular-animate/angular-animate.min.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/angular-aria/angular-aria.min.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/angular-messages/angular-messages.min.js') ?>"></script>
-	<script type="text/javascript" src="<?= asset('node_modules/carousel/js/jquery.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/jquery/dist/jquery.min.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/carousel/js/bootstrap.min.js') ?>"></script>
-	<script type="text/javascript" src="<?= asset('node_modules/carousel/js/jquery.prettyPhoto.js') ?>"></script>
-	<script type="text/javascript" src="<?= asset('node_modules/carousel/js/main.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/angular-ui-router/release/angular-ui-router.min.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/angular-cookies/angular-cookies.min.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/angular-material/angular-material.min.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/angular-filter/angular-filter.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('node_modules/chart/chart.js') ?>"></script>
-	<script type="text/javascript" src="<?= asset('node_modules/ui-bootstrap/ui-bootstrap.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('node_modules/file-saver/FileSaver.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('node_modules/blob/Blob.js') ?>"></script>
+	<script type="text/javascript" src="<?= asset('node_modules/html-docx/html-docx.js') ?>"></script>
+
 
 	<!-- Application Scripts -->
 	<script type="text/javascript" src="<?= asset('app/js/app.js') ?>"></script>
@@ -69,10 +66,8 @@
 	<script type="text/javascript" src="<?= asset('app/Autenticacion/autenticacion.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Periodos/periodos.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Periodos/periodos.factory.js') ?>"></script>
-	<script type="text/javascript" src="<?= asset('app/Analisis/analisis.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/SectoresIndicadores/sectoresIndicadores.factory.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/js/angular-drag-and-drop-lists.js') ?>"></script>
-	<script type="text/javascript" src="<?= asset('app/Analisis/analisis.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Analisis/analisisCompleto.controller.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Analisis/analisis.factory.js') ?>"></script>
 	<script type="text/javascript" src="<?= asset('app/Graficos/datosGraficos.controller.js') ?>"></script>

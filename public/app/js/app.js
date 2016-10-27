@@ -276,9 +276,9 @@
                 controller: 'DatosGraficosController'
             })
             .state('empresario.analisis',{
-                url: '/analisis',
-                templateUrl: './app/Analisis/analisis.html',
-                controller: 'AnalisisController'
+                 url: '/analisis',
+                 templateUrl: './app/Analisis/analisisCompleto.html',
+                 controller: 'AnalisisCompletoController'
             })
             .state('admin.periodos',{
                 url: '/periodos',

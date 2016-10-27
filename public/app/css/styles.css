@@ -858,5 +858,8 @@ a:hover {
 .align-left{
     float: left;
     cursor:pointer;
+}
 
+.divGrafico{
+    /*visibility: hidden;*/
 }
