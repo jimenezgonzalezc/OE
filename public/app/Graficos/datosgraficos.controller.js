@@ -372,8 +372,6 @@
 
             var converted = htmlDocx.asBlob($scope.generarDocumentoByOpcion(), {orientation: 'landscape'});
             saveAs(converted, 'test.docx');
-            //var sass = $scope.generarDocumentoByOpcion();
-            //console.log(sass);
         };
 
         $scope.generarDocumentoByOpcion = function () {
