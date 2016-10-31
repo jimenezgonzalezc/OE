@@ -473,7 +473,6 @@
 
             if ($scope.datasetsIndicadores !== 0) {
                 $scope.datasetsIndicadores.forEach(function (grafico) {
-                    console.log(grafico);
                     $scope.generarGrafico(grafico.datasets, grafico.titulo, grafico.labels);
                     var valores = $scope.getDataDocumento(grafico.datasets, grafico.labels);
                     $scope.getGrafico(grafico.titulo, datoIndicador.descripcion, valores);
@@ -573,13 +572,11 @@
                     animation: false
                 }
             });
-            console.log(myChart);
         };
 
         $scope.getGrafico = function (titulo, descripcion, valores) {
             var canvasAux = document.getElementById("graficoAux");
             var img    = canvasAux.toDataURL("image/png");
-            console.log('grafico', img);
             $scope.datosNV = '';
             valores.forEach(function (valor) {
                 valor.forEach(function (item) {
